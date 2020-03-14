@@ -4,12 +4,13 @@ $(function () {
     getCountryIds();
     getItemIdsByItemType(3,"#busSize","#hidBusSize")
     getItemIdsByItemType(4,"#fuelType","#hidFuelType")
+    getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
 
     $('#mainBody').on("change", "#countryId", function() {
         var countryId=$("#countryId").val();
         if(countryId!=null){
             getCityIds(countryId);
-            getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
+            getItemIdsByParentIdAndItemType(5,countryId,"#emissionStd","#hidEmissionStd");
         }
     });
     function getYears() {
@@ -70,7 +71,7 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemsByParentId", // 请求发送到TestServlet处
+            url: "../api/getItemsByParentIdAndItemType", // 请求发送到TestServlet处
             data: {
                 itemType:2,
                 parentId:countryId
@@ -164,7 +165,7 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemIdsByParentIdAndItemType", // 请求发送到TestServlet处
+            url: "../api/getItemsByParentIdAndItemType", // 请求发送到TestServlet处
             data: {
                 itemType:itemType,
                 parentId:parentId
@@ -187,5 +188,52 @@ $(function () {
                 }
             }
         });
+    }
+
+
+    function getMeData() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var verticleType=$("#verticleType").val();
+        var fuelType=$("#fuelType").val();
+        var speedType=$("#speedType").val();
+        var ac=$("#ac").val();
+        var load=$("#load").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/getMeDataByCountryIdAndCityIdAndYear", // 请求发送到TestServlet处
+            data: {
+                countryId: countryId,
+                cityId:cityId,
+                verticleType:verticleType,
+                fuelType:fuelType,
+                speedType:speedType,
+                ac:ac,
+                load:load,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                var coFactor=$("#coFactor").val();
+                var thcFactor=$("#thcFactor").val();
+                var noxFactor=$("#noxFactor").val();
+                var pm25Factor=$("#coFactor").val();
+                var pm10Factor=$("#thcFactor").val();
+                var Factor=$("#noxFactor").val();
+
+                if (data.code == 0&& data.details.length>0) {
+                    var detail=data.details[0];
+                    if(discountRate==""){
+                        $("#discountRate").val(detail.discount_rate);
+                    }
+                    if(socialDiscountRate==""){
+                        $("#socialDiscountRate").val(detail.social_discount_rate);
+                    }
+                    if(inflationRate==""){
+                        $("#inflationRate").val(detail.inflation_rate);
+                    }
+                }
+            }
+        })
     }
 });

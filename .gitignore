@@ -29,3 +29,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+target
+pom.releaseBackup
+application-dev.properties
+logback-dev.xml
+logback-test.xml

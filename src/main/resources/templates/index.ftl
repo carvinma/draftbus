@@ -99,6 +99,107 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Number of bus</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="busNumber" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Annual distance traveled (VKT)(km/year/bus)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="vkt" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Operational years</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="operationalYears" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Average operational speed </label>
+                        <div class="col-sm-10">
+                            <select name="opSpeed" class="form-control" lay-verify="" id="opSpeed" style="display: block;width:200px;">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Inspection and Maintenance </label>
+                        <div class="col-sm-10">
+                            <select name="maintenance" class="form-control" lay-verify="" id="maintenance" style="display: block;width:200px;">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Load </label>
+                        <div class="col-sm-10">
+                            <select name="feLoad" class="form-control" lay-verify="" id="feLoad" style="display: block;width:200px;">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Fuel efficiency(L/100 km)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" readonly class="form-control" id="fuelEfficiency" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Emissions Factors</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Carbon Monoxide (CO)/label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="coFactor" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Total Hydrocarbons (THC)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="thcFactor" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Nitrogen Oxide (Nox)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="noxFactor" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Particulate Matter 2.5 (PM 2.5)</label>
+                            <div class="col-sm-10" >
+                                <input type="text" class="form-control" id="pm25Factor" placeholder="" style="width:200px;">
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Particulate Matter 10 (PM 10)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="pm10Factor" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Carbon Dioxide (CO2)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="co2Factor" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Greenhouse Gases (GHG/CO2e)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="co2eFactor" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

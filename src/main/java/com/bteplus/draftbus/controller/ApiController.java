@@ -2,6 +2,7 @@ package com.bteplus.draftbus.controller;
 
 import com.bteplus.draftbus.entity.ItemInfo;
 import com.bteplus.draftbus.entity.MeData;
+import com.bteplus.draftbus.repository.EfDataRepository;
 import com.bteplus.draftbus.repository.ItemInfoRepository;
 import com.bteplus.draftbus.repository.MeDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ApiController {
 
     @Autowired
     MeDataRepository meDataRepository;
+
+    @Autowired
+    EfDataRepository efDataRepository;
 
     @RequestMapping(value="/abc")
     public String abc(){
@@ -63,6 +67,15 @@ public class ApiController {
     public Map<String,Object> getMeDataByCountryIdAndCityIdAndYear(Integer countryId,Integer cityId,Integer year){
         Map<String,Object> map=new HashMap<String,Object>();
         List<MeData> lst=meDataRepository.getMeDataByCountryIdAndCityIdAndYear(countryId,cityId,year);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+
+    @RequestMapping(value="/getEfDataB")
+    public Map<String,Object> getEfData(Integer countryId,Integer cityId,Integer verticleType,Integer fuelType,Integer speedType,Integer ac,Integer load){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<MeData> lst=efDataRepository.getEfData(countryId,cityId,verticleType,fuelType,speedType,ac,load);
         map.put("code",0);
         map.put("details",lst);
         return map;
