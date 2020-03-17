@@ -1,5 +1,6 @@
 package com.bteplus.draftbus.controller;
 
+import com.bteplus.draftbus.entity.EfData;
 import com.bteplus.draftbus.entity.ItemInfo;
 import com.bteplus.draftbus.entity.MeData;
 import com.bteplus.draftbus.repository.EfDataRepository;
@@ -63,19 +64,19 @@ public class ApiController {
         return map;
     }
 
-    @RequestMapping(value="/getMeDataByCountryIdAndCityIdAndYear")
-    public Map<String,Object> getMeDataByCountryIdAndCityIdAndYear(Integer countryId,Integer cityId,Integer year){
+    @RequestMapping(value="/getMeData")
+    public Map<String,Object> getMeData(Integer countryId,Integer cityId,Integer year){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<MeData> lst=meDataRepository.getMeDataByCountryIdAndCityIdAndYear(countryId,cityId,year);
+        List<MeData> lst=meDataRepository.getMeData(countryId,cityId,year);
         map.put("code",0);
         map.put("details",lst);
         return map;
     }
 
-    @RequestMapping(value="/getEfDataB")
-    public Map<String,Object> getEfData(Integer countryId,Integer cityId,Integer verticleType,Integer fuelType,Integer speedType,Integer ac,Integer load){
-        Map<String,Object> map=new HashMap<String,Object>();
-        List<MeData> lst=efDataRepository.getEfData(countryId,cityId,verticleType,fuelType,speedType,ac,load);
+    @RequestMapping(value="/getEfData")
+    public Map<String,Object> getEfData(Integer countryId,Integer cityId,Integer verticleType,Integer fuelType,Integer load){
+        Map<String,Object> map= new HashMap<>();
+        List<EfData> lst=efDataRepository.getEfData(countryId,cityId,verticleType,fuelType,load);
         map.put("code",0);
         map.put("details",lst);
         return map;

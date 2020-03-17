@@ -81,7 +81,7 @@
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">Bus Size</label>
                         <div class="col-sm-10" >
-                            <select name="busSize" class="form-control" lay-verify="" id="busSize" style="display: block;width:200px;">
+                            <select name="verticleType" class="form-control" lay-verify="" id="verticleType" style="display: block;width:200px;">
                             </select>
                         </div>
                     </div>
@@ -153,12 +153,198 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
+                <h3 class="panel-title">Cost Factors</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Purchase price</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Residual value</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="residualValue" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Down payment</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="residualValue" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Loan interest rate</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Loan time</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Procurement subsidy</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Battery price</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Battery leasing price</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Battery content</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Annual total labor cost</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Fuel price</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Fuel cost projection</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Additional fuel price</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Additional operational costs to include</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Annual general maintenance cost</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Tires</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Frequency</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Engine overhaul</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Frequency</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Transmission overhaul</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Frequency</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Battery overhaul</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Frequency</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Vehicle retrofits</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Frequency</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Additional maintenance costs to include </label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Insurance</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Administration</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Other tax and fee</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="purchasePrice" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
                 <h3 class="panel-title">Emissions Factors</h3>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">Carbon Monoxide (CO)/label>
+                        <label for="" class="col-sm-2 control-label">Carbon Monoxide (CO)</label>
                         <div class="col-sm-10" >
                             <input type="text" class="form-control" id="coFactor" placeholder="" style="width:200px;">
                         </div>
@@ -211,10 +397,11 @@
 <input type="hidden" id="hidModelYear">
 <input type="hidden" id="hidCountryId">
 <input type="hidden" id="hidCityId">
-<input type="hidden" id="hidBusSize">
+<input type="hidden" id="hidVerticleType">
 <input type="hidden" id="hidFuelType">
 <input type="hidden" id="hidEmissionStd">
-
+<input type="hidden" id="hidMaintenance">
+<input type="hidden" id="hidOpSpeed">
 
 
 

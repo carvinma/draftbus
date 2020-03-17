@@ -2,9 +2,11 @@ $(function () {
 
     getYears();
     getCountryIds();
-    getItemIdsByItemType(3,"#busSize","#hidBusSize")
+    getItemIdsByItemType(3,"#verticleType","#hidVerticleType")
     getItemIdsByItemType(4,"#fuelType","#hidFuelType")
     getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
+    getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
+    getItemIdsByItemType(7,"#maintenance","#hidMaintenance")
 
     $('#mainBody').on("change", "#countryId", function() {
         var countryId=$("#countryId").val();
@@ -13,6 +15,13 @@ $(function () {
             getItemIdsByParentIdAndItemType(5,countryId,"#emissionStd","#hidEmissionStd");
         }
     });
+
+    $('#emissionStd').change(function(){
+        getEfData();
+    });
+
+
+
     function getYears() {
         $.ajax({
             type: "POST",
@@ -104,7 +113,7 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getMeDataByCountryIdAndCityIdAndYear", // 请求发送到TestServlet处
+            url: "../api/getMeData", // 请求发送到TestServlet处
             data: {
                 countryId: countryId,
                 cityId:cityId,
@@ -147,7 +156,7 @@ $(function () {
                 if (data.code == 0) {
                     for (var i = 0; i < data.details.length; i++) {
                         var detail = data.details[i];
-                        var option = "<option  value='" + detail.item_id + "'>"
+                        var option = "<option  value='" + detail.item_id + "' data-value='"+detail.item_value+"'>"
                             + detail.item_name + "</option>";
                         html = html + option;
                     }
@@ -176,7 +185,7 @@ $(function () {
                 if (data.code == 0) {
                     for (var i = 0; i < data.details.length; i++) {
                         var detail = data.details[i];
-                        var option = "<option  value='" + detail.item_id + "'>"
+                        var option = "<option  value='" + detail.item_id + "' data-value='"+detail.item_value+"'>"
                             + detail.item_name + "</option>";
                         html = html + option;
                     }
@@ -191,26 +200,22 @@ $(function () {
     }
 
 
-    function getMeData() {
+    function getEfData() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
         var verticleType=$("#verticleType").val();
         var fuelType=$("#fuelType").val();
-        var speedType=$("#speedType").val();
-        var ac=$("#ac").val();
-        var load=$("#load").val();
+        var load=$("#feLoad").val();
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getMeDataByCountryIdAndCityIdAndYear", // 请求发送到TestServlet处
+            url: "../api/getEfData", // 请求发送到TestServlet处
             data: {
                 countryId: countryId,
                 cityId:cityId,
                 verticleType:verticleType,
                 fuelType:fuelType,
-                speedType:speedType,
-                ac:ac,
-                load:load,
+                load:load
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -219,21 +224,51 @@ $(function () {
                 var noxFactor=$("#noxFactor").val();
                 var pm25Factor=$("#coFactor").val();
                 var pm10Factor=$("#thcFactor").val();
-                var Factor=$("#noxFactor").val();
 
                 if (data.code == 0&& data.details.length>0) {
-                    var detail=data.details[0];
-                    if(discountRate==""){
-                        $("#discountRate").val(detail.discount_rate);
+                    var std=$("#emissionStd").find("option:selected").data("value");
+                    var i=0;
+                    for( i=0;i<data.details.length;i++){
+                        var detail=data.details[i];
+                        var factor=getEfFactor(detail,std);
+                        if(coFactor==""&&detail.emission=="co"){
+                            $("#coFactor").val(factor);
+                        }
+                        if(thcFactor==""&&detail.emission=="thc"){
+                            $("#thcFactor").val(factor);
+                        }
+                        if(noxFactor==""&&detail.emission=="nox"){
+                            $("#noxFactor").val(factor);
+                        }
+                        if(pm25Factor==""&&detail.emission=="pm25"){
+                            $("#pm25Factor").val(factor);
+                        }
+                        if(pm10Factor==""&&detail.emission=="pm10"){
+                            $("#pm10Factor").val(factor);
+                        }
                     }
-                    if(socialDiscountRate==""){
-                        $("#socialDiscountRate").val(detail.social_discount_rate);
-                    }
-                    if(inflationRate==""){
-                        $("#inflationRate").val(detail.inflation_rate);
-                    }
+
                 }
             }
         })
+    }
+
+    function getEfFactor(detail,std){
+        var result=0;
+        if(std=="pre_std"){
+            return detail.pre_std;
+        }else if(std=="std1"){
+            return detail.std1;
+        }else if(std=="std2"){
+            return detail.std2;
+        }else if(std=="std3"){
+            return detail.std3;
+        }else if(std=="std4"){
+            return detail.std4;
+        }else if(std=="std5"){
+            return detail.std5;
+        }else if(std=="std6"){
+            return detail.std6;
+        }
     }
 });

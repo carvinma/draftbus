@@ -24,7 +24,7 @@ public class FeData {
     private Integer  vehicle_type;
     private Integer fuel_type;
     private Integer emission;
-    private Double load;
+    private Double fe_load;
     private Double avg_value;
     private Double pre_std;
     private Double std1;
