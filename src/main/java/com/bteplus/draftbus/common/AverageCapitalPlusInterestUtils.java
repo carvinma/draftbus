@@ -10,6 +10,7 @@ package com.bteplus.draftbus.common;
  */
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -141,10 +142,10 @@ public class AverageCapitalPlusInterestUtils {
      * @param args
      */
     public static void main(String[] args) {
-        double invest = 38988; // 本金
-        int month = 12;
-        double yearRate = 0.15; // 年利率
-        BigDecimal perMonthPrincipalInterest = getPerMonthPrincipalInterest(invest, yearRate, month);
+        double invest =  275000000; // 本金
+        int year = 10;
+        double yearRate = 0.08; // 年利率
+        /*BigDecimal perMonthPrincipalInterest = getPerMonthPrincipalInterest(invest, yearRate, month);
         System.out.println("等额本息---每月还款本息：" + perMonthPrincipalInterest);
         System.out.println("等额本息---每月还款本息：" + getPerMonthPrincipalInterest(invest, yearRate, 3));
         System.out.println("等额本息---每月还款本息：" + getPerMonthPrincipalInterest(invest, yearRate, 6));
@@ -152,7 +153,7 @@ public class AverageCapitalPlusInterestUtils {
         System.out.println("等额本息---每月还款本息：" + getPerMonthPrincipalInterest(invest, yearRate, 12));
         System.out.println("等额本息---每月还款本息：" + getPerMonthPrincipalInterest(invest, yearRate, 15));
         System.out.println("等额本息---每月还款本息：" + getPerMonthPrincipalInterest(invest, yearRate, 18));
-        /*Map<Integer, BigDecimal> mapInterest = getPerMonthInterest(invest, yearRate, month);
+        Map<Integer, BigDecimal> mapInterest = getPerMonthInterest(invest, yearRate, month);
         System.out.println("等额本息---每月还款利息：" + mapInterest);
         Map<Integer, BigDecimal> mapPrincipal = getPerMonthPrincipal(invest, yearRate, month);
         System.out.println("等额本息---每月还款本金：" + mapPrincipal);
@@ -160,6 +161,69 @@ public class AverageCapitalPlusInterestUtils {
         System.out.println("等额本息---总利息：" + count);
         double principalInterestCount = getPrincipalInterestCount(invest, yearRate, month);
         System.out.println("等额本息---应还本息总和：" + principalInterestCount);*/
+
+        System.out.println("等额本息---每月还款本金：" + getPerYearPrincipal(invest,yearRate,10));
+        System.out.println("等额本息---每月还款利息：" + getPerYearInterest(invest,yearRate,10));
+        Map<Integer,BigDecimal> map=getPerYearInterest(invest,yearRate,10);
+        System.out.println("等额本息---interest npv：" + NPVCalcUtils.calcNPV(2.25/100,map));
+
+
+        Map<Integer,BigDecimal> map2=getPerYearPrincipal(invest,yearRate,10);
+        System.out.println("等额本息---Principal npv：" + NPVCalcUtils.calcNPV(2.25/100,map2));
     }
+
+
+    /**
+     * 等额本息计算获取还款方式为等额本息的每年偿还利息
+     *
+     * 公式：每月偿还利息=贷款本金×月利率×〔(1+月利率)^还款月数-(1+月利率)^(还款月序号-1)〕÷〔(1+月利率)^还款月数-1〕
+     *
+     * @param invest
+     *            总借款额（贷款本金）
+     * @param yearRate
+     *            年利率
+     * @param totalYear
+     *            还款总年数
+     * @return 每年偿还利息
+     */
+    public static Map<Integer, BigDecimal> getPerYearInterest(double invest, double yearRate, int totalYear) {
+        Map<Integer, BigDecimal> map = new HashMap<Integer, BigDecimal>();
+        BigDecimal monthInterest;
+        for (int i = 1; i < totalYear + 1; i++) {
+            BigDecimal multiply = new BigDecimal(invest).multiply(new BigDecimal(yearRate));
+            BigDecimal sub = new BigDecimal(Math.pow(1 + yearRate, totalYear))
+                    .subtract(new BigDecimal(Math.pow(1 + yearRate, i - 1)));
+            monthInterest = multiply.multiply(sub).divide(new BigDecimal(Math.pow(1 + yearRate, totalYear) - 1), 2,
+                    BigDecimal.ROUND_DOWN);
+            monthInterest = monthInterest.setScale(2, BigDecimal.ROUND_DOWN);
+            map.put(i, monthInterest);
+        }
+        return map;
+    }
+
+    /**
+     * 等额本息计算获取还款方式为等额本息的每年偿还本金
+     *
+     * @param invest
+     *            总借款额（贷款本金）
+     * @param yearRate
+     *            年利率
+     * @param totalYear
+     *            还款总年数
+     * @return 每年偿还本金
+     */
+    public static Map<Integer, BigDecimal> getPerYearPrincipal(double invest, double yearRate, int totalYear) {
+        BigDecimal yearIncome = new BigDecimal(invest)
+                .multiply(new BigDecimal(yearRate * Math.pow(1 + yearRate, totalYear)))
+                .divide(new BigDecimal(Math.pow(1 + yearRate, totalYear) - 1), 2, BigDecimal.ROUND_DOWN);
+        Map<Integer, BigDecimal> mapInterest = getPerYearInterest(invest, yearRate, totalYear);
+        Map<Integer, BigDecimal> mapPrincipal = new HashMap<Integer, BigDecimal>();
+
+        for (Map.Entry<Integer, BigDecimal> entry : mapInterest.entrySet()) {
+            mapPrincipal.put(entry.getKey(), yearIncome.subtract(entry.getValue()));
+        }
+        return mapPrincipal;
+    }
+
 }
 

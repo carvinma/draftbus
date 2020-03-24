@@ -344,6 +344,9 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">TAILPIPE</label>
+                    </div>
+                    <div class="form-group">
                         <label for="" class="col-sm-2 control-label">Carbon Monoxide (CO)</label>
                         <div class="col-sm-10" >
                             <input type="text" class="form-control" id="coFactor" placeholder="" style="width:200px;">
@@ -386,6 +389,73 @@
                             <input type="text" class="form-control" id="co2eFactor" placeholder="" style="width:200px;">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">UPSTREAM</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Particulate Matter 2.5 (PM 2.5)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="pm25Factor2" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Particulate Matter 10 (PM 10)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="pm10Factor2" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Carbon Dioxide (CO2)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="co2Factor2" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Greenhouse Gases (GHG/CO2e)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="co2eFactor2" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Infrastructure (optional)</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Charger construction($)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="chargerConstruction" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Number of chargers</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="chargerNumber" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Procurement cost($)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="procurementCost" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Operational cost($/year)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="operationalCost" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Maintenance cost($/year)</label>
+                        <div class="col-sm-10" >
+                            <input type="text" class="form-control" id="maintenanceCost" placeholder="" style="width:200px;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -393,15 +463,15 @@
     </div>
 </div>
 
-
-<input type="hidden" id="hidModelYear">
-<input type="hidden" id="hidCountryId">
-<input type="hidden" id="hidCityId">
-<input type="hidden" id="hidVerticleType">
-<input type="hidden" id="hidFuelType">
-<input type="hidden" id="hidEmissionStd">
-<input type="hidden" id="hidMaintenance">
-<input type="hidden" id="hidOpSpeed">
+<input type="hidden" id="hidRecordId" value="${inputData.record_id!}">
+<input type="hidden" id="hidModelYear" value="${inputData.calc_year!}">
+<input type="hidden" id="hidCountryId" value="${inputData.country_id!}">
+<input type="hidden" id="hidCityId" value="${inputData.city_id!}">
+<input type="hidden" id="hidVerticleType" value="${inputBusFleet.verticle_type!}">
+<input type="hidden" id="hidFuelType" value="${inputBusFleet.fuel_type!}">
+<input type="hidden" id="hidEmissionStd" value="${inputBusFleet.emission_std!}">
+<input type="hidden" id="hidMaintenance" value="${inputBusFleet.maintenance!}">
+<input type="hidden" id="hidOpSpeed" value="${inputBusFleet.op_speed!}">
 
 
 
