@@ -16,44 +16,38 @@ import javax.persistence.Table;
 public class InputCostFactor {
     @Id
     private Integer record_id;
-    private double purchase_price;
-    private double residual_value;
-    private double down_payment;
-    private double loan_interest_rate;
+    private Double purchase_price;
+    private Double residual_value;
+    private Double down_payment_rate;
+    private Double loan_interest_rate;
     private Integer loan_time;
-    private double procurement_subsidy;
+    private Double procurement_subsidy;
 
-    private double battery_price;
-    private double battery_leasing_price;
-    private double battery_content;
+    private Double battery_price;
+    private Double battery_leasing_price;
+    private Double battery_content;
 
-    private double annual_labor_cost;
-    private double fuel_price;
-    private double fuel_cost_projection;
-    private double additional_fuel_price;
-    private double additional_operation_cost;
-    private double annual_maintenance_cost;
-    private double insurance;
-    private double administration;
+    private Double annual_labor_cost;
+    private Double fuel_price;
+    private Double fuel_cost_projection;
+    private Double additional_fuel_price;
+    private Double additional_operation_cost;
+    private Double annual_maintenance_cost;
+    private Double insurance;
+    private Double administration;
 
-    private double tires;
+    private Double tires;
     private Integer tires_frequency;
-    private double engine_overhaul;
+    private Double engine_overhaul;
     private Integer engine_overhaul_frequency;
-    private double transmission_overhaul;
+    private Double transmission_overhaul;
     private Integer transmission_overhaul_frequency;
-    private double battery_overhaul;
+    private Double battery_overhaul;
     private Integer battery_overhaul_frequency;
 
-    private double vehicle_retrofits;
+    private Double vehicle_retrofits;
     private Integer vehicle_retrofits_frequency;
-    private double additional_maintenance_cost;
+    private Double additional_maintenance_cost;
 
-
-
-
-
-
-    private Integer maintenance;
 
 }

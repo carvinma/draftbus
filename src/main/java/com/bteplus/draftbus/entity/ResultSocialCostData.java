@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -13,12 +14,13 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResultSocialCostData {
+    @Id
     private Integer record_id;
-    private double co;
-    private double thc;
-    private double nox;
-    private double pm25;
-    private double pm10;
-    private double co2;
+    private Double co;
+    private Double thc;
+    private Double nox;
+    private Double pm25;
+    private Double pm10;
+    private Double co2;
   
 }

@@ -20,7 +20,9 @@ $(function () {
         getEfData();
     });
 
-
+    $('#mainBody').on("click", "#btnCalc", function() {
+        calcData();
+    });
 
     function getYears() {
         $.ajax({
@@ -270,5 +272,188 @@ $(function () {
         }else if(std=="std6"){
             return detail.std6;
         }
+    }
+
+
+    function calcData() {
+        var id = $("#hidRecordId").val();
+        var countryId = $("#countryId").val();
+        var cityId = $("#cityId").val();
+        var modelYear = $("#modelYear").val();
+
+        var discountRate = $("#discountRate").val();
+        var socialDiscountRate = $("#socialDiscountRate").val();
+        var inflationRate = $("#inflationRate").val();
+        var temperature = $("#temperature").val();
+        var humidity = $("#humidity").val();
+        var slope = $("#slope").val();
+
+        var verticleType = $("#verticleType").val();
+        var fuelType = $("#fuelType").val();
+        var emissionStd = $("#emissionStd").val();
+        var busNumber = $("#busNumber").val();
+        var replacementRatio = $("#replacementRatio").val();
+        var loanTime = $("#loanTime").val();
+        var vkt = $("#vkt").val();
+        var operationalYears = $("#operationalYears").val();
+        var opSpeed = $("#opSpeed").val();
+        var maintenance = $("#maintenance").val();
+        var fuelEfficiency = $("#fuelEfficiency").val();
+        var feLoad = $("#feLoad").val();
+
+
+
+        var purchasePrice = $("#purchasePrice").val();
+        var residualValue = $("#residualValue").val();
+        var downPaymentRate = $("#downPaymentRate").val();
+        var loanInterestRate = $("#loanInterestRate").val();
+        var loanTime = $("#loanTime").val();
+        var procurementSubsidy = $("#procurementSubsidy").val();
+        var batteryPrice = $("#batteryPrice").val();
+        var batteryLeasingPrice = $("#batteryLeasingPrice").val();
+        var batteryContent = $("#batteryContent").val();
+        var annualLaborCost = $("#annualLaborCost").val();
+        var fuelPrice = $("#fuelPrice").val();
+        var fuelCostProjection = $("#fuelCostProjection").val();
+        var additionalFuelPrice = $("#additionalFuelPrice").val();
+        var additionalOperationalCost = $("#additionalOperationalCost").val();
+
+
+        var annualMaintenanceCost = $("#annualMaintenanceCost").val();
+        var tires = $("#tires").val();
+        var tiresFrequency = $("#tiresFrequency").val();
+        var engineOverhaul = $("#engineOverhaul").val();
+        var engineOverhaulFrequency = $("#engineOverhaulFrequency").val();
+        var transmissionOverhaul = $("#transmissionOverhaul").val();
+        var transmissionOverhaulFrequency = $("#transmissionOverhaulFrequency").val();
+        var batteryOverhaul = $("#batteryOverhaul").val();
+        var batteryOverhaulFrequency = $("#batteryOverhaulFrequency").val();
+        var vehicleRetrofits = $("#vehicleRetrofits").val();
+        var vehicleRetrofitsFrequency = $("#vehicleRetrofitsFrequency").val();
+
+        var additionalMaintenanceCost = $("#additionalMaintenanceCost").val();
+        var insurance = $("#insurance").val();
+        var administration = $("#administration").val();
+        var otherTaxFee = $("#otherTaxFee").val();
+
+
+        var coFactor = $("#coFactor").val();
+        var thcFactor = $("#thcFactor").val();
+        var noxFactor = $("#noxFactor").val();
+        var pm25Factor = $("#pm25Factor").val();
+        var pm10Factor = $("#pm10Factor").val();
+        var co2Factor = $("#co2Factor").val();
+        var co2eFactor = $("#co2eFactor").val();
+        var pm25Factor2 = $("#pm25Factor2").val();
+        var pm10Factor2 = $("#pm10Factor2").val();
+        var co2Factor2 = $("#co2Factor2").val();
+        var co2eFactor2 = $("#co2eFactor2").val();
+        var coFactor3 = $("#coFactor3").val();
+        var thcFactor3 = $("#thcFactor3").val();
+        var noxFactor3 = $("#noxFactor3").val();
+        var pm25Factor3 = $("#pm25Factor3").val();
+        var pm10Factor3 = $("#pm10Factor3").val();
+        var co2Factor3 = $("#co2Factor3").val();
+
+        var chargerConstruction = $("#chargerConstruction").val();
+        var chargersNumber = $("#chargersNumber").val();
+        var procurementCost = $("#procurementCost").val();
+        var operationalCost = $("#operationalCost").val();
+        var maintenanceCost = $("#maintenanceCost").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/calcData", // 请求发送到TestServlet处
+            data: {
+                id:id,
+                countryId: countryId,
+                cityId: cityId,
+                modelYear: modelYear,
+                discountRate:discountRate,
+                socialDiscountRate:socialDiscountRate,
+                inflationRate:inflationRate,
+                temperature:temperature,
+                humidity:humidity,
+                slope:slope,
+
+
+                verticleType: verticleType,
+                fuelType: fuelType,
+                emissionStd: emissionStd,
+                busNumber:busNumber,
+                replacementRatio:replacementRatio,
+                vkt:vkt,
+                operationalYears:operationalYears,
+                opSpeed:opSpeed,
+                maintenance:maintenance,
+                feLoad:feLoad,
+                fuelEfficiency:fuelEfficiency,
+
+
+                purchasePrice: purchasePrice,
+                residualValue: residualValue,
+                downPaymentRate: downPaymentRate,
+                loanInterestRate:loanInterestRate,
+                loanTime:loanTime,
+                procurementSubsidy:procurementSubsidy,
+                batteryPrice:batteryPrice,
+                batteryLeasingPrice:batteryLeasingPrice,
+                batteryContent:batteryContent,
+                annualLaborCost:annualLaborCost,
+                fuelPrice: fuelPrice,
+                fuelCostProjection: fuelCostProjection,
+                additionalFuelPrice: additionalFuelPrice,
+                additionalOperationalCost:additionalOperationalCost,
+                annualMaintenanceCost:annualMaintenanceCost,
+
+                tires: tires,
+                tiresFrequency: tiresFrequency,
+                engineOverhaul: engineOverhaul,
+                engineOverhaulFrequency:engineOverhaulFrequency,
+                transmissionOverhaul:transmissionOverhaul,
+                transmissionOverhaulFrequency:transmissionOverhaulFrequency,
+                batteryOverhaul:batteryOverhaul,
+                batteryOverhaulFrequency:batteryOverhaulFrequency,
+                vehicleRetrofits:vehicleRetrofits,
+                vehicleRetrofitsFrequency:vehicleRetrofitsFrequency,
+                additionalMaintenanceCost:additionalMaintenanceCost,
+                insurance:insurance,
+                administration:administration,
+                otherTaxFee:otherTaxFee,
+
+
+                coFactor: coFactor,
+                thcFactor: thcFactor,
+                noxFactor: noxFactor,
+                pm25Factor:pm25Factor,
+                pm10Factor:pm10Factor,
+                co2Factor:co2Factor,
+                co2eFactor:co2eFactor,
+                pm25Factor2:pm25Factor2,
+                pm10Factor2:pm10Factor2,
+                co2Factor2:co2Factor2,
+                co2eFactor2:co2eFactor2,
+
+                coFactor3: coFactor3,
+                thcFactor3: thcFactor3,
+                noxFactor3: noxFactor3,
+                pm25Factor3:pm25Factor3,
+                pm10Factor3:pm10Factor3,
+                co2Factor3:co2Factor3,
+
+                chargersNumber: chargersNumber,
+                procurementCost: procurementCost,
+                operationalCost: operationalCost,
+                maintenanceCost:maintenanceCost,
+                chargerConstruction:chargerConstruction,
+
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if(data.code==0){
+                    window.href="/result?id="+data.id;
+                }
+            }
+        })
     }
 });

@@ -14,14 +14,14 @@ import javax.persistence.*;
 public class InputBusFleet {
     @Id
     private Integer record_id;
-    private Integer bus_size;
+    private Integer verticle_type;
     private Integer fuel_type;
     private Integer emission_std;
     private Integer bus_number;
-    private Integer replacement_ratio;
-    private Integer vkt;
+    private Double replacement_ratio;
+    private Double vkt;
     private Integer operational_years;
-    private double fuel_efficiency;
+    private Double fuel_efficiency;
     private Integer age;
     private Integer maintenance;
     private Integer op_speed;
