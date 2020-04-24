@@ -12,8 +12,8 @@ import java.util.List;
 public interface FeDataRepository extends JpaRepository<FeData,Integer>,Serializable {
 
 
-    @Query(value = "select * from fe_data where is_delete=0 and country_Id=?1 and city_id=?2 and vehicle_type=?3 and fuel_type=?4 and speed_type=?5 and  ac=?6 and fe_load=?7",nativeQuery = true)
-    List<FeData> getEfData(Integer countryId, Integer cityId, Integer vehicleType, Integer fuelType, Integer speedType, Integer ac, Integer load);
+    @Query(value = "select * from fe_data where is_delete=0 and country_Id=?1 and city_id=?2 and vehicle_type=?3 and fuel_type=?4  and  ac=?5 and fe_load=?6 and op_speed=?7",nativeQuery = true)
+    List<FeData> getFeData(Integer countryId, Integer cityId, Integer vehicleType, Integer fuelType,  Integer ac, Integer load,Integer opSpeed);
 
 
 

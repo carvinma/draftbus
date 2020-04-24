@@ -17,4 +17,18 @@ public class NPVCalcUtils {
         return Double.NaN;
 
     }
+
+    public static double calcNPV(double r, Double[] netCash){
+        double npv = 0;
+
+        if (netCash.length != 0) {
+            for (int count = 0; count < netCash.length; count++) {
+                npv += netCash[count] / Math.pow(1 + r, count);
+            }
+            //return npv;
+            return npv/(1+r);
+        }
+        return Double.NaN;
+
+    }
 }

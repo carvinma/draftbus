@@ -18,17 +18,18 @@ public class InputData {
     private Integer calc_year;
     private Integer country_id;
     private Integer city_id;
-    private Double discount_rate;
-    private Double social_discount_rate;
-    private Double inflation_rate;
-    private Double exchange_rate;
+    private Double discount_rate=0.0;
+    private Double social_discount_rate=0.0;
+    private Double inflation_rate=0.0;
+    private Double exchange_rate=0.0;
     private Integer temperature;
     private Integer humidity;
     private Integer slope;
-    private Double charger_construction;
-    private Integer chargers_number;
-    private Double procurement_cost;
-    private Double operational_cost;
-    private Double maintenance_cost;
+    private Double charger_construction=0.0;
+    private Integer chargers_number=0;
+    private Double procurement_cost=0.0;
+    private Double operational_cost=0.0;
+    private Double maintenance_cost=0.0;
+    private Integer parent_id;
 
 }

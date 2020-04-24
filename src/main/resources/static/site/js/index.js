@@ -2,27 +2,51 @@ $(function () {
 
     getYears();
     getCountryIds();
-    getItemIdsByItemType(3,"#verticleType","#hidVerticleType")
+    getItemIdsByItemType(3,"#vehicleType","#hidVehicleType")
     getItemIdsByItemType(4,"#fuelType","#hidFuelType")
     getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
     getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
-    getItemIdsByItemType(7,"#maintenance","#hidMaintenance")
+    getItemIdsByItemType(7,"#ac","#hidAc")
+    getItemIdsByItemType(9,"#temperature","#hidTemperature")
+    getItemIdsByItemType(10,"#humidity","#hidHumidity")
+    getItemIdsByItemType(11,"#slope","#hidSlope")
 
+    loadData();
+    getChildren();
+    function loadData()
+    {
+        var countryId=$("#hidCountryId").val();
+        if(countryId!=""){
+            getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
+        }
+    }
     $('#mainBody').on("change", "#countryId", function() {
         var countryId=$("#countryId").val();
         if(countryId!=null){
             getCityIds(countryId);
-            getItemIdsByParentIdAndItemType(5,countryId,"#emissionStd","#hidEmissionStd");
+            getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
         }
     });
 
     $('#emissionStd').change(function(){
         getEfData();
+        getFeData();
     });
 
     $('#mainBody').on("click", "#btnCalc", function() {
-        calcData();
+        if($("#frm").valid()) {
+            calcData(false);
+            return;
+        }
     });
+    $('#mainBody').on("click", "#btnAdd", function() {
+        if($("#frm").valid()){
+            calcData(true);
+            return;
+        };
+    });
+
+
 
     function getYears() {
         $.ajax({
@@ -69,6 +93,10 @@ $(function () {
                     }
                 }
                 $("#countryId").html(html);
+                var curId=$("#hidCountryId").val();
+                if(curId!=null){
+                    $("#countryId").val(curId);
+                }
                 var countryId=$("#countryId").val();
                 if(countryId!=null){
                     getCityIds(countryId)
@@ -172,7 +200,7 @@ $(function () {
         });
     }
 
-    function getItemIdsByParentIdAndItemType(itemType,parentId,elementName,hidElementName) {
+    function getItemIdsByParentIdAndItemType(parentId,itemType,elementName,hidElementName) {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -202,10 +230,67 @@ $(function () {
     }
 
 
+    function getFeData() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var vehicleType=$("#vehicleType").val();
+        var fuelType=$("#fuelType").val();
+        var load=$("#feLoad").val();
+        var ac=$("#ac").val();
+        var opSpeed=$("#opSpeed").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/getFeData", // 请求发送到TestServlet处
+            data: {
+                countryId: countryId,
+                cityId:cityId,
+                vehicleType:vehicleType,
+                fuelType:fuelType,
+                load:load,
+                ac:ac,
+                opSpeed:opSpeed
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0&& data.details.length>0) {
+                    var std=$("#emissionStd").find("option:selected").data("value");
+                    var i=0;
+                    for( i=0;i<data.details.length;i++){
+                        var detail=data.details[i];
+                        var efficiency=getFuelEfficiency(detail,std);
+                        $("#fuelEfficiency").val(efficiency);
+                    }
+
+                }
+            }
+        })
+    }
+
+    function getFuelEfficiency(detail,std){
+        var result=0;
+        if(std=="pre_std"){
+            return detail.pre_std;
+        }else if(std=="std1"){
+            return detail.std1;
+        }else if(std=="std2"){
+            return detail.std2;
+        }else if(std=="std3"){
+            return detail.std3;
+        }else if(std=="std4"){
+            return detail.std4;
+        }else if(std=="std5"){
+            return detail.std5;
+        }else if(std=="std6"){
+            return detail.std6;
+        }
+    }
+
+
     function getEfData() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
-        var verticleType=$("#verticleType").val();
+        var vehicleType=$("#vehicleType").val();
         var fuelType=$("#fuelType").val();
         var load=$("#feLoad").val();
         $.ajax({
@@ -215,7 +300,7 @@ $(function () {
             data: {
                 countryId: countryId,
                 cityId:cityId,
-                verticleType:verticleType,
+                vehicleType:vehicleType,
                 fuelType:fuelType,
                 load:load
             },
@@ -233,19 +318,19 @@ $(function () {
                     for( i=0;i<data.details.length;i++){
                         var detail=data.details[i];
                         var factor=getEfFactor(detail,std);
-                        if(coFactor==""&&detail.emission=="co"){
+                        if(detail.emission=="co"){
                             $("#coFactor").val(factor);
                         }
-                        if(thcFactor==""&&detail.emission=="thc"){
+                        if(detail.emission=="thc"){
                             $("#thcFactor").val(factor);
                         }
-                        if(noxFactor==""&&detail.emission=="nox"){
+                        if(detail.emission=="nox"){
                             $("#noxFactor").val(factor);
                         }
-                        if(pm25Factor==""&&detail.emission=="pm25"){
+                        if(detail.emission=="pm25"){
                             $("#pm25Factor").val(factor);
                         }
-                        if(pm10Factor==""&&detail.emission=="pm10"){
+                        if(detail.emission=="pm10"){
                             $("#pm10Factor").val(factor);
                         }
                     }
@@ -274,96 +359,104 @@ $(function () {
         }
     }
 
-
-    function calcData() {
+    function calcData(isAddChild) {
+        var url="../api/calc";
+        if(isAddChild){
+            url="../api/addChild";
+        }
         var id = $("#hidRecordId").val();
         var countryId = $("#countryId").val();
         var cityId = $("#cityId").val();
         var modelYear = $("#modelYear").val();
 
-        var discountRate = $("#discountRate").val();
-        var socialDiscountRate = $("#socialDiscountRate").val();
-        var inflationRate = $("#inflationRate").val();
         var temperature = $("#temperature").val();
         var humidity = $("#humidity").val();
         var slope = $("#slope").val();
 
-        var verticleType = $("#verticleType").val();
+        var feLoad = $("#feLoad").val();
+        var ac = $("#ac").val();
+
+        var vehicleType = $("#vehicleType").val();
         var fuelType = $("#fuelType").val();
         var emissionStd = $("#emissionStd").val();
-        var busNumber = $("#busNumber").val();
-        var replacementRatio = $("#replacementRatio").val();
-        var loanTime = $("#loanTime").val();
-        var vkt = $("#vkt").val();
-        var operationalYears = $("#operationalYears").val();
-        var opSpeed = $("#opSpeed").val();
-        var maintenance = $("#maintenance").val();
-        var fuelEfficiency = $("#fuelEfficiency").val();
-        var feLoad = $("#feLoad").val();
+
+        var discountRate = delcommafy($("#discountRate").val());
+        var socialDiscountRate = delcommafy($("#socialDiscountRate").val());
+        var inflationRate = delcommafy($("#inflationRate").val());
+        var busNumber = delcommafy($("#busNumber").val());
+        var replacementRatio = delcommafy($("#replacementRatio").val());
+        var loanTime = delcommafy($("#loanTime").val());
+        var vkt = delcommafy($("#vkt").val());
+        var operationalYears = delcommafy($("#operationalYears").val());
+        var opSpeed = delcommafy($("#opSpeed").val());
+        var maintenance = delcommafy($("#maintenance").val());
+        var fuelEfficiency = delcommafy($("#fuelEfficiency").val());
+       
 
 
-
-        var purchasePrice = $("#purchasePrice").val();
-        var residualValue = $("#residualValue").val();
-        var downPaymentRate = $("#downPaymentRate").val();
-        var loanInterestRate = $("#loanInterestRate").val();
-        var loanTime = $("#loanTime").val();
-        var procurementSubsidy = $("#procurementSubsidy").val();
-        var batteryPrice = $("#batteryPrice").val();
-        var batteryLeasingPrice = $("#batteryLeasingPrice").val();
-        var batteryContent = $("#batteryContent").val();
-        var annualLaborCost = $("#annualLaborCost").val();
-        var fuelPrice = $("#fuelPrice").val();
-        var fuelCostProjection = $("#fuelCostProjection").val();
-        var additionalFuelPrice = $("#additionalFuelPrice").val();
-        var additionalOperationalCost = $("#additionalOperationalCost").val();
-
-
-        var annualMaintenanceCost = $("#annualMaintenanceCost").val();
-        var tires = $("#tires").val();
-        var tiresFrequency = $("#tiresFrequency").val();
-        var engineOverhaul = $("#engineOverhaul").val();
-        var engineOverhaulFrequency = $("#engineOverhaulFrequency").val();
-        var transmissionOverhaul = $("#transmissionOverhaul").val();
-        var transmissionOverhaulFrequency = $("#transmissionOverhaulFrequency").val();
-        var batteryOverhaul = $("#batteryOverhaul").val();
-        var batteryOverhaulFrequency = $("#batteryOverhaulFrequency").val();
-        var vehicleRetrofits = $("#vehicleRetrofits").val();
-        var vehicleRetrofitsFrequency = $("#vehicleRetrofitsFrequency").val();
-
-        var additionalMaintenanceCost = $("#additionalMaintenanceCost").val();
-        var insurance = $("#insurance").val();
-        var administration = $("#administration").val();
-        var otherTaxFee = $("#otherTaxFee").val();
+        var purchasePrice = delcommafy($("#purchasePrice").val());
+        var residualValue = delcommafy($("#residualValue").val());
+        var downPaymentRate = delcommafy($("#downPaymentRate").val());
+        var loanInterestRate = delcommafy($("#loanInterestRate").val());
+        var loanTime = delcommafy($("#loanTime").val());
+        var procurementSubsidy = delcommafy($("#procurementSubsidy").val());
+        var batteryPrice = delcommafy($("#batteryPrice").val());
+        var batteryLeasingPrice = delcommafy($("#batteryLeasingPrice").val());
+        var batteryContent = delcommafy($("#batteryContent").val());
+        var annualLaborCost = delcommafy($("#annualLaborCost").val());
+        var fuelPrice = delcommafy($("#fuelPrice").val());
+        var fuelCostProjection = delcommafy($("#fuelCostProjection").val());
+        var additionalFuelPrice = delcommafy($("#additionalFuelPrice").val());
+        var additionalOperationalCost = delcommafy($("#additionalOperationalCost").val());
 
 
-        var coFactor = $("#coFactor").val();
-        var thcFactor = $("#thcFactor").val();
-        var noxFactor = $("#noxFactor").val();
-        var pm25Factor = $("#pm25Factor").val();
-        var pm10Factor = $("#pm10Factor").val();
-        var co2Factor = $("#co2Factor").val();
-        var co2eFactor = $("#co2eFactor").val();
-        var pm25Factor2 = $("#pm25Factor2").val();
-        var pm10Factor2 = $("#pm10Factor2").val();
-        var co2Factor2 = $("#co2Factor2").val();
-        var co2eFactor2 = $("#co2eFactor2").val();
-        var coFactor3 = $("#coFactor3").val();
-        var thcFactor3 = $("#thcFactor3").val();
-        var noxFactor3 = $("#noxFactor3").val();
-        var pm25Factor3 = $("#pm25Factor3").val();
-        var pm10Factor3 = $("#pm10Factor3").val();
-        var co2Factor3 = $("#co2Factor3").val();
+        var annualMaintenanceCost = delcommafy($("#annualMaintenanceCost").val());
+        var annualMaintenanceLaborCost = delcommafy($("#annualMaintenanceLaborCost").val());
+        var tires = delcommafy($("#tires").val());
+        var tiresFrequency = delcommafy($("#tiresFrequency").val());
+        var engineOverhaul = delcommafy($("#engineOverhaul").val());
+        var engineOverhaulFrequency = delcommafy($("#engineOverhaulFrequency").val());
+        var transmissionOverhaul = delcommafy($("#transmissionOverhaul").val());
+        var transmissionOverhaulFrequency = delcommafy($("#transmissionOverhaulFrequency").val());
+        var batteryOverhaul = delcommafy($("#batteryOverhaul").val());
+        var batteryOverhaulFrequency = delcommafy($("#batteryOverhaulFrequency").val());
+        var vehicleRetrofits = delcommafy($("#vehicleRetrofits").val());
+        var vehicleRetrofitsFrequency = delcommafy($("#vehicleRetrofitsFrequency").val());
 
-        var chargerConstruction = $("#chargerConstruction").val();
-        var chargersNumber = $("#chargersNumber").val();
-        var procurementCost = $("#procurementCost").val();
-        var operationalCost = $("#operationalCost").val();
-        var maintenanceCost = $("#maintenanceCost").val();
+        var additionalMaintenanceCost = delcommafy($("#additionalMaintenanceCost").val());
+        var insurance = delcommafy($("#insurance").val());
+        var administration = delcommafy($("#administration").val());
+        var otherTaxFee = delcommafy($("#otherTaxFee").val());
+        var onetimeOverhaulCost=delcommafy($("#onetimeOverhaulCost").val());
+
+
+        var coFactor = delcommafy($("#coFactor").val());
+        var thcFactor = delcommafy($("#thcFactor").val());
+        var noxFactor = delcommafy($("#noxFactor").val());
+        var pm25Factor = delcommafy($("#pm25Factor").val());
+        var pm10Factor = delcommafy($("#pm10Factor").val());
+        var co2Factor = delcommafy($("#co2Factor").val());
+        var co2eFactor = delcommafy($("#co2eFactor").val());
+        var pm25Factor2 = delcommafy($("#pm25Factor2").val());
+        var pm10Factor2 = delcommafy($("#pm10Factor2").val());
+        var co2Factor2 = delcommafy($("#co2Factor2").val());
+        var co2eFactor2 = delcommafy($("#co2eFactor2").val());
+        var coFactor3 = delcommafy($("#coFactor3").val());
+        var thcFactor3 = delcommafy($("#thcFactor3").val());
+        var noxFactor3 = delcommafy($("#noxFactor3").val());
+        var pm25Factor3 = delcommafy($("#pm25Factor3").val());
+        var pm10Factor3 = delcommafy($("#pm10Factor3").val());
+        var co2Factor3 = delcommafy($("#co2Factor3").val());
+
+        var chargerConstruction = delcommafy($("#chargerConstruction").val());
+        var chargersNumber = delcommafy($("#chargersNumber").val());
+        var procurementCost = delcommafy($("#procurementCost").val());
+        var operationalCost = delcommafy($("#operationalCost").val());
+        var maintenanceCost = delcommafy($("#maintenanceCost").val());
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/calcData", // 请求发送到TestServlet处
+            url: url, // 请求发送到TestServlet处
             data: {
                 id:id,
                 countryId: countryId,
@@ -376,8 +469,8 @@ $(function () {
                 humidity:humidity,
                 slope:slope,
 
-
-                verticleType: verticleType,
+                ac:ac,
+                vehicleType: vehicleType,
                 fuelType: fuelType,
                 emissionStd: emissionStd,
                 busNumber:busNumber,
@@ -405,7 +498,7 @@ $(function () {
                 additionalFuelPrice: additionalFuelPrice,
                 additionalOperationalCost:additionalOperationalCost,
                 annualMaintenanceCost:annualMaintenanceCost,
-
+                annualMaintenanceLaborCost:annualMaintenanceLaborCost,
                 tires: tires,
                 tiresFrequency: tiresFrequency,
                 engineOverhaul: engineOverhaul,
@@ -446,14 +539,61 @@ $(function () {
                 operationalCost: operationalCost,
                 maintenanceCost:maintenanceCost,
                 chargerConstruction:chargerConstruction,
+                onetimeOverhaulCost:onetimeOverhaulCost
 
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
                 if(data.code==0){
-                    window.href="/result?id="+data.id;
+                    if(isAddChild){
+                        var hrHtml=$("#hidFleetButton").html();
+                        hrHtml=hrHtml.replace(/#Number#/g,data.number);
+                        hrHtml=hrHtml.replace("#RecordId#",data.id);
+                        hrHtml=hrHtml.replace("<tbody>","");
+                        hrHtml=hrHtml.replace("</tbody>","");
+                        $("#tbody").append(hrHtml)
+                    }else {
+                        window.location.href = "/result?id=" + data.id;
+                    }
                 }
             }
         })
+    }
+
+    function delcommafy(num){
+        if(num==undefined || num==null||(num+"").trim()==""){
+            return "0";
+        }
+        num=num.replace(/,/gi,'');
+        return num;
+        
+    }
+
+    function getChildren() {
+        var id = $("#hidRecordId").val();
+        $.ajax({
+            type: "POST",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "/api/getChildren", // 请求发送到TestServlet处
+            data: {
+                parentId:id
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0) {
+                    var str = "";
+                    var length=data.details.length;
+                    for (var i = 0; i < data.details.length; i++) {
+                        var rId=data.details[i];
+                        var hrHtml=$("#hidFleetButton").html();
+                        hrHtml=hrHtml.replace(/#Number#/g,i+1);
+                        hrHtml=hrHtml.replace("#RecordId#",rId);
+                        hrHtml=hrHtml.replace("<tbody>","");
+                        hrHtml=hrHtml.replace("</tbody>","");
+                        $("#tbody").append(hrHtml)
+                    }
+                }
+            }
+        });
     }
 });

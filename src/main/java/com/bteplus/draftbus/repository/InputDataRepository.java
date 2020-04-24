@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface InputDataRepository extends JpaRepository<InputData,Integer>,Serializable {
-
+    @Query(value = "select record_id from input_data where  parent_id=?1 order by record_id ",nativeQuery = true)
+    List<Integer> getChildren(Integer parentId);
 }

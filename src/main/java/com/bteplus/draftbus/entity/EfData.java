@@ -24,15 +24,15 @@ public class EfData {
     private Integer  vehicle_type;
     private Integer fuel_type;
     private String emission;
-    private Double ef_load;
-    private Double avg_value;
-    private Double pre_std;
-    private Double std1;
-    private Double std2;
-    private Double std3;
-    private Double std4;
-    private Double std5;
-    private Double std6;
+    private Integer ef_load;
+    private Double avg_value=0.0;
+    private Double pre_std=0.0;
+    private Double std1=0.0;
+    private Double std2=0.0;
+    private Double std3=0.0;
+    private Double std4=0.0;
+    private Double std5=0.0;
+    private Double std6=0.0;
 
 
 
