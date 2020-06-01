@@ -15,6 +15,7 @@ public class InputData {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer record_id;
+    private String name;
     private Integer calc_year;
     private Integer country_id;
     private Integer city_id;

@@ -12,4 +12,10 @@ import java.util.List;
 public interface InputDataRepository extends JpaRepository<InputData,Integer>,Serializable {
     @Query(value = "select record_id from input_data where  parent_id=?1 order by record_id ",nativeQuery = true)
     List<Integer> getChildren(Integer parentId);
+
+    @Query(value = "select * from input_data where  parent_id=?1 order by record_id ",nativeQuery = true)
+    List<InputData> getChildrenData(Integer parentId);
+
+    @Query(value = "select * from record_id  in ( ?1 ) order by record_id",nativeQuery = true)
+    List<InputData> getCompareData(List<Integer> ids);
 }

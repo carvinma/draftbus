@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../bootstrap-3.3.7/css/bootstrap.css" media="all">
+    <link rel="stylesheet" href="../site/css/bootoast.css" media="all">
+
+    <!--<link rel="stylesheet" href="../layui/css/layui.css" media="all">-->
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <style>
         .required {
@@ -512,15 +515,21 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <button type="button" id="btnCalc" class="btn btn-success">Calculate</button>
-                    <button type="button" id="btnAdd" class="btn btn-success">Add Fleet</button>
+                    <button type="button" id="btnCompare" class="btn btn-warning">Compare</button>
+                    <button type="button" style="margin-left: 100px;" id="btnAdd" class="btn btn-primary">Add Fleet</button>
+                    <button type="button" id="btnAdd2" class="btn btn-primary">Add Cost Factor</button>
+                    <button type="button" id="btnAdd3" class="btn btn-primary">Add Infrastructure</button>
+
                 </div>
             </div>
             <div class="form-horizontal">
                 <table class="table-bordered  table">
                     <thead>
                     <tr>
+                        <td style="width: 50px;"></td>
                         <td>Number</td>
-                        <td>Fleet</td>
+                        <td>Name</td>
+                        <td>Action</td>
                     </tr>
                     </thead>
                     <tbody id="tbody">
@@ -535,13 +544,236 @@
 <table id="hidFleetButton" style="display: none;">
     <tr>
         <td>
+            <input type="checkbox" name="checkbox" value="#RecordId#" style="zoom:150%">
+        </td>
+        <td>
         #Number#
        </td>
         <td>
-            <a href="/child?id=#RecordId#" target="_blank" class="btn btn-warning btn-fleet">Fleet#Number#</a>
+            <span>#Name#</span>
         </td>
+        <td><a href="/child?id=#RecordId#" target="_blank" class="btn btn-primary editFleet" value="#RecordId#">edit</a>
+            <button type="button" class="btn btn-danger delFleet" value="#RecordId#">delete</button></td>
     </tr>
 </table>
+<div class="modal fade large" tabindex="-1" role="dialog"  id="myModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Input Your data</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frm2">
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Name<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input class="form-control" required lay-verify="" id="name2"
+                                    >
+                            </input>
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Bus Size<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <select class="form-control" required lay-verify="" id="vehicleType2"
+                                    >
+                            </select>
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Number of bus<span
+                                class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" required class="form-control" id="busNumber2" placeholder=""
+                                   >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Fuel type<span
+                                class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <select class="form-control" required lay-verify="" id="fuelType2"
+                                    >
+                            </select>
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Annual distance traveled
+                            (VKT)(km/year/bus)<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" required class="form-control" id="vkt2" placeholder=""
+                                    >
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Emission standard<span
+                                class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <select class="form-control" required lay-verify="" id="emissionStd2"
+                                   >
+                            </select>
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Operational years(Year)<span
+                                class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" required class="form-control" id="operationalYears2" placeholder=""
+                                    >
+                        </div>
+                    </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+                <button id="btnSave" type="button" class="btn btn-primary">Save Data</button>
+                <input type="hidden" id="hidChildId" value="">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade large" tabindex="-1" role="dialog"  id="myModal3">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Input Your data</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frm3">
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Name<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input class="form-control" required lay-verify="" id="name3"
+                                    >
+                            </input>
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Procurement subsidy($/bus)<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="procurementSubsidy2" placeholder=""
+                                    required >
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Residual value(%)<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="residualValue2" placeholder=""
+                                    required value="${costFactor.residual_value!}">
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Down payment(%)<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="downPaymentRate2" placeholder=""
+                                     required ">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Loan interest rate(%)<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="loanInterestRate2" placeholder=""
+                                    required ">
+                        </div>
+                        <label for="" class="col-sm-4 control-label">Loan time(years)<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text"  required class="form-control" id="loanTime2" placeholder=""
+                                    >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+                <button id="btnSave3" type="button" class="btn btn-primary">Save Data</button>
+                <input type="hidden" id="hidChildId3" value="">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div class="modal fade large" tabindex="-1" role="dialog"  id="myModal4">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Input Your data</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frm4">
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Name<span class="required">*</span></label>
+                        <div class="col-sm-2">
+                            <input class="form-control" required lay-verify="" id="name4"
+                                    style="display: block;width:200px;">
+                            </input>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Charger construction($)</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="chargerConstruction2" placeholder=""
+                                   style="width:200px;" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Number of chargers</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="chargersNumber2" placeholder=""
+                                   style="width:200px;" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Procurement cost($)</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="procurementCost2" placeholder=""
+                                   style="width:200px;" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Operational cost($/year)</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="operationalCost2" placeholder=""
+                                   style="width:200px;" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 control-label">Maintenance cost($/year)</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="maintenanceCost2" placeholder=""
+                                   style="width:200px;" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+                <button id="btnSave4" type="button" class="btn btn-primary">Save Data</button>
+                <input type="hidden" id="hidChildId4" value="">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="delModal">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete it?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="btnDeleteFleet" type="button" class="btn btn-primary">Delete</button>
+                <input type="hidden" id="hidDeleteId" value="">
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <input type="hidden" id="hidRecordId" value="${inputData.record_id!}">
 <input type="hidden" id="hidModelYear" value="${inputData.calc_year!}">
@@ -564,5 +796,7 @@
 <script src="../site/js/jquery-2.1.1.min.js"></script>
 <script src="../bootstrap-3.3.7/js/bootstrap.js"></script>
 <script src="../jquery-validation-1.19.0/dist/jquery.validate.js"></script>
-<script src="../site/js/index.js?v=1"></script>
+<script src="../site/js/bootoast.js"></script>
+<!--<script dtv="../layui/layui.js" ></script>-->
+<script src="../site/js/index.js?v=3"></script>
 </html>

@@ -7,6 +7,8 @@ import com.bteplus.draftbus.common.NPVCalcUtils;
 import com.bteplus.draftbus.common.OperatingCostCalcUtils;
 import com.bteplus.draftbus.common.PMTCalcUtils;
 import com.bteplus.draftbus.entity.*;
+import com.bteplus.draftbus.model.BarResult;
+import com.bteplus.draftbus.model.ChartResult;
 import com.bteplus.draftbus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
@@ -142,6 +144,7 @@ public class ApiController {
         );
 
         List<Integer> lst=inputDataRepository.getChildren(id);
+        System.out.println("children:"+lst.size());
         for(int i=0;i<lst.size();i++){
             InputData inputData=inputDataRepository.getOne(lst.get(i));
             InputBusFleet busFleet=inputBusFleetRepository.getOne(lst.get(i));
@@ -230,7 +233,7 @@ public class ApiController {
             maintenanceCost=inputData.getOperational_cost();
             onetimeOverhaulCost=costFactor.getOnetime_overhaul_cost();
 
-            calcData(id,modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
+            calcData(inputData.getRecord_id(),modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
                     annualLaborCost,fuelPrice,fuelCostProjection, additionalOperationalCost,additionalFuelPrice,annualMaintenanceLaborCost,
                     annualMaintenanceCost, tires,tiresFrequency,engineOverhaul,engineOverhaulFrequency, transmissionOverhaul,transmissionOverhaulFrequency,batteryOverhaul,batteryOverhaulFrequency, vehicleRetrofits,vehicleRetrofitsFrequency,additionalMaintenanceCost,insurance,administration,otherTaxFee,
                     coFactor,thcFactor,noxFactor,pm25Factor,pm10Factor,co2Factor,co2eFactor,pm25Factor2,pm10Factor2,co2Factor2,co2eFactor2, coFactor3,thcFactor3,noxFactor3,pm25Factor3,pm10Factor3,co2Factor3,
@@ -298,12 +301,12 @@ public class ApiController {
         double fuelAdditive=additionalFuelPrice;
         double fuelStationMaintenance=maintenanceCost;
         double fuelStationCostperationCost=operationalCost;
-        insurance=insurance*busNumber;
-        additionalOperationalCost=additionalOperationalCost*busNumber;
-        additionalMaintenanceCost=additionalMaintenanceCost*busNumber;
+        double insuranceTotal=insurance*busNumber;
+        double additionalOperationalCostTotal=additionalOperationalCost*busNumber;
+        double additionalMaintenanceCostTotal=additionalMaintenanceCost*busNumber;
         Double[] fuelCostResults=OperatingCostCalcUtils.calcFuelCosts(vkt,busNumber,fuelEfficiency,fuelCostRate,fuelCostProjection,fuelAdditive,operationalYears);
-        double fixedMaintenanceCosts = OperatingCostCalcUtils.calcFixedMaintenanceCost(fixedAnnualMaintenanceCost,laborCost,additionalMaintenanceCost,fuelStationMaintenance);
-        Double[] operatingCostResults=OperatingCostCalcUtils.calcOperatingCost(laborCost,fuelStationCostperationCost,insurance,additionalOperationalCost,fuelCostResults);
+        double fixedMaintenanceCosts = OperatingCostCalcUtils.calcFixedMaintenanceCost(fixedAnnualMaintenanceCost,laborCost,additionalMaintenanceCostTotal,fuelStationMaintenance);
+        Double[] operatingCostResults=OperatingCostCalcUtils.calcOperatingCost(laborCost,fuelStationCostperationCost,insuranceTotal,additionalOperationalCostTotal,fuelCostResults);
 
         Double[] laborCostResults=new Double[operationalYears];
         Double[] maintenanceCostResults=new Double[operationalYears];
@@ -495,7 +498,7 @@ public class ApiController {
     @RequestMapping(value="/getChildren")
     public Map<String,Object> getChildren(Integer parentId){
         Map<String,Object> map= new HashMap<>();
-        List<Integer> lst=inputDataRepository.getChildren(parentId);
+        List<InputData> lst=inputDataRepository.getChildrenData(parentId);
         map.put("code",0) ;
         map.put("details" ,lst);
         return map;
@@ -514,13 +517,14 @@ public class ApiController {
                 operationalCost,maintenanceCost,onetimeoverhoulCost
         );
         Map<String,Object> map= new HashMap<>();
-
+        List<Integer> lst=inputDataRepository.getChildren(id);
         InputData inputDat2=inputDataRepository.getOne(id);
         String strJson= JSON.toJSONString(inputDat2);
         JSONObject json=JSONObject.parseObject(strJson);
         json.put("record_id",null);
         InputData inputData=JSON.parseObject(json.toJSONString(),InputData.class);
         inputData.setParent_id(id);
+        inputData.setName("Fleet"+(lst.size()+2));
         inputData=inputDataRepository.save(inputData);
 
 
@@ -558,11 +562,228 @@ public class ApiController {
         socialCostFactor=inputSocialCostFactorRepository.save(socialCostFactor);
         costFactor=inputCostFactorRepository.save(costFactor);
 
-        List<Integer> lst=inputDataRepository.getChildren(id);
+
         map.put("code",0) ;
         map.put("id" ,inputData.getRecord_id());
-        map.put("number",lst.size());
+        map.put("number",lst.size()+2);
+        map.put("name",inputData.getName());
+        return map;
+    }
+    @RequestMapping(value="/saveChildData")
+    public Map<String,Object> saveChild(Integer id,String name,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber, Double vkt,Integer operationalYears) {
+        Map<String,Object> map= new HashMap<>();
+        if(id!=null) {
+            InputBusFleet busFleet = inputBusFleetRepository.getOne(id);
+            busFleet.setVehicle_type(vehicleType);
+            busFleet.setFuel_type(fuelType);
+            busFleet.setEmission_std(emissionStd);
+            busFleet.setVkt(vkt);
+            busFleet.setOperational_years(operationalYears);
+            busFleet.setBus_number(busNumber);
+            inputBusFleetRepository.save(busFleet);
 
+            InputData inputData=inputDataRepository.getOne(id);
+            inputData.setName(name);
+            inputDataRepository.save(inputData);
+        }
+
+        map.put("code",0) ;
+        return map;
+    }
+    @RequestMapping(value="/saveChildData2")
+    public Map<String,Object> saveChild2(Integer id,String name,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime) {
+        Map<String,Object> map= new HashMap<>();
+        if(id!=null) {
+            InputCostFactor costFactor=inputCostFactorRepository.getOne(id);
+            costFactor.setLoan_interest_rate(loanInterestRate*100);
+            costFactor.setLoan_time(loanTime);
+            costFactor.setProcurement_subsidy(procurementSubsidy);
+            costFactor.setResidual_value(residualValue*100);
+            costFactor.setDown_payment_rate(downPaymentRate);
+            inputCostFactorRepository.save(costFactor);
+
+            InputData inputData=inputDataRepository.getOne(id);
+            inputData.setName(name);
+            inputDataRepository.save(inputData);
+        }
+
+        map.put("code",0) ;
+        return map;
+    }
+
+    @RequestMapping(value="/saveChildData3")
+    public Map<String,Object> saveChild3(Integer id,String name,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double operationalCost,Double maintenanceCost) {
+        Map<String,Object> map= new HashMap<>();
+        if(id!=null) {
+            InputData inputData=inputDataRepository.getOne(id);
+            inputData.setName(name);
+            inputData.setCharger_construction(chargerConstruction);
+            inputData.setChargers_number(chargersNumber);
+            inputData.setMaintenance_cost(maintenanceCost);
+            inputData.setOperational_cost(operationalCost);
+            inputData.setProcurement_cost(procurementCost);
+            inputDataRepository.save(inputData);
+        }
+
+        map.put("code",0) ;
+        return map;
+    }
+
+    @RequestMapping(value="/delFleet")
+    public Map<String,Object> delFleet(Integer id){
+        Map<String,Object> map= new HashMap<>();
+        map.put("code",0) ;
+        try{
+            InputData inputData=inputDataRepository.getOne(id);
+            if(inputData!=null) {
+                inputDataRepository.deleteById(id);
+                inputBusFleetRepository.deleteById(id);
+                inputCostFactorRepository.deleteById(id);
+                inputSocialCostFactorRepository.deleteById(id);
+                inputEmissionFactorRepository.deleteById(id);
+                ResultData resultData = resultDataRepository.findById(id).orElse(null);
+                System.out.println(resultData);
+                if (resultData != null) {
+                    resultDataRepository.deleteById(id);
+                    resultSocialCostDataRepository.deleteById(id);
+                    resultEmissionDataRepository.deleteById(id);
+                }
+            }
+        }catch (Exception ex){
+            map.put("code",1);
+            System.out.println(ex.getMessage());
+        }
+        return map;
+    }
+
+    @RequestMapping(value="/getCompareData")
+    public Map<String,Object> getCompareData(String ids) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        List<Integer> lst=new ArrayList<>();
+        String[] strs=ids.split(",");
+        for (String item:strs) {
+            lst.add(Integer.valueOf(item));
+        }
+
+
+
+        map.put("data1",getResultData(lst,1));
+        map.put("data2",getResultData(lst,2));
+        map.put("data3",getResultData(lst,3));
+        return map;
+    }
+
+
+    private ChartResult getResultData(List<Integer> ids,Integer resultType){
+        ChartResult chartResult=new ChartResult();
+        List<String> legendList=new ArrayList<>();
+        List<String> categoryList=new ArrayList<>();
+        List<BarResult> dataList=new ArrayList<>();
+        List<Map<String,Object>> resultDataList=null;
+        if(resultType.intValue()==1){
+            resultDataList=resultDataRepository.getCompareData(ids);
+        }else if(resultType.intValue()==2){
+            resultDataList=resultEmissionDataRepository.getCompareData(ids);
+        }else if(resultType.intValue()==3){
+            resultDataList=resultSocialCostDataRepository.getCompareData(ids);
+        }
+        int length=ids.size();
+
+        Map<String,Object> result1=resultDataList.get(0);
+        for (String key:result1.keySet()) {
+            legendList.add(key);
+        }
+        legendList.remove("name");
+        legendList.remove("record_id");
+        for(int i=0;i<length;i++){
+            Map<String,Object> result=resultDataList.get(i);
+            categoryList.add(result.get("name").toString());
+        }
+
+        int legendSize=legendList.size();
+        for(int i=0;i<legendSize;i++){
+            String name=legendList.get(i);
+            BarResult barResult=new BarResult();
+            barResult.setName(name);
+            List<Object> lst=new ArrayList<>();
+            for(int j=0;j<length;j++){
+                Map<String,Object> result=resultDataList.get(j);
+                lst.add(result.get(name));
+            }
+            barResult.setData(lst);
+            if(resultType.intValue()==3){
+                barResult.setStack("cc3");
+            }
+
+            dataList.add(barResult);
+        }
+
+
+
+        chartResult.setCategoryData(categoryList);
+        chartResult.setLegendData(legendList);
+        chartResult.setData(dataList);
+        return chartResult;
+
+    }
+
+    @RequestMapping(value="/getCountryList")
+    public Map<String,Object> getCountryList(){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getCountryList();
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+
+    @RequestMapping(value="/getCityList")
+    public Map<String,Object> getCityList(Integer countryId){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getCityList(countryId);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+
+    @RequestMapping(value="/getVehicleTypeList")
+    public Map<String,Object> getVehicleTypeList(Integer countryId,Integer cityId){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getVehicleTypeList(countryId,cityId);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+    @RequestMapping(value="/getFuelTypeList")
+    public Map<String,Object> getFuelTypeList(Integer countryId,Integer cityId,Integer vehicleType){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getFuelTypeList(countryId,cityId,vehicleType);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+    @RequestMapping(value="/getSpeedList")
+    public Map<String,Object> getSpeedList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getSpeedList(countryId,cityId,vehicleType,fuelType);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+    @RequestMapping(value="/getLoadList")
+    public Map<String,Object> getLoadList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+    @RequestMapping(value="/getAcList")
+    public Map<String,Object> getAcList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed,Integer load){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ItemInfo> lst=itemInfoRepository.getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
+        map.put("code",0);
+        map.put("details",lst);
         return map;
     }
 

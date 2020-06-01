@@ -23,8 +23,10 @@ public class EfData {
     private Integer city_id;
     private Integer  vehicle_type;
     private Integer fuel_type;
-    private String emission;
+    private Integer ac;
+    private Integer op_speed;
     private Integer ef_load;
+    private String emission;
     private Double avg_value=0.0;
     private Double pre_std=0.0;
     private Double std1=0.0;

@@ -15,4 +15,29 @@ public interface ItemInfoRepository extends JpaRepository<ItemInfo,Integer>,Seri
 
     @Query(value = "select * from item_info where is_delete=0 and parent_id=?1 and item_type=?2 order by sort_no ",nativeQuery = true)
     List<ItemInfo> getItemsByParentIdAndItemType(Integer parentId,Integer itemType);
+
+    @Query(value = "select item.* from item_info item where item_id in (select country_id from fe_data fe group by country_id)",nativeQuery = true)
+    List<ItemInfo> getCountryList();
+
+
+
+    @Query(value = "select * from item_info item where item_id in (select city_id from fe_data fe where country_id=?1 group by city_id )",nativeQuery = true)
+    List<ItemInfo> getCityList(Integer countryId);
+
+    @Query(value = "select * from item_info item where item_id in (select vehicle_type from fe_data fe where country_id=?1 and city_id=?2 group by vehicle_type )",nativeQuery = true)
+    List<ItemInfo> getVehicleTypeList(Integer countryId,Integer cityId);
+
+    @Query(value = "select * from item_info item where item_id in (select fuel_type from fe_data fe where country_id=?1 and city_id=?2 and vehicle_type=?3 group by fuel_type )",nativeQuery = true)
+    List<ItemInfo> getFuelTypeList(Integer countryId,Integer cityId,Integer vehicleType);
+
+    @Query(value = "select * from item_info item where item_id in (select op_speed from fe_data fe where country_id=?1 and city_id=?2 and vehicle_type=?3 and fuel_type=?4 group by op_speed )",nativeQuery = true)
+    List<ItemInfo> getSpeedList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType);
+
+    @Query(value = "select * from item_info item where item_id in (select fe_load from fe_data fe where country_id=?1 and city_id=?2  and vehicle_type=?3 and fuel_type=?4 and op_speed=?5 group by fe_load )",nativeQuery = true)
+    List<ItemInfo> getLoadList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed);
+
+    @Query(value = "select * from item_info item where item_id in (select ac from fe_data fe where country_id=?1 and city_id=?2 and   vehicle_type=?3 and fuel_type=?4 and op_speed=?5 and fe_load=?6 group by ac )",nativeQuery = true)
+    List<ItemInfo> getAcList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed,Integer load);
+
+
 }

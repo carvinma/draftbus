@@ -2,11 +2,11 @@ $(function () {
 
     getYears();
     getCountryIds();
-    getItemIdsByItemType(3,"#vehicleType","#hidVehicleType")
-    getItemIdsByItemType(4,"#fuelType","#hidFuelType")
-    getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
-    getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
-    getItemIdsByItemType(7,"#ac","#hidAc")
+    //getItemIdsByItemType(3,"#vehicleType","#hidVehicleType")
+    //getItemIdsByItemType(4,"#fuelType","#hidFuelType")
+    //getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
+    //getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
+    //getItemIdsByItemType(7,"#ac","#hidAc")
     getItemIdsByItemType(9,"#temperature","#hidTemperature")
     getItemIdsByItemType(10,"#humidity","#hidHumidity")
     getItemIdsByItemType(11,"#slope","#hidSlope")
@@ -27,6 +27,40 @@ $(function () {
             getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
         }
     });
+    $('#mainBody').on("change", "#cityId", function() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        if(cityId!=null){
+            getVehicleList(countryId,cityId);
+        }
+    });
+    $('#mainBody').on("change", "#vehicleType", function() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var vehicleType=$("#vehicleType").val();
+        if(vehicleType!=null){
+            getFuelTypeList(countryId,cityId,vehicleType);
+        }
+    });
+    $('#mainBody').on("change", "#fuelType", function() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var vehicleType=$("#vehicleType").val();
+        var fuelType=$("#fuelType").val();
+        if(fuelType!=null){
+            getSpeedList(countryId,cityId,vehicleType,fuelType);
+        }
+    });
+    $('#mainBody').on("change", "#opSpeed", function() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var vehicleType=$("#vehicleType").val();
+        var fuelType=$("#fuelType").val();
+        var opSpeed=$("#opSpeed").val();
+        if(opSpeed!=null){
+            getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
+        }
+    });
 
     $('#emissionStd').change(function(){
         getEfData();
@@ -41,7 +75,19 @@ $(function () {
     });
     $('#mainBody').on("click", "#btnAdd", function() {
         if($("#frm").valid()){
-            calcData(true);
+            calcData(true,1);
+            return;
+        };
+    });
+    $('#mainBody').on("click", "#btnAdd2", function() {
+        if($("#frm").valid()){
+            calcData(true,2);
+            return;
+        };
+    });
+    $('#mainBody').on("click", "#btnAdd3", function() {
+        if($("#frm").valid()){
+            calcData(true,3);
             return;
         };
     });
@@ -77,9 +123,10 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemsByItemType", // 请求发送到TestServlet处
+            //url: "../api/getItemsByItemType", // 请求发送到TestServlet处
+            url:"../api/getCountryList",
             data: {
-                itemType:1
+                //itemType:1
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -110,10 +157,12 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemsByParentIdAndItemType", // 请求发送到TestServlet处
+            //url: "../api/getItemsByParentIdAndItemType", // 请求发送到TestServlet处
+            url: "../api/getCityList",
             data: {
-                itemType:2,
-                parentId:countryId
+                //itemType:2,
+                //parentId:countryId
+                countryId:countryId
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -132,6 +181,7 @@ $(function () {
                     $("#cityId").val(cityId);
                 }
                 getMeData();
+                getVehicleList(countryId,cityId)
             }
         });
     }
@@ -204,10 +254,9 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemsByParentIdAndItemType", // 请求发送到TestServlet处
+            url: "../api/getItemsByItemType", // 请求发送到TestServlet处
             data: {
                 itemType:itemType,
-                parentId:parentId
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -359,7 +408,7 @@ $(function () {
         }
     }
 
-    function calcData(isAddChild) {
+    function calcData(isAddChild,childType) {
         var url="../api/calc";
         if(isAddChild){
             url="../api/addChild";
@@ -546,14 +595,50 @@ $(function () {
             success: function (data) {
                 if(data.code==0){
                     if(isAddChild){
-                        var hrHtml=$("#hidFleetButton").html();
-                        hrHtml=hrHtml.replace(/#Number#/g,data.number);
-                        hrHtml=hrHtml.replace("#RecordId#",data.id);
-                        hrHtml=hrHtml.replace("<tbody>","");
-                        hrHtml=hrHtml.replace("</tbody>","");
-                        $("#tbody").append(hrHtml)
-                    }else {
-                        window.location.href = "/result?id=" + data.id;
+
+                        if(childType==1) {
+                            $("#hidChildId").val(data.id);
+                            $("#name2").val(data.name);
+                            $("#vehicleType2").html($("#vehicleType").html());
+                            $("#emissionStd2").html($("#emissionStd").html());
+                            $("#fuelType2").html($("#fuelType").html());
+
+                            $("#vkt2").val($("#vkt").val());
+                            $("#operationalYears2").val($("#operationalYears").val());
+                            $("#busNumber2").val($("#busNumber").val());
+                            $("#myModal").modal("show");
+                        }else if(childType==2) {
+                            $("#hidChildId3").val(data.id);
+                            $("#name3").val(data.name);
+                            $("#procurementSubsidy2").val($("#procurementSubsidy").val());
+                            $("#residualValue2").val($("#residualValue").val());
+                            $("#downPaymentRate2").val($("#downPaymentRate").val());
+                            $("#loanInterestRate2").val($("#loanInterestRate").val());
+                            $("#loanTime2").val($("#loanTime").val());
+                            $("#myModal3").modal("show");
+                        }else if(childType==3) {
+                            $("#hidChildId4").val(data.id);
+                            $("#name4").val(data.name);
+                            $("#chargersNumber2").val($("#chargersNumber").val());
+                            $("#chargerConstruction2").val($("#chargerConstruction").val());
+                            $("#procurementCost2").val($("#procurementCost2").val());
+                            $("#operationalCost2").val($("#operationalCost").val());
+                            $("#maintenanceCost2").val($("#maintenanceCost").val());
+                            $("#myModal4").modal("show");
+                        }
+                }else {
+                        var ids="";
+                        $("input[name='checkbox']:checked").each(function(){
+                            ids=ids+","+$(this).val();
+                        });
+                        if(ids.length==0){
+                            $("#tbody input[name='checkbox']").each(function(){
+                                ids=ids+","+$(this).val();
+                            });
+                        }
+                        ids=$("#hidRecordId").val()+ids;
+                        window.open("/chart?ids="+ids);
+
                     }
                 }
             }
@@ -583,11 +668,20 @@ $(function () {
                 if (data.code == 0) {
                     var str = "";
                     var length=data.details.length;
+                    $("#tbody").html("");
                     for (var i = 0; i < data.details.length; i++) {
-                        var rId=data.details[i];
+                        var detail=data.details[i];
+                        var rId=detail.record_id;
+                        var name=detail.name;
                         var hrHtml=$("#hidFleetButton").html();
                         hrHtml=hrHtml.replace(/#Number#/g,i+1);
-                        hrHtml=hrHtml.replace("#RecordId#",rId);
+                        hrHtml=hrHtml.replace(/#RecordId#/g,rId);
+
+                        if(name==""||name==null){
+                            hrHtml=hrHtml.replace(/#Name#/g,"Fleet"+(i+1));
+                        }else{
+                            hrHtml=hrHtml.replace(/#Name#/g,name);
+                        }
                         hrHtml=hrHtml.replace("<tbody>","");
                         hrHtml=hrHtml.replace("</tbody>","");
                         $("#tbody").append(hrHtml)
@@ -595,5 +689,304 @@ $(function () {
                 }
             }
         });
+    }
+
+    $('#mainBody').on("click", "#btnSave", function() {
+        if($("#frm2").valid()) {
+            saveChildData();
+        }
+        getChildren();
+    });
+
+    $('#mainBody').on("click", "#btnSave3", function() {
+        if($("#frm3").valid()) {
+            saveChildData2();
+        }
+        getChildren();
+    });
+
+    $('#mainBody').on("click", "#btnSave4", function() {
+        if($("#frm4").valid()) {
+            saveChildData3();
+        }
+        getChildren();
+    });
+
+    $('#mainBody').on("click", "#btnCompare", function() {
+        //var selectCheckbox=$("input[type='checkbox']:checked");
+        var arr=$("input[name='checkbox']:checked");
+        if(arr.length==0){
+            bootoast({
+                message: 'please select compare data',
+                position:'right-bottom',
+                timeout:2
+            });
+        }else{
+            calcData(false);
+        }
+
+
+    });
+    $('#mainBody').on("click", ".btn-close", function() {
+        getChildren();
+    });
+
+    $('#mainBody').on("click", ".delFleet", function() {
+        var id=$(this).attr("value");
+        $("#hidDeleteId").val(id);
+        $("#delModal").modal("show");
+    });
+    $('#delModal').on("click", "#btnDeleteFleet", function() {
+        var id=$("#hidDeleteId").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/delFleet", // 请求发送到TestServlet处
+            data: {
+                id: id,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if(data.code==0){
+                    $("#delModal").modal("hide");
+                    bootoast({
+                        message: 'delete successfully',
+                        position:'right-bottom',
+                        timeout:2
+                    });
+                }else{
+                    bootoast({
+                        message: 'delete failed',
+                        position:'right-bottom',
+                        timeout:2
+                    });
+                }
+                getChildren();
+            }
+        });
+    });
+
+    function saveChildData() {
+        var name = $("#name2").val();
+        var vehicleType = $("#vehicleType2").val();
+        var fuelType = $("#fuelType2").val();
+        var emissionStd = $("#emissionStd2").val();
+        var busNumber = delcommafy($("#busNumber2").val());
+        var vkt = delcommafy($("#vkt2").val());
+        var operationalYears = delcommafy($("#operationalYears2").val());
+        var id = $("#hidChildId").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/saveChildData", // 请求发送到TestServlet处
+            data: {
+                id: id,
+                name:name,
+                vehicleType: vehicleType,
+                fuelType: fuelType,
+                emissionStd: emissionStd,
+                busNumber:busNumber,
+                vkt:vkt,
+                operationalYears:operationalYears,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0) {
+                    $("#myModal").modal("hide");
+                    bootoast({
+                        message: 'save successfully',
+                        position:'right-bottom',
+                        timeout:2
+                    });
+                }
+            }
+        });
+    }
+
+    function saveChildData2() {
+        var name = $("#name3").val();
+        var residualValue = delcommafy($("#residualValue2").val());
+        var downPaymentRate = delcommafy($("#downPaymentRate2").val());
+        var loanInterestRate = delcommafy($("#loanInterestRate2").val());
+        var loanTime = delcommafy($("#loanTime2").val());
+        var procurementSubsidy = delcommafy($("#procurementSubsidy2").val());
+        var id = $("#hidChildId3").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/saveChildData2", // 请求发送到TestServlet处
+            data: {
+                id: id,
+                name:name,
+                residualValue: residualValue,
+                downPaymentRate: downPaymentRate,
+                loanInterestRate:loanInterestRate,
+                loanTime:loanTime,
+                procurementSubsidy:procurementSubsidy,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0) {
+                    $("#myModal3").modal("hide");
+                    bootoast({
+                        message: 'save successfully',
+                        position:'right-bottom',
+                        timeout:2
+                    });
+                }
+            }
+        });
+    }
+
+    function saveChildData3() {
+        var name = $("#name4").val();
+        var chargerConstruction = delcommafy($("#chargerConstruction2").val());
+        var chargersNumber = delcommafy($("#chargersNumber2").val());
+        var procurementCost = delcommafy($("#procurementCost2").val());
+        var operationalCost = delcommafy($("#operationalCost2").val());
+        var maintenanceCost = delcommafy($("#maintenanceCost2").val());
+        var id = $("#hidChildId4").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/saveChildData3", // 请求发送到TestServlet处
+            data: {
+                id: id,
+                name:name,
+                chargersNumber: chargersNumber,
+                procurementCost: procurementCost,
+                operationalCost: operationalCost,
+                maintenanceCost:maintenanceCost,
+                chargerConstruction:chargerConstruction,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0) {
+                    $("#myModal4").modal("hide");
+                    bootoast({
+                        message: 'save successfully',
+                        position:'right-bottom',
+                        timeout:2
+                    });
+                }
+            }
+        });
+    }
+
+    function getVehicleList(countryId,cityId) {
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/getVehicleTypeList", // 请求发送到TestServlet处
+            data: {
+                countryId:countryId,
+                cityId:cityId,
+            },
+            success: function (data) {
+                loadListData(data,"#vehicleType","#hidVehicleType");
+                var vehicleType=$("#vehicleType").val();
+                getFuelTypeList(countryId,cityId,vehicleType);
+            }
+        });
+
+    }
+
+    function getFuelTypeList(countryId,cityId,vehicleType) {
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/getFuelTypeList", // 请求发送到TestServlet处
+            data: {
+                countryId:countryId,
+                cityId:cityId,
+                vehicleType:vehicleType
+            },
+            success: function (data) {
+                loadListData(data,"#fuelType","#hidFuelType");
+                var fuelType=$("#fuelType").val();
+                getSpeedList(countryId,cityId,vehicleType,fuelType)
+            }
+        });
+
+    }
+
+    function getSpeedList(countryId,cityId,vehicleType,fuelType) {
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/getSpeedList", // 请求发送到TestServlet处
+            data: {
+                countryId:countryId,
+                cityId:cityId,
+                vehicleType:vehicleType,
+                fuelType:fuelType
+            },
+            success: function (data) {
+                loadListData(data,"#opSpeed","#hidOpSpeed");
+                var opSpeed=$("#opSpeed").val();
+                getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed)
+            }
+        });
+
+    }
+
+    function getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed) {
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/getLoadList", // 请求发送到TestServlet处
+            data: {
+                countryId:countryId,
+                cityId:cityId,
+                vehicleType:vehicleType,
+                fuelType:fuelType,
+                opSpeed:opSpeed
+            },
+            success: function (data) {
+                loadListData(data,"#feLoad","#hidFeLoad");
+                var load=$("#feLoad").val();
+                getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
+            }
+        });
+
+    }
+    function getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load) {
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/getAcList", // 请求发送到TestServlet处
+            data: {
+                countryId:countryId,
+                cityId:cityId,
+                vehicleType:vehicleType,
+                fuelType:fuelType,
+                opSpeed:opSpeed,
+                load:load
+            },
+            success: function (data) {
+                loadListData(data,"#ac","#hidAc");
+
+            }
+        });
+
+    }
+
+
+
+    function loadListData(data,elementName,hidElementName){
+        var html = "";
+        if (data.code == 0) {
+            for (var i = 0; i < data.details.length; i++) {
+                var detail = data.details[i];
+                var option = "<option  value='" + detail.item_id + "' data-value='"+detail.item_value+"'>"
+                    + detail.item_name + "</option>";
+                html = html + option;
+            }
+        }
+        $(elementName).html(html);
+        var eId=$(hidElementName).val();
+        if(eId!=null){
+            $(elementName).val(eId);
+        }
     }
 });

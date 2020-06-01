@@ -55,6 +55,7 @@ public class HomeContrller {
         InputSocialCostFactor socialCostFactor=new InputSocialCostFactor();
         InputCostFactor costFactor=new InputCostFactor();
         if(id==null) {
+            inputData.setName("Fleet1");
             inputData=inputDataRepository.save(inputData);
             busFleet.setRecord_id(inputData.getRecord_id());
             socialCostFactor.setRecord_id(inputData.getRecord_id());
@@ -211,6 +212,13 @@ public class HomeContrller {
         result.setPm25(getDouble2(resultSocialCostData.getPm25()*mutil));
         result.setThc(getDouble2(resultSocialCostData.getThc()*mutil));
         return result;
+    }
+
+    @RequestMapping(value="/chart")
+    public String chart(HttpServletRequest request, Model model, String ids){
+        model.addAttribute("recordIds",ids);
+
+        return "chart";
     }
 
 }

@@ -529,6 +529,7 @@ $(function () {
             dataType: "json", // 返回数据形式为json
             success: function (data) {
                 if(data.code==0){
+
                     bootoast({
                         message: 'save successfully',
                         position:'right-bottom',
