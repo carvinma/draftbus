@@ -57,7 +57,14 @@ public class ApiController {
     @Autowired
     ResultSocialCostDataRepository resultSocialCostDataRepository;
 
+    @Autowired
+    BusCostRepository busCostRepository;
 
+    @Autowired
+    SocialCostFactorRepository socialCostFactorRepository;
+
+    @Autowired
+    GhgDataRepository ghgDataRepository;
 
     @RequestMapping(value="/abc")
     public String abc(){
@@ -70,7 +77,7 @@ public class ApiController {
         Map<String,Object> map=new HashMap<String,Object>();
         Calendar calendar = Calendar.getInstance();
         Integer year=calendar.get(Calendar.YEAR);
-        Integer i=year-50;
+        Integer i=year-2;
         List<Integer> lst=new ArrayList<>();
         while(year>=i){
             lst.add(year);
@@ -89,10 +96,21 @@ public class ApiController {
         map.put("details",lst);
         return map;
     }
-    @RequestMapping(value="/getItemsByParentIdAndItemType")
+    @RequestMapping(value="/getItemIdsByParentIdAndItemType")
     public Map<String,Object> getItemsByParentId(Integer parentId,Integer itemType){
         Map<String,Object> map=new HashMap<String,Object>();
+        String unit="CN";
         List<ItemInfo> lst=itemInfoRepository.getItemsByParentIdAndItemType(parentId,itemType);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+
+    @RequestMapping(value="/getItemIdsByUnitAndItemType")
+    public Map<String,Object> getItemsByParentId(String unit,Integer itemType){
+        Map<String,Object> map=new HashMap<String,Object>();
+        //String unit="CN";
+        List<ItemInfo> lst=itemInfoRepository.getItemsByUnitAndItemType(unit,itemType);
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -101,16 +119,28 @@ public class ApiController {
     @RequestMapping(value="/getMeData")
     public Map<String,Object> getMeData(Integer countryId,Integer cityId,Integer year){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<MeData> lst=meDataRepository.getMeData(countryId,cityId,year);
+        List<Map<String,Double>> lst=meDataRepository.getMeData(countryId,cityId,year);
+        if (lst.isEmpty()) {
+            lst=meDataRepository.getMeData(countryId,null,null);
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
     }
 
     @RequestMapping(value="/getEfData")
-    public Map<String,Object> getEfData(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer load){
+    public Map<String,Object> getEfData(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType, Integer ac,Integer load,Integer opSpeed){
         Map<String,Object> map= new HashMap<>();
-        List<EfData> lst=efDataRepository.getEfData(countryId,cityId,vehicleType,fuelType,load);
+        List<Map<String,Object>> lst=efDataRepository.getEfData(countryId,cityId,vehicleType,fuelType,ac,load,opSpeed);
+        if(lst.size()==0){
+            lst=efDataRepository.getEfData(countryId,cityId,vehicleType,fuelType,null,null,null);
+            if(lst.size()==0){
+                lst=efDataRepository.getEfData(countryId,cityId,null,fuelType,null,null,null);
+                if(lst.size()==0){
+                    lst=efDataRepository.getEfData(countryId,null,null,fuelType,null,null,null);
+                }
+            }
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -119,7 +149,16 @@ public class ApiController {
     @RequestMapping(value="/getFeData")
     public Map<String,Object> getFeData(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer ac,Integer load,Integer opSpeed){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<FeData> lst=feDataRepository.getFeData(countryId,cityId,vehicleType,fuelType,ac,load,opSpeed);
+        List<Map<String,Object>> lst=feDataRepository.getFeData(countryId,cityId,vehicleType,fuelType,ac,load,opSpeed);
+        if(lst.isEmpty()){
+            lst=feDataRepository.getFeData(countryId,cityId,vehicleType,fuelType,null,null,null);
+            if(lst.isEmpty()){
+                lst=feDataRepository.getFeData(countryId,cityId,null,fuelType,null,null,null);
+                if(lst.isEmpty()){
+                    lst=feDataRepository.getFeData(countryId,null,null,fuelType,null,null,null);
+                }
+            }
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -782,6 +821,43 @@ public class ApiController {
     public Map<String,Object> getAcList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed,Integer load){
         Map<String,Object> map=new HashMap<String,Object>();
         List<ItemInfo> lst=itemInfoRepository.getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+
+    @RequestMapping(value="/getBusCost")
+    public Map<String,Object> getBusCost(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<Map<String,Object>> lst=busCostRepository.getBusCost(countryId,cityId,vehicleType,fuelType);
+        if(lst.isEmpty()){
+            lst=busCostRepository.getBusCost(countryId,null,vehicleType,fuelType);
+            if (lst.isEmpty()) {
+                lst=busCostRepository.getBusCost(countryId,null,null,fuelType);
+            }
+        }
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+    @RequestMapping(value="/getSocialCostFactor")
+    public Map<String,Object> getSocialCostFactor(Integer countryId){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<SocialCostFactor> lst=socialCostFactorRepository.findSocialCostFactorsByCountryId(countryId);
+
+        map.put("code",0);
+        map.put("details",lst);
+        return map;
+    }
+
+    @RequestMapping(value="/getGhgData")
+    public Map<String,Object> getGhgFactor(Integer countryId,Integer cityId,Integer fuelType){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<Map<String,Double>> lst=ghgDataRepository.getGhgData(countryId,cityId,fuelType);
+        if(lst.isEmpty()){
+            lst=ghgDataRepository.getGhgData(countryId,null,fuelType);
+        }
+
         map.put("code",0);
         map.put("details",lst);
         return map;

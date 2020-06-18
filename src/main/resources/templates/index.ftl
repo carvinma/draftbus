@@ -15,6 +15,9 @@
         .required {
             color: red;
         }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -187,9 +190,11 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Cost Factors</h3>
+                    <h3 class="panel-title"> Cost Factors
+                        <a style="float:right;" id="openOne" role="button" data-toggle="collapse"  href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">unfold
+                       </a></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body panel-collapse collapse" id="collapseOne" >
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label style="text-align: center;" for="" class="col-sm-4 control-label">PROCUREMENT</label>
@@ -315,9 +320,11 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Emissions Factors</h3>
+                    <h3>Emissions Factors
+                    <a style="float:right;" id="openTwo" role="button" data-toggle="collapse"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">unfold
+                    </a></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body panel-collapse collapse" id="collapseTwo" >
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label style="text-align: center;" for="" class="col-sm-6 control-label">TAILPIPE</label>
@@ -411,9 +418,10 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Social cost factors</h3>
+                    <h3 class="panel-title">Social cost factors <a style="float:right;" id="openThree" role="button" data-toggle="collapse"  href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">unfold
+                    </a></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body panel-collapse collapse" id="collapseThree" >
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Carbon Monoxide (CO)<span

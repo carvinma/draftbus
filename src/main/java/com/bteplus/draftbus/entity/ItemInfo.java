@@ -17,7 +17,7 @@ public class ItemInfo {
     private Integer item_id;
     private String  item_name;
     private Integer  item_type;
-    private Integer  item_unit;
+    private String  item_unit;
     private Integer  parent_id;
     private Integer  is_delete;
     private String  item_value;

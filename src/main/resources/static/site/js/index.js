@@ -2,11 +2,11 @@ $(function () {
 
     getYears();
     getCountryIds();
-    //getItemIdsByItemType(3,"#vehicleType","#hidVehicleType")
-    //getItemIdsByItemType(4,"#fuelType","#hidFuelType")
-    //getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
-    //getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
-    //getItemIdsByItemType(7,"#ac","#hidAc")
+    getItemIdsByItemType(3,"#vehicleType","#hidVehicleType")
+    getItemIdsByItemType(4,"#fuelType","#hidFuelType")
+    getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
+    getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
+    getItemIdsByItemType(7,"#ac","#hidAc")
     getItemIdsByItemType(9,"#temperature","#hidTemperature")
     getItemIdsByItemType(10,"#humidity","#hidHumidity")
     getItemIdsByItemType(11,"#slope","#hidSlope")
@@ -17,39 +17,50 @@ $(function () {
     {
         var countryId=$("#hidCountryId").val();
         if(countryId!=""){
-            getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
+            getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
         }
     }
     $('#mainBody').on("change", "#countryId", function() {
         var countryId=$("#countryId").val();
         if(countryId!=null){
             getCityIds(countryId);
-            getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
+            getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
+            getSocialCostFactor(countryId);
         }
+        getEfData();
+        getFeData();
+        getBusCost();
     });
     $('#mainBody').on("change", "#cityId", function() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
-        if(cityId!=null){
-            getVehicleList(countryId,cityId);
-        }
+        //if(cityId!=null){
+         //   getVehicleList(countryId,cityId);
+        //}
     });
     $('#mainBody').on("change", "#vehicleType", function() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
         var vehicleType=$("#vehicleType").val();
-        if(vehicleType!=null){
-            getFuelTypeList(countryId,cityId,vehicleType);
-        }
+        //if(vehicleType!=null){
+        //    getFuelTypeList(countryId,cityId,vehicleType);
+        //}
+        getEfData();
+        getFeData();
+        getBusCost();
     });
     $('#mainBody').on("change", "#fuelType", function() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
         var vehicleType=$("#vehicleType").val();
         var fuelType=$("#fuelType").val();
-        if(fuelType!=null){
-            getSpeedList(countryId,cityId,vehicleType,fuelType);
-        }
+        //if(fuelType!=null){
+        //    getSpeedList(countryId,cityId,vehicleType,fuelType);
+        //}
+        getEfData();
+        getFeData();
+        getBusCost();
+        getCo2e();
     });
     $('#mainBody').on("change", "#opSpeed", function() {
         var countryId=$("#countryId").val();
@@ -57,14 +68,23 @@ $(function () {
         var vehicleType=$("#vehicleType").val();
         var fuelType=$("#fuelType").val();
         var opSpeed=$("#opSpeed").val();
-        if(opSpeed!=null){
-            getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
-        }
+        //if(opSpeed!=null){
+        //    getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
+        //}
+        getEfData();
+        getFeData();
+        getBusCost();
+    });
+    $('#mainBody').on("change", "#feLoad", function() {
+        getEfData();
+        getFeData();
+        getBusCost();
     });
 
     $('#emissionStd').change(function(){
         getEfData();
         getFeData();
+        getBusCost();
     });
 
     $('#mainBody').on("click", "#btnCalc", function() {
@@ -91,8 +111,23 @@ $(function () {
             return;
         };
     });
-
-
+    /*$('#mainBody').on("change", "#vkt", function() {
+        calcCo2();
+    });
+    $('#mainBody').on("change", "#vkt", function() {
+        calcCo2();
+    });
+    $('#mainBody').on("change", "#fuel", function() {
+        calcCo2();
+    });*/
+    $('#mainBody').on("click", "#openOne", function() {
+        var text=$(this).html();
+        if(text=="fold"){
+            $(this).html("unfold");
+        }else {
+            $(this).html("fold");
+        }
+    });
 
     function getYears() {
         $.ajax({
@@ -123,10 +158,10 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            //url: "../api/getItemsByItemType", // 请求发送到TestServlet处
-            url:"../api/getCountryList",
+            url: "../api/getItemsByItemType", // 请求发送到TestServlet处
+            //url:"../api/getCountryList",
             data: {
-                //itemType:1
+                itemType:1
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -147,7 +182,7 @@ $(function () {
                 var countryId=$("#countryId").val();
                 if(countryId!=null){
                     getCityIds(countryId)
-                    getItemIdsByParentIdAndItemType(countryId,5,"#emissionStd","#hidEmissionStd");
+                    getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
                 }
             }
         });
@@ -157,12 +192,12 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            //url: "../api/getItemsByParentIdAndItemType", // 请求发送到TestServlet处
-            url: "../api/getCityList",
+            url: "../api/getItemIdsByParentIdAndItemType", // 请求发送到TestServlet处
+            //url: "../api/getCityList",
             data: {
-                //itemType:2,
-                //parentId:countryId
-                countryId:countryId
+                itemType:2,
+                parentId:countryId
+                //countryId:countryId
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -180,8 +215,9 @@ $(function () {
                 if(cityId!=""){
                     $("#cityId").val(cityId);
                 }
+                var cityId=$("#cityId").val();
                 getMeData();
-                getVehicleList(countryId,cityId)
+                //getVehicleList(countryId,cityId)
             }
         });
     }
@@ -250,12 +286,13 @@ $(function () {
         });
     }
 
-    function getItemIdsByParentIdAndItemType(parentId,itemType,elementName,hidElementName) {
+    function getItemIdsByCountryIdAndItemType(countryId,itemType,elementName,hidElementName) {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemsByItemType", // 请求发送到TestServlet处
+            url: "../api/getItemIdsByCountryIdAndItemType", // 请求发送到TestServlet处
             data: {
+                countryId:countryId,
                 itemType:itemType,
             },
             dataType: "json", // 返回数据形式为json
@@ -287,6 +324,9 @@ $(function () {
         var load=$("#feLoad").val();
         var ac=$("#ac").val();
         var opSpeed=$("#opSpeed").val();
+        if(countryId==null ||cityId==null||vehicleType==null||fuelType==null||load==null||ac==null||opSpeed==null){
+            return;
+        }
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -319,20 +359,60 @@ $(function () {
     function getFuelEfficiency(detail,std){
         var result=0;
         if(std=="pre_std"){
-            return detail.pre_std;
+            result= detail.pre_std;
         }else if(std=="std1"){
-            return detail.std1;
+            result=  detail.std1;
         }else if(std=="std2"){
-            return detail.std2;
+            result=  detail.std2;
         }else if(std=="std3"){
-            return detail.std3;
+            result=  detail.std3;
         }else if(std=="std4"){
-            return detail.std4;
+            result=  detail.std4;
         }else if(std=="std5"){
-            return detail.std5;
+            result=  detail.std5;
         }else if(std=="std6"){
-            return detail.std6;
+            result=  detail.std6;
+        }else if(std=="eev"){
+            result=  detail.eev;
         }
+        if(result==0){
+            result=detail.avg_value;
+        }
+        if(result==0){
+            var ct=0;
+            var sum=0;
+            if(detail.pre_std>0){
+                ct=ct+1;
+            }
+            if(detail.std1>0){
+                ct=ct+1;
+            }
+            if(detail.std2>0){
+                ct=ct+1;
+            }
+            if(detail.std3>0){
+                ct=ct+1;
+            }
+            if(detail.std4>0){
+                ct=ct+1;
+            }
+            if(detail.std5>0){
+                ct=ct+1;
+            }
+            if(detail.std6>0){
+                ct=ct+1;
+            }
+            if(detail.eev>0){
+                ct=ct+1;
+            }
+            sum=detail.pre_std+detail.std1+detail.std2+detail.std3+detail.std4+detail.std5+detail.std6+detail.eev;
+            if(ct>0){
+                result=sum/ct;
+            }
+        }
+        var reg = /^(.*\..{4}).*$/;
+        result = String(result).replace(reg ,"$1");
+        return Number(result);
     }
 
 
@@ -342,6 +422,11 @@ $(function () {
         var vehicleType=$("#vehicleType").val();
         var fuelType=$("#fuelType").val();
         var load=$("#feLoad").val();
+        var ac=$("#ac").val();
+        var opSpeed=$("#opSpeed").val();
+        if(countryId==null ||cityId==null||vehicleType==null||fuelType==null||load==null||ac==null||opSpeed==null){
+            return;
+        }
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -351,7 +436,9 @@ $(function () {
                 cityId:cityId,
                 vehicleType:vehicleType,
                 fuelType:fuelType,
-                load:load
+                load:load,
+                ac:ac,
+                opSpeed:opSpeed
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -392,20 +479,60 @@ $(function () {
     function getEfFactor(detail,std){
         var result=0;
         if(std=="pre_std"){
-            return detail.pre_std;
+            result= detail.pre_std;
         }else if(std=="std1"){
-            return detail.std1;
+            result=  detail.std1;
         }else if(std=="std2"){
-            return detail.std2;
+            result=  detail.std2;
         }else if(std=="std3"){
-            return detail.std3;
+            result=  detail.std3;
         }else if(std=="std4"){
-            return detail.std4;
+            result=  detail.std4;
         }else if(std=="std5"){
-            return detail.std5;
+            result=  detail.std5;
         }else if(std=="std6"){
-            return detail.std6;
+            result=  detail.std6;
+        }else if(std=="eev"){
+            result=  detail.eev;
         }
+        if(result==0){
+            result=detail.avg_value;
+        }
+        if(result==0){
+            var ct=0;
+            var sum=0;
+            if(detail.pre_std>0){
+                ct=ct+1;
+            }
+            if(detail.std1>0){
+                ct=ct+1;
+            }
+            if(detail.std2>0){
+                ct=ct+1;
+            }
+            if(detail.std3>0){
+                ct=ct+1;
+            }
+            if(detail.std4>0){
+                ct=ct+1;
+            }
+            if(detail.std5>0){
+                ct=ct+1;
+            }
+            if(detail.std6>0){
+                ct=ct+1;
+            }
+            if(detail.eev>0){
+                ct=ct+1;
+            }
+            sum=detail.pre_std+detail.std1+detail.std2+detail.std3+detail.std4+detail.std5+detail.std6+detail.eev;
+            if(ct>0){
+                result=sum/ct;
+            }
+        }
+        var reg = /^(.*\..{4}).*$/;
+        result = String(result).replace(reg ,"$1");
+        return Number(result);
     }
 
     function calcData(isAddChild,childType) {
@@ -988,5 +1115,103 @@ $(function () {
         if(eId!=null){
             $(elementName).val(eId);
         }
+    }
+
+    function getSocialCostFactor() {
+        var countryId=$("#countryId").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/getSocialCostFactor", // 请求发送到TestServlet处
+            data: {
+                countryId: countryId,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0&& data.details.length>0) {
+
+                    var i=0;
+                    for( i=0;i<data.details.length;i++){
+                        var detail=data.details[i];
+                        if(detail.emission=="co"){
+                            $("#coFactor3").val(detail.scf);
+                        }else if(detail.emission=="thc"){
+                            $("#thcFactor3").val(detail.scf);
+                        }else if(detail.emission=="nox"){
+                            $("#noxFactor3").val(detail.scf);
+                        }else if(detail.emission=="pm25"){
+                            $("#pm25Factor3").val(detail.scf);
+                        }else if(detail.emission=="pm10"){
+                            $("#pm10Factor3").val(detail.scf);
+                        }else if(detail.emission=="co2"){
+                            $("#co2Factor3").val(detail.scf);
+                        }
+                    }
+
+                }
+            }
+        })
+    }
+
+    function getBusCost() {
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var vehicleType=$("#vehicleType").val();
+        var fuelType=$("#fuelType").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/getBusCost", // 请求发送到TestServlet处
+            data: {
+                countryId: countryId,
+                cityId:cityId,
+                vehicleType:vehicleType,
+                fuelType:fuelType,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0&& data.details.length>0) {
+                    var detail=data.details[0];
+                    $("#additionalOperationalCost").val(detail.additional_operation);
+                    $("#administration").val(detail.administration);
+                    $("#fuelPrice").val(detail.fuel_price);
+                    $("#insurance").val(detail.insurance);
+                    $("#annualLaborCost").val(detail.labor_total);
+                    $("#annualMaintenanceCost").val(detail.maintenance_total);
+                    $("#otherTaxFee").val(detail.other_tax_fee);
+                    $("#purchasePrice").val(detail.purchase_price);
+                    $("#residualValue").val(detail.residual_value);
+                    $("#loanTime").val(detail.life_total);
+                }
+            }
+        })
+    }
+
+    function getCo2e(){
+        var countryId=$("#countryId").val();
+        var cityId=$("#cityId").val();
+        var fuelType=$("#fuelType").val();
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "../api/getGhgData", // 请求发送到TestServlet处
+            data: {
+                countryId: countryId,
+                cityId: cityId,
+                fuelType: fuelType,
+            },
+            dataType: "json", // 返回数据形式为json
+            success: function (data) {
+                if (data.code == 0 && data.details.length > 0) {
+                    var detail = data.details[0];
+                    $("#co2Factor").val(detail.co2);
+                    $("#co2eFactor").val(detail.co2e);
+
+                    $("#co2Factor2").val(detail.co2);
+                    $("#co2eFactor2").val(detail.co2e);
+                }
+            }
+        });
+
     }
 });

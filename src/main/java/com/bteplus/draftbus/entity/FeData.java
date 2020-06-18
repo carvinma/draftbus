@@ -34,7 +34,7 @@ public class FeData {
     private Double std4=0.0;
     private Double std5=0.0;
     private Double std6=0.0;
-
+    private Double eev=0.0;
 
 
 

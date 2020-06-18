@@ -10,10 +10,13 @@ import java.util.List;
 
 @Repository
 public interface ItemInfoRepository extends JpaRepository<ItemInfo,Integer>,Serializable {
-    @Query(value = "select * from item_info where is_delete=0 and item_type=?1 order by sort_no ",nativeQuery = true)
+    @Query(value = "select * from item_info where is_delete=0 and item_type=?1 order by item_name ",nativeQuery = true)
     List<ItemInfo> getItemsByItemType(Integer itemType);
 
-    @Query(value = "select * from item_info where is_delete=0 and parent_id=?1 and item_type=?2 order by sort_no ",nativeQuery = true)
+    @Query(value = "select * from item_info where is_delete=0 and item_unit=?1 and item_type=?2 order by item_name ",nativeQuery = true)
+    List<ItemInfo> getItemsByUnitAndItemType(String unit,Integer itemType);
+
+    @Query(value = "select * from item_info where is_delete=0 and parent_id=?1 and item_type=?2 order by item_name ",nativeQuery = true)
     List<ItemInfo> getItemsByParentIdAndItemType(Integer parentId,Integer itemType);
 
     @Query(value = "select item.* from item_info item where item_id in (select country_id from fe_data fe group by country_id)",nativeQuery = true)
