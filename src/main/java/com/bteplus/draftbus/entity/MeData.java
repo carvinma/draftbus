@@ -21,9 +21,9 @@ public class MeData {
     private Integer economic_id;
     private Integer  country_id;
     private Integer economic_year;
-    private Double discount_rate=0.0;
-    private Double social_discount_rate=0.0;
-    private Double inflation_rate=0.0;
-    private Double exchange_rate=0.0;
+    private Double discount_rate;
+    private Double social_discount_rate;
+    private Double inflation_rate;
+    private Double exchange_rate;
     private Integer  is_delete=0;
 }

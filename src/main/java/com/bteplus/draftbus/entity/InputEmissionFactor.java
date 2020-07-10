@@ -14,16 +14,16 @@ import javax.persistence.*;
 public class InputEmissionFactor {
     @Id
     private Integer record_id;
-    private Double co=0.0;
-    private Double thc=0.0;
-    private Double nox=0.0;
-    private Double pm25=0.0;
-    private Double pm10=0.0;
-    private Double co2=0.0;
-    private Double co2e=0.0;
-    private Double pm25_up=0.0;
-    private Double pm10_up=0.0;
-    private Double co2_up=0.0;
-    private Double co2e_up=0.0;
+    private Double co;
+    private Double thc;
+    private Double nox;
+    private Double pm25;
+    private Double pm10;
+    private Double co2;
+    private Double co2e;
+    private Double pm25_up;
+    private Double pm10_up;
+    private Double co2_up;
+    private Double co2e_up;
 
 }

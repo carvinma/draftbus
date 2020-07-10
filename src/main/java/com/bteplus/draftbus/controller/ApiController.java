@@ -122,6 +122,11 @@ public class ApiController {
         List<Map<String,Double>> lst=meDataRepository.getMeData(countryId,cityId,year);
         if (lst.isEmpty()) {
             lst=meDataRepository.getMeData(countryId,null,null);
+        }else{
+            Map<String,Double> detail=lst.get(0);
+            if(detail.get("discount_rate").doubleValue()<=0){
+                lst=meDataRepository.getMeData(countryId,null,null);
+            }
         }
         map.put("code",0);
         map.put("details",lst);
@@ -147,26 +152,96 @@ public class ApiController {
     }
 
     @RequestMapping(value="/getFeData")
-    public Map<String,Object> getFeData(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer ac,Integer load,Integer opSpeed){
+    public Map<String,Object> getFeData(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer ac,Integer load,Integer opSpeed,String std){
         Map<String,Object> map=new HashMap<String,Object>();
         List<Map<String,Object>> lst=feDataRepository.getFeData(countryId,cityId,vehicleType,fuelType,ac,load,opSpeed);
+        System.out.println("11111111111111");
         if(lst.isEmpty()){
+            System.out.println("222222222222222222");
             lst=feDataRepository.getFeData(countryId,cityId,vehicleType,fuelType,null,null,null);
             if(lst.isEmpty()){
+                System.out.println("333333333333333333333333");
                 lst=feDataRepository.getFeData(countryId,cityId,null,fuelType,null,null,null);
                 if(lst.isEmpty()){
+                    System.out.println("44444444444444444");
                     lst=feDataRepository.getFeData(countryId,null,null,fuelType,null,null,null);
                 }
             }
         }
+        Double result=0.0;
+        if(!lst.isEmpty()){
+            System.out.println("5555555555555555555");
+            System.out.println(lst.size());
+            result=getFuelEfficiency(lst.get(0),std);
+        }
         map.put("code",0);
-        map.put("details",lst);
+        map.put("result",result);
         return map;
+    }
+    private Double getFuelEfficiency(Map<String,Object> detail,String std){
+        System.out.println(JSON.toJSON(detail));
+
+        Double result=0.0;
+        result=Double.parseDouble(detail.get(std).toString());
+        if(result<=0){
+            result=Double.parseDouble(detail.get("avg_value").toString());
+            System.out.println("avg_value:"+result);
+        }
+        if(result<=0){
+            int ct=0;
+
+            double preStd=Double.parseDouble(detail.get("pre_std").toString());
+            double std1=Double.parseDouble(detail.get("std1").toString());
+            double std2=Double.parseDouble(detail.get("std2").toString());
+            double std3=Double.parseDouble(detail.get("std3").toString());
+            double std4=Double.parseDouble(detail.get("std4").toString());
+            double std5=Double.parseDouble(detail.get("std5").toString());
+            double std6=Double.parseDouble(detail.get("std6").toString());
+            double eev=Double.parseDouble(detail.get("eev").toString());
+            double avg=Double.parseDouble(detail.get("avg_value").toString());
+
+            if(preStd>0){
+                ct=ct+1;
+            }
+            if(std1>0){
+                ct=ct+1;
+            }
+            if(std2>0){
+                ct=ct+1;
+            }
+            if(std3>0){
+                ct=ct+1;
+            }
+            if(std4>0){
+                ct=ct+1;
+            }
+            if(std5>0){
+                ct=ct+1;
+            }
+            if(std6>0){
+                ct=ct+1;
+            }
+            if(eev>0){
+                ct=ct+1;
+            }
+            if(avg>0){
+                ct=ct+1;
+            }
+            double sum=preStd+std1+std2+std3+std4+std5+std6+eev+avg;
+            if(ct>0){
+                result=sum/ct;
+            }
+            System.out.println("sum:"+sum);
+            System.out.println("ct:"+ct);
+            System.out.println("avg_value2:"+result);
+        }
+
+        return result;
     }
 
 
     @RequestMapping(value="/calc")
-    public Map<String,Object> calcAllData(Integer id,Integer modelYear,Integer countryId,Integer cityId,Double discountRate,Double socialDiscountRate,Double inflationRate,Integer temperature,Integer humidity,Integer slope,Integer age,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber,Double replacementRatio, Double vkt,Integer operationalYears, Integer opSpeed,Integer ac,Double fuelEfficiency,Double  purchasePrice,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double batteryPrice,Double batteryLeasingPrice,Double batteryContent,
+    public Map<String,Object> calcAllData(Integer id,Integer modelYear,Integer countryId,Integer cityId,Double discountRate,Double socialDiscountRate,Double inflationRate,Integer temperature,Integer humidity,Integer slope,Integer age,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber,Double replacementRatio, Double vkt,Integer operationalYears, Integer opSpeed,Integer ac,Integer feLoad,Double fuelEfficiency,Double  purchasePrice,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double batteryPrice,Double batteryLeasingPrice,Double batteryContent,
                                        Double annualLaborCost,Double fuelPrice,Double fuelCostProjection, Double additionalOperationalCost,Double additionalFuelPrice,Double annualMaintenanceLaborCost,
                                        Double annualMaintenanceCost, Double tires,Integer tiresFrequency,Double engineOverhaul,Integer engineOverhaulFrequency, Double transmissionOverhaul,Integer transmissionOverhaulFrequency,Double batteryOverhaul,Integer batteryOverhaulFrequency, Double vehicleRetrofits,Integer vehicleRetrofitsFrequency,Double additionalMaintenanceCost,Double insurance,Double administration,Double otherTaxFee,
                                        Double coFactor,Double thcFactor,Double noxFactor,Double pm25Factor,Double pm10Factor,Double co2Factor,Double co2eFactor,Double pm25Factor2,Double pm10Factor2,Double co2Factor2,Double co2eFactor2, Double coFactor3,Double thcFactor3,Double noxFactor3,Double pm25Factor3,Double pm10Factor3,Double co2Factor3,
@@ -175,7 +250,7 @@ public class ApiController {
         Map<String,Object> map= new HashMap<>();
 
 
-        calcData(id,modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
+        calcData(id,modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,feLoad,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
                 annualLaborCost,fuelPrice,fuelCostProjection, additionalOperationalCost,additionalFuelPrice,annualMaintenanceLaborCost,
                 annualMaintenanceCost, tires,tiresFrequency,engineOverhaul,engineOverhaulFrequency, transmissionOverhaul,transmissionOverhaulFrequency,batteryOverhaul,batteryOverhaulFrequency, vehicleRetrofits,vehicleRetrofitsFrequency,additionalMaintenanceCost,insurance,administration,otherTaxFee,
                 coFactor,thcFactor,noxFactor,pm25Factor,pm10Factor,co2Factor,co2eFactor,pm25Factor2,pm10Factor2,co2Factor2,co2eFactor2, coFactor3,thcFactor3,noxFactor3,pm25Factor3,pm10Factor3,co2Factor3,
@@ -272,7 +347,7 @@ public class ApiController {
             maintenanceCost=inputData.getOperational_cost();
             onetimeOverhaulCost=costFactor.getOnetime_overhaul_cost();
 
-            calcData(inputData.getRecord_id(),modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
+            calcData(inputData.getRecord_id(),modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,feLoad,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
                     annualLaborCost,fuelPrice,fuelCostProjection, additionalOperationalCost,additionalFuelPrice,annualMaintenanceLaborCost,
                     annualMaintenanceCost, tires,tiresFrequency,engineOverhaul,engineOverhaulFrequency, transmissionOverhaul,transmissionOverhaulFrequency,batteryOverhaul,batteryOverhaulFrequency, vehicleRetrofits,vehicleRetrofitsFrequency,additionalMaintenanceCost,insurance,administration,otherTaxFee,
                     coFactor,thcFactor,noxFactor,pm25Factor,pm10Factor,co2Factor,co2eFactor,pm25Factor2,pm10Factor2,co2Factor2,co2eFactor2, coFactor3,thcFactor3,noxFactor3,pm25Factor3,pm10Factor3,co2Factor3,
@@ -288,7 +363,7 @@ public class ApiController {
     
 
 
-    private Map<String,Object> calcData(Integer id,Integer modelYear,Integer countryId,Integer cityId,Double discountRate,Double socialDiscountRate,Double inflationRate,Integer temperature,Integer humidity,Integer slope,Integer age,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber,Double replacementRatio, Double vkt,Integer operationalYears, Integer opSpeed,Integer ac,Double fuelEfficiency,Double  purchasePrice,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double batteryPrice,Double batteryLeasingPrice,Double batteryContent,
+    private Map<String,Object> calcData(Integer id,Integer modelYear,Integer countryId,Integer cityId,Double discountRate,Double socialDiscountRate,Double inflationRate,Integer temperature,Integer humidity,Integer slope,Integer age,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber,Double replacementRatio, Double vkt,Integer operationalYears, Integer opSpeed,Integer ac,Integer feLoad,Double fuelEfficiency,Double  purchasePrice,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double batteryPrice,Double batteryLeasingPrice,Double batteryContent,
                                         Double annualLaborCost,Double fuelPrice,Double fuelCostProjection, Double additionalOperationalCost,Double additionalFuelPrice,Double annualMaintenanceLaborCost,
                                         Double annualMaintenanceCost, Double tires,Integer tiresFrequency,Double engineOverhaul,Integer engineOverhaulFrequency, Double transmissionOverhaul,Integer transmissionOverhaulFrequency,Double batteryOverhaul,Integer batteryOverhaulFrequency, Double vehicleRetrofits,Integer vehicleRetrofitsFrequency,Double additionalMaintenanceCost,Double insurance,Double administration,Double otherTaxFee,
                                         Double coFactor,Double thcFactor,Double noxFactor,Double pm25Factor,Double pm10Factor,Double co2Factor,Double co2eFactor,Double pm25Factor2,Double pm10Factor2,Double co2Factor2,Double co2eFactor2, Double coFactor3,Double thcFactor3,Double noxFactor3,Double pm25Factor3,Double pm10Factor3,Double co2Factor3,
@@ -453,6 +528,7 @@ public class ApiController {
         busFleet.setFuel_efficiency(fuelEfficiency);
         busFleet.setFuel_type(fuelType);
         busFleet.setAc(ac);
+        busFleet.setFe_load(feLoad);
         busFleet.setOp_speed(opSpeed);
         busFleet.setOperational_years(operationalYears);
         busFleet.setVkt(vkt);
@@ -543,13 +619,13 @@ public class ApiController {
         return map;
     }
     @RequestMapping(value="/addChild")
-    public Map<String,Object> addChild(Integer id,Integer modelYear,Integer countryId,Integer cityId,Double discountRate,Double socialDiscountRate,Double inflationRate,Integer temperature,Integer humidity,Integer slope,Integer age,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber,Double replacementRatio, Double vkt,Integer operationalYears, Integer opSpeed,Integer ac,Double fuelEfficiency,Double  purchasePrice,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double batteryPrice,Double batteryLeasingPrice,Double batteryContent,
+    public Map<String,Object> addChild(Integer id,Integer modelYear,Integer countryId,Integer cityId,Double discountRate,Double socialDiscountRate,Double inflationRate,Integer temperature,Integer humidity,Integer slope,Integer age,Integer vehicleType,Integer fuelType, Integer emissionStd,Integer busNumber,Double replacementRatio, Double vkt,Integer operationalYears, Integer opSpeed,Integer ac,Integer feLoad,Double fuelEfficiency,Double  purchasePrice,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double batteryPrice,Double batteryLeasingPrice,Double batteryContent,
                                        Double annualLaborCost,Double fuelPrice,Double fuelCostProjection, Double additionalOperationalCost,Double additionalFuelPrice,Double annualMaintenanceLaborCost,
                                        Double annualMaintenanceCost, Double tires,Integer tiresFrequency,Double engineOverhaul,Integer engineOverhaulFrequency, Double transmissionOverhaul,Integer transmissionOverhaulFrequency,Double batteryOverhaul,Integer batteryOverhaulFrequency, Double vehicleRetrofits,Integer vehicleRetrofitsFrequency,Double additionalMaintenanceCost,Double insurance,Double administration,Double otherTaxFee,
                                        Double coFactor,Double thcFactor,Double noxFactor,Double pm25Factor,Double pm10Factor,Double co2Factor,Double co2eFactor,Double pm25Factor2,Double pm10Factor2,Double co2Factor2,Double co2eFactor2, Double coFactor3,Double thcFactor3,Double noxFactor3,Double pm25Factor3,Double pm10Factor3,Double co2Factor3,
                                        Double operationalCost,Double maintenanceCost,Double onetimeoverhoulCost)
     {
-        calcData(id,modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
+        calcData(id,modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,feLoad,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
                 annualLaborCost,fuelPrice,fuelCostProjection, additionalOperationalCost,additionalFuelPrice,annualMaintenanceLaborCost,
                 annualMaintenanceCost, tires,tiresFrequency,engineOverhaul,engineOverhaulFrequency, transmissionOverhaul,transmissionOverhaulFrequency,batteryOverhaul,batteryOverhaulFrequency, vehicleRetrofits,vehicleRetrofitsFrequency,additionalMaintenanceCost,insurance,administration,otherTaxFee,
                 coFactor,thcFactor,noxFactor,pm25Factor,pm10Factor,co2Factor,co2eFactor,pm25Factor2,pm10Factor2,co2Factor2,co2eFactor2, coFactor3,thcFactor3,noxFactor3,pm25Factor3,pm10Factor3,co2Factor3,
@@ -789,6 +865,9 @@ public class ApiController {
     public Map<String,Object> getVehicleTypeList(Integer countryId,Integer cityId){
         Map<String,Object> map=new HashMap<String,Object>();
         List<ItemInfo> lst=itemInfoRepository.getVehicleTypeList(countryId,cityId);
+        if(lst.isEmpty()){
+            lst=itemInfoRepository.getVehicleTypeList(countryId,null);
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -797,6 +876,9 @@ public class ApiController {
     public Map<String,Object> getFuelTypeList(Integer countryId,Integer cityId,Integer vehicleType){
         Map<String,Object> map=new HashMap<String,Object>();
         List<ItemInfo> lst=itemInfoRepository.getFuelTypeList(countryId,cityId,vehicleType);
+        if(lst.isEmpty()){
+            lst=itemInfoRepository.getFuelTypeList(countryId,null,null);
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -805,6 +887,9 @@ public class ApiController {
     public Map<String,Object> getSpeedList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType){
         Map<String,Object> map=new HashMap<String,Object>();
         List<ItemInfo> lst=itemInfoRepository.getSpeedList(countryId,cityId,vehicleType,fuelType);
+        if(lst.isEmpty()){
+            lst=itemInfoRepository.getSpeedList(countryId,null,null,fuelType);
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -813,6 +898,9 @@ public class ApiController {
     public Map<String,Object> getLoadList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed){
         Map<String,Object> map=new HashMap<String,Object>();
         List<ItemInfo> lst=itemInfoRepository.getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
+        if(lst.isEmpty()){
+            lst=itemInfoRepository.getLoadList(countryId,null,null,fuelType,null);
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -821,6 +909,9 @@ public class ApiController {
     public Map<String,Object> getAcList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed,Integer load){
         Map<String,Object> map=new HashMap<String,Object>();
         List<ItemInfo> lst=itemInfoRepository.getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
+        if(lst.isEmpty()){
+            lst=itemInfoRepository.getAcList(countryId,null,null,fuelType,null,null);
+        }
         map.put("code",0);
         map.put("details",lst);
         return map;

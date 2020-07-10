@@ -16,41 +16,41 @@ import javax.persistence.Table;
 public class InputCostFactor {
     @Id
     private Integer record_id;
-    private Double purchase_price=0.0;
-    private Double residual_value=0.0;
-    private Double down_payment_rate=0.0;
-    private Double loan_interest_rate=0.0;
+    private Double purchase_price;
+    private Double residual_value;
+    private Double down_payment_rate;
+    private Double loan_interest_rate;
     private Integer loan_time=0;
-    private Double procurement_subsidy=0.0;
+    private Double procurement_subsidy;
 
-    private Double battery_price=0.0;
-    private Double battery_leasing_price=0.0;
-    private Double battery_content=0.0;
+    private Double battery_price;
+    private Double battery_leasing_price;
+    private Double battery_content;
 
-    private Double annual_labor_cost=0.0;
-    private Double fuel_price=0.0;
-    private Double fuel_cost_projection=0.0;
-    private Double additional_fuel_price=0.0;
-    private Double additional_operation_cost=0.0;
-    private Double annual_maintenance_cost=0.0;
-    private Double annual_maintenance_labor_cost=0.0;
-    private Double insurance=0.0;
-    private Double administration=0.0;
-    private Double other_tax_fee=0.0;
+    private Double annual_labor_cost;
+    private Double fuel_price;
+    private Double fuel_cost_projection;
+    private Double additional_fuel_price;
+    private Double additional_operation_cost;
+    private Double annual_maintenance_cost;
+    private Double annual_maintenance_labor_cost;
+    private Double insurance;
+    private Double administration;
+    private Double other_tax_fee;
 
-    private Double tires=0.0;
-    private Integer tires_frequency=0;
-    private Double engine_overhaul=0.0;
-    private Integer engine_overhaul_frequency=0;
-    private Double transmission_overhaul=0.0;
-    private Integer transmission_overhaul_frequency=0;
-    private Double battery_overhaul=0.0;
-    private Integer battery_overhaul_frequency=0;
+    private Double tires;
+    private Integer tires_frequency;
+    private Double engine_overhaul;
+    private Integer engine_overhaul_frequency;
+    private Double transmission_overhaul;
+    private Integer transmission_overhaul_frequency;
+    private Double battery_overhaul;
+    private Integer battery_overhaul_frequency;
 
-    private Double vehicle_retrofits=0.0;
-    private Integer vehicle_retrofits_frequency=0;
-    private Double additional_maintenance_cost=0.0;
-    private Double onetime_overhaul_cost=0.0;
+    private Double vehicle_retrofits;
+    private Integer vehicle_retrofits_frequency;
+    private Double additional_maintenance_cost;
+    private Double onetime_overhaul_cost;
 
 
 }

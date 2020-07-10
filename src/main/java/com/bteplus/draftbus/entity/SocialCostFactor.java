@@ -17,7 +17,7 @@ public class SocialCostFactor {
     private Integer factor_id;
     private Integer country_id;
     private String emission;
-    private Double scf=0.0;
+    private Double scf;
 
 
 }

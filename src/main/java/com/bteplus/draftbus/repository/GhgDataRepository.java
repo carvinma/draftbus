@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Repository
 public interface GhgDataRepository extends JpaRepository<GhgData,Integer>,Serializable {
-    @Query(value = "select ifnull(avg(co2),0) co2,ifnull(avg(co2e),0) co2e from ghg_data where is_delete=0 and country_Id=?1 and (?2 is null or city_id=?2) and fuel_type=?3",nativeQuery = true)
+    @Query(value = "select ifnull(avg(if(co2=0,null,co2)),0) co2,ifnull(avg(if(co2e=0,null,co2e)),0) co2e from ghg_data where is_delete=0 and country_Id=?1 and (?2 is null or city_id=?2) and fuel_type=?3",nativeQuery = true)
     List<Map<String,Double>> getGhgData(Integer countryId, Integer cityId, Integer fuel_type);
 
 }

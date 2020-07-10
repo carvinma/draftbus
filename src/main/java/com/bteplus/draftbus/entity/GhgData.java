@@ -23,8 +23,8 @@ public class GhgData {
     private Integer city_id;
     private Integer fuel_type;
     private String unit;
-    private Double co2e=0.0;
-    private Double co2=0.0;
-    private Double ch4=0.0;
-    private Double n2o=0.0;
+    private Double co2e;
+    private Double co2;
+    private Double ch4;
+    private Double n2o;
 }

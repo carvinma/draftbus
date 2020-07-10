@@ -18,11 +18,12 @@ public class InputBusFleet {
     private Integer fuel_type;
     private Integer emission_std;
     private Integer bus_number=0;
-    private Double replacement_ratio=0.0;
-    private Double vkt=0.0;
-    private Integer operational_years=0;
-    private Double fuel_efficiency=0.0;
-    private Integer age=0;
+    private Double replacement_ratio;
+    private Double vkt;
+    private Integer operational_years;
+    private Double fuel_efficiency;
+    private Integer age;
     private Integer ac;
     private Integer op_speed;
+    private Integer fe_load;
 }
