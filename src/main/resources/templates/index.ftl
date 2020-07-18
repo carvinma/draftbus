@@ -201,8 +201,8 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> Cost Factors
-                        <a style="float:right;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">unfold
+                    <h3 class="panel-title"> Cost Factors <button class="btn btn-primary" style="margin-left: 20px;" type="button" id="fillCostFactor">Fill default values</button>
+                        <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">unfold
                        </a></h3>
                 </div>
                 <div class="panel-body panel-collapse collapse" id="collapseOne" >
@@ -389,7 +389,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Emissions Factors<a style="float:right;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">unfold
+                    <h3 class="panel-title">Emissions Factors <button type="button" class="btn btn-primary" style="margin-left: 20px;" id="fillEmissionCostFactor">Fill default values</button><a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">unfold
                     </a>
                     </h3>
                 </div>
@@ -487,7 +487,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Social cost factors <a style="float:right;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">unfold
+                    <h3 class="panel-title">Social cost factors  <button class="btn btn-primary" style="margin-left: 20px;" type="button" id="fillSocialCostFactor">Fill default values</button> <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">unfold
                     </a></h3>
                 </div>
                 <div class="panel-body panel-collapse collapse" id="collapseThree" >
@@ -779,20 +779,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" id="hidRecordId" value="${inputData.record_id!}">
-                    <input type="hidden" id="hidModelYear" value="${inputData.calc_year!}">
-                    <input type="hidden" id="hidCountryId" value="${inputData.country_id!}">
-                    <input type="hidden" id="hidCityId" value="${inputData.city_id!}">
-                    <input type="hidden" id="hidTemperature" value="${inputData.temperature!}">
-                    <input type="hidden" id="hidHumidity" value="${inputData.humidity!}">
-                    <input type="hidden" id="hidSlope" value="${inputData.slope!}">
 
-                    <input type="hidden" id="hidVehicleType" value="${busFleet.vehicle_type!}">
-                    <input type="hidden" id="hidFuelType" value="${busFleet.fuel_type!}">
-                    <input type="hidden" id="hidEmissionStd" value="${busFleet.emission_std!}">
-                    <input type="hidden" id="hidAc" value="${busFleet.ac!}">
-                    <input type="hidden" id="hidOpSpeed" value="${busFleet.op_speed!}">
-                    <input type="hidden" id="hidFeLoad" value="${busFleet.fe_load!}">
                 </form>
             </div>
             <div class="modal-footer">
@@ -825,7 +812,20 @@
     </div>
 </div>
 
+<input type="hidden" class="myInt" id="hidRecordId" value="${inputData.record_id!}">
+<input type="hidden" class="myInt" id="hidModelYear" value="${inputData.calc_year!}">
+<input type="hidden" class="myInt" id="hidCountryId" value="${inputData.country_id!}">
+<input type="hidden" class="myInt" id="hidCityId" value="${inputData.city_id!}">
+<input type="hidden" id="hidTemperature" value="${inputData.temperature!}">
+<input type="hidden" id="hidHumidity" value="${inputData.humidity!}">
+<input type="hidden" id="hidSlope" value="${inputData.slope!}">
 
+<input type="hidden" class="myInt" id="hidVehicleType" value="${busFleet.vehicle_type!}">
+<input type="hidden" class="myInt" id="hidFuelType" value="${busFleet.fuel_type!}">
+<input type="hidden" class="myInt"  id="hidEmissionStd" value="${busFleet.emission_std!}">
+<input type="hidden" class="myInt" id="hidAc" value="${busFleet.ac!}">
+<input type="hidden" class="myInt" id="hidOpSpeed" value="${busFleet.op_speed!}">
+<input type="hidden" class="myInt" id="hidFeLoad" value="${busFleet.fe_load!}">
 
 
 </body>

@@ -21,4 +21,17 @@ public class PMTCalcUtils {
         return result;
     }
 
+    public static double calculatePMT2(double rate, double nper, double pv) {
+        double v = (1 + (rate ));
+        double t = -(nper);
+        double result = (pv * (rate)) / (1 - Math.pow(v, t));
+        return result;
+    }
+
+
+    public static void main(String[] args){
+        double result=calculatePMT2(0.1,5,3100000);
+        System.out.println(result);
+    }
+
 }

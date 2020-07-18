@@ -120,6 +120,12 @@
 
                             </tr>
                             <tr>
+                                <td>Infra Cost</td>
+                                <td><label type="text" class=""  placeholder=""
+                                           style="width:200px;">${resultData.infra_cost_npv!!}</td>
+
+                            </tr>
+                            <tr>
                                 <td>Capital (Upfront Procurement) Cost</td>
                                 <td><label type="text" class=""  placeholder=""
                                            style="width:200px;">${resultData.capital_cost_npv!}</td>
@@ -140,13 +146,13 @@
                             <tr>
                                 <td>Total O&M Cost</td>
                                 <td><label type="text" class=""  placeholder=""
-                                           style="width:200px;">${resultData.labor_cost_npv!+resultData.labor_cost_npv!+resultData.others_operational_cost_npv!+resultData.maintenance_cost_npv!}</td>
+                                           style="width:200px;">${resultData.om_cost_npv!}</td>
 
                             </tr>
                             <tr>
                                 <td>Total Cost</td>
                                 <td><label type="text" class=""  placeholder=""
-                                           style="width:200px;"></td>
+                                           style="width:200px;">${resultData.capital_cost_npv!+resultData.financial_cost_npv!+resultData.om_cost_npv!+resultData.infra_cost_npv!}</td>
 
                             </tr>
                         </table>
@@ -187,6 +193,12 @@
 
                             </tr>
                             <tr>
+                                <td>Infra Cost</td>
+                                <td><label type="text" class=""  placeholder=""
+                                           style="width:200px;">${resultData2.infra_cost_npv!!}</td>
+
+                            </tr>
+                            <tr>
                                 <td>Capital (Upfront Procurement) Cost</td>
                                 <td><label type="text" class=""  placeholder=""
                                            style="width:200px;">${resultData2.capital_cost_npv!}</td>
@@ -207,13 +219,13 @@
                             <tr>
                                 <td>Total O&M Cost</td>
                                 <td><label type="text" class=""  placeholder=""
-                                           style="width:200px;">${resultData2.labor_cost_npv!+resultData.labor_cost_npv!+resultData.others_operational_cost_npv!+resultData.maintenance_cost_npv!}</td>
+                                           style="width:200px;">${resultData2.om_cost_npv!!}</td>
 
                             </tr>
                             <tr>
                                 <td>Total Cost</td>
                                 <td><label type="text" class=""  placeholder=""
-                                           style="width:200px;"></td>
+                                           style="width:200px;">${resultData2.capital_cost_npv!+resultData2.financial_cost_npv!+resultData2.om_cost_npv!+resultData2.infra_cost_npv!}</td>
 
                             </tr>
                         </table>
@@ -244,107 +256,6 @@
                                 <tr>
                                     <td>Carbon Monoxide (CO)</td>
                                     <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Total Hydrocarbons (THC)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.thc!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Nitrogen Oxide (Nox)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.nox!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Particulate Matter 2.5 (PM 2.5)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.pm25!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Particulate Matter 10 (PM 10)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.pm10!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Carbon Dioxide (CO2)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co2!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Greenhouse Gases (GHG/CO2e)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co2e!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold">UPSTREAM</td>
-                                    <td></td>
-
-                                </tr>
-                                <tr>
-                                    <td>Particulate Matter 2.5 (PM 2.5)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.pm25_up!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Particulate Matter 10 (PM 10)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.pm10_up!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Carbon Dioxide (CO2)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co2_up!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Greenhouse Gases (GHG/CO2e)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co2e_up!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold">Total</td>
-                                    <td></td>
-
-                                </tr>
-                                <tr>
-                                    <td>Carbon Dioxide (CO2)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co2!+resultEmissionData.co2_up!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Greenhouse Gases (GHG/CO2e)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultEmissionData.co2e!+resultEmissionData.co2e_up!}</td>
-
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <table class="table-bordered  table">
-                                <tr>
-                                    <th>Annualized Emissions (Unit: Lifetime Tonnes)</th>
-                                    <th>Fleet1</th>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold">TAILPIPE</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Carbon Monoxide (CO)</td>
-                                    <td><label type="text" class=""  placeholder=""
                                                style="width:200px;">${resultEmissionData2.co!}</td>
 
                                 </tr>
@@ -364,19 +275,19 @@
                                     <td>Particulate Matter 2.5 (PM 2.5)</td>
                                     <td><label type="text" class=""  placeholder=""
                                                style="width:200px;">${resultEmissionData2.pm25!}</td>
-                                    <td></td>
+
                                 </tr>
                                 <tr>
                                     <td>Particulate Matter 10 (PM 10)</td>
                                     <td><label type="text" class=""  placeholder=""
                                                style="width:200px;">${resultEmissionData2.pm10!}</td>
-                                    <td></td>
+
                                 </tr>
                                 <tr>
                                     <td>Carbon Dioxide (CO2)</td>
                                     <td><label type="text" class=""  placeholder=""
                                                style="width:200px;">${resultEmissionData2.co2!}</td>
-                                    <td></td>
+
                                 </tr>
                                 <tr>
                                     <td>Greenhouse Gases (GHG/CO2e)</td>
@@ -416,17 +327,118 @@
                                 <tr>
                                     <td style="font-weight: bold">Total</td>
                                     <td></td>
+
                                 </tr>
                                 <tr>
                                     <td>Carbon Dioxide (CO2)</td>
                                     <td><label type="text" class=""  placeholder=""
                                                style="width:200px;">${resultEmissionData2.co2!+resultEmissionData2.co2_up!}</td>
-                                    <td></td>
+
                                 </tr>
                                 <tr>
                                     <td>Greenhouse Gases (GHG/CO2e)</td>
                                     <td><label type="text" class=""  placeholder=""
                                                style="width:200px;">${resultEmissionData2.co2e!+resultEmissionData2.co2e_up!}</td>
+
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table-bordered  table">
+                                <tr>
+                                    <th>Annualized Emissions (Unit: Lifetime Tonnes)</th>
+                                    <th>Fleet1</th>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">TAILPIPE</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Carbon Monoxide (CO)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.co!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Total Hydrocarbons (THC)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.thc!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Nitrogen Oxide (Nox)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.nox!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Particulate Matter 2.5 (PM 2.5)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.pm25!}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Particulate Matter 10 (PM 10)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.pm10!}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Carbon Dioxide (CO2)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.co2!}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Greenhouse Gases (GHG/CO2e)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.co2e!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">UPSTREAM</td>
+                                    <td></td>
+
+                                </tr>
+                                <tr>
+                                    <td>Particulate Matter 2.5 (PM 2.5)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.pm25_up!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Particulate Matter 10 (PM 10)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.pm10_up!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Carbon Dioxide (CO2)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.co2_up!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Greenhouse Gases (GHG/CO2e)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData.co2e_up!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">Total</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Carbon Dioxide (CO2)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData2.co2!+resultEmissionData.co2_up!}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Greenhouse Gases (GHG/CO2e)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultEmissionData2.co2e!+resultEmissionData.co2e_up!}</td>
 
                                 </tr>
                             </table>
@@ -451,6 +463,51 @@
                                     <th>Lifetime PV</th>
                                     <th>Fleet1</th>
 
+                                </tr>
+                                <tr>
+                                    <td>Carbon Monoxide (CO)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultSocialCostData2.co!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Total Hydrocarbons (THC)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultSocialCostData2.thc!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Nitrogen Oxide (Nox)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultSocialCostData2.nox!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Particulate Matter 2.5 (PM 2.5)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultSocialCostData2.pm25!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Particulate Matter 10 (PM 10)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultSocialCostData2.pm10!}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Carbon Dioxide (CO2)</td>
+                                    <td><label type="text" class=""  placeholder=""
+                                               style="width:200px;">${resultSocialCostData2.co2!}</td>
+
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table-bordered table">
+                                <tr>
+                                    <th>Annualized PV</th>
+                                    <th>Fleet1</th>
                                 </tr>
                                 <tr>
                                     <td>Carbon Monoxide (CO)</td>
@@ -488,62 +545,7 @@
                                                style="width:200px;">${resultSocialCostData.co2!}</td>
 
                                 </tr>
-                                <tr>
-                                    <td>Greenhouse Gases (GHG/CO2e)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData.co2e!}</td>
 
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <table class="table-bordered table">
-                                <tr>
-                                    <th>Annualized PV</th>
-                                    <th>Fleet1</th>
-                                </tr>
-                                <tr>
-                                    <td>Carbon Monoxide (CO)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.co!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Total Hydrocarbons (THC)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.thc!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Nitrogen Oxide (Nox)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.nox!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Particulate Matter 2.5 (PM 2.5)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.pm25!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Particulate Matter 10 (PM 10)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.pm10!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Carbon Dioxide (CO2)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.co2_up!}</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Greenhouse Gases (GHG/CO2e)</td>
-                                    <td><label type="text" class=""  placeholder=""
-                                               style="width:200px;">${resultSocialCostData2.co2e_up!}</td>
-
-                                </tr>
                             </table>
                         </div>
                     </div>

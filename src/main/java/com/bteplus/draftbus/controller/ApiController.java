@@ -66,6 +66,8 @@ public class ApiController {
     @Autowired
     GhgDataRepository ghgDataRepository;
 
+    static int const_g_t=1000000;
+
     @RequestMapping(value="/abc")
     public String abc(){
 
@@ -370,7 +372,9 @@ public class ApiController {
                                         Double operationalCost,Double maintenanceCost,Double onetimeOverhaulCost
     ){
         Map<String,Object> map= new HashMap<>();
-        inflationRate=inflationRate/100;
+        if(inflationRate!=null) {
+            inflationRate = inflationRate / 100;
+        }
         downPaymentRate=downPaymentRate/100;
         residualValue=residualValue/100;
         discountRate=discountRate/100;
@@ -380,16 +384,21 @@ public class ApiController {
 
         double totalBusCost=purchasePrice*busNumber;
         double downPayment=totalBusCost*downPaymentRate;
-        double busResidualValue=purchasePrice*residualValue;
+        double busResidualValue=totalBusCost*residualValue;
         double busResidualNPV=busResidualValue/Math.pow(1+discountRate,operationalYears);
+
+        System.out.println("busResidualValue:"+String.valueOf(busResidualValue));
+        System.out.println("busResidualNPV:"+String.valueOf(busResidualNPV));
         Integer numberOfPayment=loanTime;
 
         double subsidy=procurementSubsidy*busNumber;
         double infrastructureCost=(chargerConstruction+procurementCost)*chargersNumber;
         double loanAmout=totalBusCost-downPayment-subsidy;
-        double annualPayment=PMTCalcUtils.calculatePMT(loanInterestRate,numberOfPayment*12,loanAmout);
+        double annualPayment=PMTCalcUtils.calculatePMT2(loanInterestRate,numberOfPayment*12,loanAmout);
         double totalCostLoan=annualPayment*numberOfPayment;
         double totalInterest=totalCostLoan-loanAmout;
+
+        System.out.println("infrastructureCost:"+String.valueOf(infrastructureCost));
 
         System.out.println("totalBusCost:"+String.valueOf(totalBusCost));
         System.out.println("downPayment:"+String.valueOf(downPayment));
@@ -397,16 +406,21 @@ public class ApiController {
         System.out.println("loanAmout:"+String.valueOf(loanAmout));
         System.out.println("loanInterestRate:"+String.valueOf(loanInterestRate));
         System.out.println("numberOfPayment:"+String.valueOf(numberOfPayment));
+        System.out.println("annualPayment:"+String.valueOf(annualPayment));
 
-        double financialNPV=NPVCalcUtils.calcNPV(discountRate,AverageCapitalPlusInterestUtils.getPerYearInterest(loanAmout,loanInterestRate,numberOfPayment));
-        double capitalNPV=NPVCalcUtils.calcNPV(discountRate,AverageCapitalPlusInterestUtils.getPerYearPrincipal(loanAmout,loanInterestRate,numberOfPayment));
+        double financialNPV=NPVCalcUtils.calcNPV(discountRate,AverageCapitalPlusInterestUtils.getPerYearInterest(loanAmout*loanInterestRate,loanInterestRate,numberOfPayment));
+        double capitalNPV2=NPVCalcUtils.calcNPV(discountRate,AverageCapitalPlusInterestUtils.getPerYearPrincipal(loanAmout,loanInterestRate,numberOfPayment));
+        double capitalNPV=downPayment-busResidualNPV+infrastructureCost+capitalNPV2;
         double procurementNPV=financialNPV+capitalNPV;
-        double annualizedFinancialCost=financialNPV/operationalYears;
-        double annualizedCapitalCost=capitalNPV/operationalYears;
+        double annualizedFinancialCost=financialNPV*discountRate/(1-Math.pow((1+discountRate),-1*operationalYears));
+        double annualizedCapitalCost=capitalNPV*discountRate/(1-Math.pow((1+discountRate),-1*operationalYears));
         double annualizedTotalProcurementCost=annualizedFinancialCost+annualizedCapitalCost;
 
         System.out.println("financialNPV:"+String.valueOf(financialNPV));
+        System.out.println("capitalNPV2:"+String.valueOf(capitalNPV2));
         System.out.println("capitalNPV:"+String.valueOf(capitalNPV));
+        System.out.println("annualizedFinancialCost:"+String.valueOf(annualizedFinancialCost));
+        System.out.println("annualizedCapitalCost:"+String.valueOf(annualizedCapitalCost));
 
         //operation
         double laborCost=annualLaborCost*busNumber;
@@ -422,52 +436,90 @@ public class ApiController {
         double fixedMaintenanceCosts = OperatingCostCalcUtils.calcFixedMaintenanceCost(fixedAnnualMaintenanceCost,laborCost,additionalMaintenanceCostTotal,fuelStationMaintenance);
         Double[] operatingCostResults=OperatingCostCalcUtils.calcOperatingCost(laborCost,fuelStationCostperationCost,insuranceTotal,additionalOperationalCostTotal,fuelCostResults);
 
+        System.out.println("Annual total labor cost:"+laborCost);
+        System.out.println("fuelCostResults:"+laborCost);
+        System.out.println("fixedMaintenanceCosts:"+fixedMaintenanceCosts);
+        System.out.println("operatingCostResults:"+operatingCostResults);
+
         Double[] laborCostResults=new Double[operationalYears];
         Double[] maintenanceCostResults=new Double[operationalYears];
         Double[] omCostResults=new Double[operationalYears];
+        Double[] overhaulCostResults=new Double[operationalYears];
+        Double[] infraCostResults=new Double[operationalYears];
         double totalOperatingCost=0;
         double totalLaborCost=0;
         double totalFuelCost=0;
         double totalMaintenceCost=0;
         double totalOMCost=0;
 
+        System.out.println("onetimeOverhaulCost:"+onetimeOverhaulCost);
+        int midIdx=operationalYears/2;
         for(int i=0;i<operationalYears;i++){
+            overhaulCostResults[i]=0.0;
             totalOperatingCost=totalOperatingCost+operatingCostResults[i];
             laborCostResults[i]=laborCost;
             maintenanceCostResults[i]=fixedMaintenanceCosts;
-            omCostResults[i]=laborCost+fuelCostResults[i]+fixedMaintenanceCosts;
+            omCostResults[i]=operatingCostResults[i]+fixedMaintenanceCosts;
+            if(i==midIdx){
+                omCostResults[i]=omCostResults[i]+onetimeOverhaulCost*busNumber;
+                overhaulCostResults[i]=onetimeOverhaulCost*busNumber;
+            }
+
+            infraCostResults[i]=operationalCost+maintenanceCost;
+            System.out.println("infra o:"+infraCostResults[i]);
         }
+
         double operatingNPV=NPVCalcUtils.calcNPV(discountRate,operatingCostResults);
-        System.out.println("operatingNPV"+String.valueOf(operatingNPV));
+        System.out.println("operatingNPV:"+String.valueOf(operatingNPV));
 
         double laborCostNPV=NPVCalcUtils.calcNPV(discountRate,laborCostResults);
-        System.out.println("laborCostNPV"+String.valueOf(laborCostNPV));
+        System.out.println("laborCostNPV:"+String.valueOf(laborCostNPV));
 
         double fuelCostNPV=NPVCalcUtils.calcNPV(discountRate,fuelCostResults);
-        System.out.println("fuelCostNPV"+String.valueOf(fuelCostNPV));
+        System.out.println("fuelCostNPV:"+String.valueOf(fuelCostNPV));
 
         double maintenanceCostNPV=NPVCalcUtils.calcNPV(discountRate,maintenanceCostResults);
-        System.out.println("maintenanceCostNPV"+String.valueOf(maintenanceCostNPV));
+        System.out.println("maintenanceCostNPV:"+String.valueOf(maintenanceCostNPV));
 
         double omCostNPV=NPVCalcUtils.calcNPV(discountRate,omCostResults);
-        System.out.println("omCostNPV"+String.valueOf(omCostNPV));
+        System.out.println("omCostNPV:"+String.valueOf(omCostNPV));
+
+        double overhaulNPV=NPVCalcUtils.calcNPV(discountRate,overhaulCostResults);
+        System.out.println("overhaulNPV:"+String.valueOf(overhaulNPV));
+
+        double infraNPV=NPVCalcUtils.calcNPV(discountRate,infraCostResults);
+        System.out.println("infraNPV:"+String.valueOf(infraNPV));
 
 
 
+        //计算每年的
+        double coTotal=coFactor*vkt*busNumber/const_g_t;
+        double thcTotal=thcFactor*vkt*busNumber/const_g_t;
+        double noxTotal=noxFactor*vkt*busNumber/const_g_t;
+        double pm25Total=pm25Factor*vkt*busNumber/const_g_t;
+        double pm10Total=pm10Factor*vkt*busNumber/const_g_t;
+        double co2Total=fuelEfficiency*co2Factor*vkt*busNumber/100/const_g_t;
+        double co2eTotal=fuelEfficiency*co2eFactor*vkt*busNumber/100/const_g_t;
 
+        double pm25Total2=pm25Factor2*vkt*busNumber/const_g_t;
+        double pm10Total2=pm10Factor2*vkt*busNumber/const_g_t;
+        double co2Total2=fuelEfficiency*co2Factor2*vkt*busNumber/100/const_g_t;
+        double co2eTotal2=fuelEfficiency*co2eFactor2*vkt*busNumber/100/const_g_t;
 
-        double coTotal=coFactor*vkt*busNumber*operationalYears;
-        double thcTotal=thcFactor*vkt*busNumber*operationalYears;
-        double noxTotal=noxFactor*vkt*busNumber*operationalYears;
-        double pm25Total=pm25Factor*vkt*busNumber*operationalYears;
-        double pm10Total=pm10Factor*vkt*busNumber*operationalYears;
-        double co2Total=co2Factor*vkt*busNumber*operationalYears;
-        double co2eTotal=co2eFactor*vkt*busNumber*operationalYears;
+        System.out.println("coTotal:"+String.valueOf(coTotal));
+        System.out.println("thcTotal:"+String.valueOf(thcTotal));
+        System.out.println("noxTotal:"+String.valueOf(noxTotal));
+        System.out.println("pm25Total:"+String.valueOf(pm25Total));
+        System.out.println("pm10Total:"+String.valueOf(pm10Total));
+        System.out.println("co2Total:"+String.valueOf(co2Total));
+        System.out.println("coTotal:"+String.valueOf(coTotal));
+        System.out.println("co2eTotal:"+String.valueOf(co2eTotal));
 
-        double pm25Total2=pm25Factor2*vkt*busNumber*operationalYears;
-        double pm10Total2=pm10Factor2*vkt*busNumber*operationalYears;
-        double co2Total2=co2Factor2*vkt*busNumber*operationalYears;
-        double co2eTotal2=co2eFactor2*vkt*busNumber*operationalYears;
+        System.out.println("pm25Total2:"+String.valueOf(pm25Total2));
+        System.out.println("pm10Total2:"+String.valueOf(pm10Total2));
+        System.out.println("co2Total2:"+String.valueOf(co2Total2));
+        System.out.println("co2eTotal2:"+String.valueOf(co2eTotal2));
+
 
         ResultData resultData=new ResultData();
         ResultEmissionData resultEmissionData=new ResultEmissionData();
@@ -485,7 +537,7 @@ public class ApiController {
         inputData.setCity_id(cityId);
         inputData.setCountry_id(countryId);
         inputData.setDiscount_rate(discountRate*100);
-        inputData.setInflation_rate(inflationRate*100);
+        //inputData.setInflation_rate(inflationRate*100);  //暂时不用了
         inputData.setMaintenance_cost(maintenanceCost);
         inputData.setOperational_cost(operationalCost);
         inputData.setProcurement_cost(procurementCost);
@@ -577,8 +629,10 @@ public class ApiController {
         resultData.setFuel_cost_npv(fuelCostNPV);
         resultData.setLabor_cost_npv(laborCostNPV);
         resultData.setMaintenance_cost_npv(maintenanceCostNPV);
-        resultData.setOverhaul_cost_npv(0.00);
+        resultData.setOverhaul_cost_npv(overhaulNPV);
         resultData.setOthers_operational_cost_npv(operatingNPV-laborCostNPV-fuelCostNPV);
+        resultData.setOm_cost_npv(omCostNPV);
+        resultData.setInfra_cost_npv(infraNPV);
         resultData.setRecord_id(inputData.getRecord_id());
         resultDataRepository.save(resultData);
 
@@ -623,13 +677,13 @@ public class ApiController {
                                        Double annualLaborCost,Double fuelPrice,Double fuelCostProjection, Double additionalOperationalCost,Double additionalFuelPrice,Double annualMaintenanceLaborCost,
                                        Double annualMaintenanceCost, Double tires,Integer tiresFrequency,Double engineOverhaul,Integer engineOverhaulFrequency, Double transmissionOverhaul,Integer transmissionOverhaulFrequency,Double batteryOverhaul,Integer batteryOverhaulFrequency, Double vehicleRetrofits,Integer vehicleRetrofitsFrequency,Double additionalMaintenanceCost,Double insurance,Double administration,Double otherTaxFee,
                                        Double coFactor,Double thcFactor,Double noxFactor,Double pm25Factor,Double pm10Factor,Double co2Factor,Double co2eFactor,Double pm25Factor2,Double pm10Factor2,Double co2Factor2,Double co2eFactor2, Double coFactor3,Double thcFactor3,Double noxFactor3,Double pm25Factor3,Double pm10Factor3,Double co2Factor3,
-                                       Double operationalCost,Double maintenanceCost,Double onetimeoverhoulCost)
+                                       Double operationalCost,Double maintenanceCost,Double onetimeOverhaulCost)
     {
         calcData(id,modelYear,countryId,cityId,discountRate,socialDiscountRate,inflationRate,temperature,humidity,slope,age,vehicleType,fuelType, emissionStd,busNumber,replacementRatio, vkt,operationalYears, opSpeed,ac,feLoad,fuelEfficiency, purchasePrice,downPaymentRate, procurementSubsidy, residualValue,loanInterestRate,loanTime,chargerConstruction,procurementCost,chargersNumber,batteryPrice,batteryLeasingPrice,batteryContent,
                 annualLaborCost,fuelPrice,fuelCostProjection, additionalOperationalCost,additionalFuelPrice,annualMaintenanceLaborCost,
                 annualMaintenanceCost, tires,tiresFrequency,engineOverhaul,engineOverhaulFrequency, transmissionOverhaul,transmissionOverhaulFrequency,batteryOverhaul,batteryOverhaulFrequency, vehicleRetrofits,vehicleRetrofitsFrequency,additionalMaintenanceCost,insurance,administration,otherTaxFee,
                 coFactor,thcFactor,noxFactor,pm25Factor,pm10Factor,co2Factor,co2eFactor,pm25Factor2,pm10Factor2,co2Factor2,co2eFactor2, coFactor3,thcFactor3,noxFactor3,pm25Factor3,pm10Factor3,co2Factor3,
-                operationalCost,maintenanceCost,onetimeoverhoulCost
+                operationalCost,maintenanceCost,onetimeOverhaulCost
         );
         Map<String,Object> map= new HashMap<>();
         List<Integer> lst=inputDataRepository.getChildren(id);

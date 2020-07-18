@@ -23,5 +23,6 @@ public class ResultData {
     private Double maintenance_cost_npv=0.0;
     private Double others_operational_cost_npv=0.0;
     private Double overhaul_cost_npv=0.0;
-
+    private Double om_cost_npv=0.0;
+    private Double infra_cost_npv=0.0;
 }

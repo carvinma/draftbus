@@ -76,7 +76,11 @@ $(function () {
     function loadData()
     {
         $("input[type='hidden']").each(function(){
-            $(this).val(delcommafy($(this).val()));
+            if($(this).hasClass("myInt")) {
+                $(this).val(delcommafy($(this).val(),true));
+            }else{
+                $(this).val(delcommafy($(this).val()));
+            }
         });
 
 
@@ -108,9 +112,9 @@ $(function () {
             getSocialCostFactor(countryId);
         }
         getVehicleList();
-        getEfData();
-        getFeData();
-        getBusCost();
+        //getEfData();
+        //getFeData();
+        //getBusCost();
     });
     $('#mainBody').on("change", "#cityId", function() {
         var countryId=$("#countryId").val();
@@ -125,9 +129,9 @@ $(function () {
 
         getFuelTypeList(countryId,cityId,vehicleType);
 
-        getEfData();
-        getFeData();
-        getBusCost();
+        //getEfData();
+        //getFeData();
+        //getBusCost();
     });
     $('#mainBody').on("change", "#fuelType", function() {
         var countryId=$("#countryId").val();
@@ -148,10 +152,10 @@ $(function () {
             $(".fuelPriceUnit").html("$/L");
         }
 
-        getEfData();
-        getFeData();
-        getBusCost();
-        getCo2e();
+        //getEfData();
+        //getFeData();
+        //getBusCost();
+        //getCo2e();
     });
     $('#mainBody').on("change", "#opSpeed", function() {
         var countryId=$("#countryId").val();
@@ -160,26 +164,23 @@ $(function () {
         var fuelType=$("#fuelType").val();
         var opSpeed=$("#opSpeed").val();
         getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
-        getEfData();
-        getFeData();
-        getBusCost();
+        //getEfData();
+        //getFeData();
+        //getBusCost();
     });
     $('#mainBody').on("change", "#feLoad", function() {
-        getEfData();
-        getFeData();
-        getBusCost();
+        //getEfData();
+        //getFeData();
+        //getBusCost();
     });
 
     $('#emissionStd').change(function(){
-        getEfData();
-        getFeData();
-        getBusCost();
+        //getEfData();
+        //getFeData();
+        //getBusCost();
     });
 
     $('#mainBody').on("click", "#btnCalc", function() {
-
-
-
         var valid=$("#frm").valid();
         if(valid) {
             calcData(false);
@@ -487,25 +488,35 @@ $(function () {
 
                 if (data.code == 0&& data.details.length>0) {
                     var std=$("#emissionStd").find("option:selected").data("value");
+                    var fuelType=$("#fuelType").val();
                     var i=0;
                     for( i=0;i<data.details.length;i++){
                         var detail=data.details[i];
                         var factor=getEfFactor(detail,std);
                         factor=factor.toFixed(4);
-                        if(detail.emission=="co"){
-                            $("#coFactor").val(factor);
-                        }
-                        if(detail.emission=="thc"){
-                            $("#thcFactor").val(factor);
-                        }
-                        if(detail.emission=="nox"){
-                            $("#noxFactor").val(factor);
-                        }
-                        if(detail.emission=="pm25"){
-                            $("#pm25Factor").val(factor);
-                        }
-                        if(detail.emission=="pm10"){
-                            $("#pm10Factor").val(factor);
+                        if(fuelType==4){
+                            if (detail.emission == "pm25") {
+                                $("#pm25Factor").val(factor);
+                            }
+                            if (detail.emission == "pm10") {
+                                $("#pm10Factor").val(factor);
+                            }
+                        }else {
+                            if (detail.emission == "co") {
+                                $("#coFactor").val(factor);
+                            }
+                            if (detail.emission == "thc") {
+                                $("#thcFactor").val(factor);
+                            }
+                            if (detail.emission == "nox") {
+                                $("#noxFactor").val(factor);
+                            }
+                            if (detail.emission == "pm25") {
+                                $("#pm25Factor").val(factor);
+                            }
+                            if (detail.emission == "pm10") {
+                                $("#pm10Factor").val(factor);
+                            }
                         }
                     }
 
@@ -597,12 +608,12 @@ $(function () {
         var discountRate = delcommafy($("#discountRate").val());
         var socialDiscountRate = delcommafy($("#socialDiscountRate").val());
         var inflationRate = delcommafy($("#inflationRate").val());
-        var busNumber = delcommafy($("#busNumber").val());
+        var busNumber = delcommafy($("#busNumber").val(),true);
         var replacementRatio = delcommafy($("#replacementRatio").val());
         var loanTime = delcommafy($("#loanTime").val());
         var vkt = delcommafy($("#vkt").val());
-        var operationalYears = delcommafy($("#operationalYears").val());
-        var opSpeed = delcommafy($("#opSpeed").val());
+        var operationalYears = delcommafy($("#operationalYears").val(),true);
+        var opSpeed = $("#opSpeed").val();
         var maintenance = delcommafy($("#maintenance").val());
         var fuelEfficiency = delcommafy($("#fuelEfficiency").val());
        
@@ -612,7 +623,7 @@ $(function () {
         var residualValue = delcommafy($("#residualValue").val());
         var downPaymentRate = delcommafy($("#downPaymentRate").val());
         var loanInterestRate = delcommafy($("#loanInterestRate").val());
-        var loanTime = delcommafy($("#loanTime").val());
+        var loanTime = delcommafy($("#loanTime").val(),true);
         var procurementSubsidy = delcommafy($("#procurementSubsidy").val());
         var batteryPrice = delcommafy($("#batteryPrice").val());
         var batteryLeasingPrice = delcommafy($("#batteryLeasingPrice").val());
@@ -627,15 +638,15 @@ $(function () {
         var annualMaintenanceCost = delcommafy($("#annualMaintenanceCost").val());
         var annualMaintenanceLaborCost = delcommafy($("#annualMaintenanceLaborCost").val());
         var tires = delcommafy($("#tires").val());
-        var tiresFrequency = delcommafy($("#tiresFrequency").val());
+        var tiresFrequency = delcommafy($("#tiresFrequency").val(),true);
         var engineOverhaul = delcommafy($("#engineOverhaul").val());
-        var engineOverhaulFrequency = delcommafy($("#engineOverhaulFrequency").val());
+        var engineOverhaulFrequency = delcommafy($("#engineOverhaulFrequency").val(),true);
         var transmissionOverhaul = delcommafy($("#transmissionOverhaul").val());
-        var transmissionOverhaulFrequency = delcommafy($("#transmissionOverhaulFrequency").val());
+        var transmissionOverhaulFrequency = delcommafy($("#transmissionOverhaulFrequency").val(),true);
         var batteryOverhaul = delcommafy($("#batteryOverhaul").val());
-        var batteryOverhaulFrequency = delcommafy($("#batteryOverhaulFrequency").val());
+        var batteryOverhaulFrequency = delcommafy($("#batteryOverhaulFrequency").val(),true);
         var vehicleRetrofits = delcommafy($("#vehicleRetrofits").val());
-        var vehicleRetrofitsFrequency = delcommafy($("#vehicleRetrofitsFrequency").val());
+        var vehicleRetrofitsFrequency = delcommafy($("#vehicleRetrofitsFrequency").val(),true);
 
         var additionalMaintenanceCost = delcommafy($("#additionalMaintenanceCost").val());
         var insurance = delcommafy($("#insurance").val());
@@ -663,7 +674,7 @@ $(function () {
         var co2Factor3 = delcommafy($("#co2Factor3").val());
 
         var chargerConstruction = delcommafy($("#chargerConstruction").val());
-        var chargersNumber = delcommafy($("#chargersNumber").val());
+        var chargersNumber = delcommafy($("#chargersNumber").val(),true);
         var procurementCost = delcommafy($("#procurementCost").val());
         var operationalCost = delcommafy($("#operationalCost").val());
         var maintenanceCost = delcommafy($("#maintenanceCost").val());
@@ -794,7 +805,7 @@ $(function () {
                             $("#name4").val(data.name);
                             $("#chargersNumber2").val($("#chargersNumber").val());
                             $("#chargerConstruction2").val($("#chargerConstruction").val());
-                            $("#procurementCost2").val($("#procurementCost2").val());
+                            $("#procurementCost2").val($("#procurementCost").val());
                             $("#operationalCost2").val($("#operationalCost").val());
                             $("#maintenanceCost2").val($("#maintenanceCost").val());
                             $("#myModal4").modal("show");
@@ -824,12 +835,17 @@ $(function () {
         }
         num=num.replace(/,/gi,'');
         if(isInt==true){
-            num=num.fixed(0);
+            num=parseInt(num);
         }else{
-            num=num.fixed(4);
+            num=parseFloat(num);
+            num=num.toFixed(4);
         }
         return num;
         
+    }
+
+    function myIsNaN(value) {
+        return typeof value === 'number' && !isNaN(value);
     }
 
     function getChildren() {
@@ -1253,16 +1269,35 @@ $(function () {
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
+                var fuelType=$("#fuelType").val();
                 if (data.code == 0 && data.details.length > 0) {
                     var detail = data.details[0];
-                    $("#co2Factor").val(detail.co2);
-                    $("#co2eFactor").val(detail.co2e);
+                    if(fuelType==4){
+                        $("#co2Factor2").val(detail.co2);
+                        $("#co2eFactor2").val(detail.co2e);
+                    }else{
+                        $("#co2Factor").val(detail.co2);
+                        $("#co2eFactor").val(detail.co2e);
+                    }
 
-                    $("#co2Factor2").val(detail.co2);
-                    $("#co2eFactor2").val(detail.co2e);
                 }
             }
         });
 
     }
+
+    $('#mainBody').on("click", "#fillSocialCostFactor", function() {
+        getSocialCostFactor();
+    });
+
+    $('#mainBody').on("click", "#fillEmissionCostFactor", function() {
+        getEfData();
+        getCo2e();
+    });
+
+    $('#mainBody').on("click", "#fillCostFactor", function() {
+        getBusCost();
+        getFeData();
+    });
+
 });

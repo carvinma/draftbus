@@ -8,17 +8,17 @@ public class OperatingCostCalcUtils {
     public static Double[] calcFuelCosts(Double vkt,Integer busNumber,Double fuelEfficiency,Double fuelCostRate,Double fuelCostProject,Double fuelAdditive,Integer operationalYear){
         Double[] results=new Double[operationalYear];
 
-        System.out.println("Fuel cost list");
+        //System.out.println("Fuel cost list");
 
         for(Integer i=0;i<operationalYear;i++) {
             double d=((fuelCostRate * Math.pow((1 + fuelCostProject), i)) + fuelAdditive);
             double result = vkt * busNumber * fuelEfficiency  * 0.01 *d ;
             DecimalFormat df = new DecimalFormat(".00");
             result=Double.valueOf(df.format(result));
-            System.out.println(result);
+            //System.out.println(result);
             results[i]=result;
         }
-        System.out.println("Fuel cost list end");
+        //System.out.println("Fuel cost list end");
         return results;
     }
 
@@ -27,22 +27,22 @@ public class OperatingCostCalcUtils {
         int length=fuelCosts.length;
         Double[] results=new Double[length];
         DecimalFormat df = new DecimalFormat(".00");
-        System.out.println("Operating cost list");
+        //System.out.println("Operating cost list");
         for(Integer i=0;i<length;i++) {
-            double result=laborCost+fuelStationCostperationCost+insurance+additionalOperationalCost+fuelCosts[i];
+            double result=laborCost+insurance+additionalOperationalCost+fuelCosts[i];
             result=Double.valueOf(df.format(result));
             results[i]=result;
-            System.out.println(result);
+            //System.out.println(result);
         }
-        System.out.println("Operating cost list end");
+        //System.out.println("Operating cost list end");
         return results;
     }
 
     public  static double calcFixedMaintenanceCost(Double fixedAnnualMaintenanceCost,Double laborCost,Double addtionalMaintenanceCost,Double fuelStationMaintenance){
-        double result= fixedAnnualMaintenanceCost+laborCost+addtionalMaintenanceCost+fuelStationMaintenance;
+        double result= fixedAnnualMaintenanceCost+laborCost+addtionalMaintenanceCost;
         DecimalFormat df = new DecimalFormat(".00");
         result=Double.valueOf(df.format(result));
-        System.out.println("FixedMaintenanceCost"+String.valueOf(result));
+        //System.out.println("FixedMaintenanceCost"+String.valueOf(result));
         return result;
     }
 
@@ -92,21 +92,21 @@ public class OperatingCostCalcUtils {
         //System.out.println(""+totalOperatingCost);
 
 
-        System.out.println("operatingNPV"+String.valueOf(operatingNPV));
+        System.out.println("operatingNPV:"+String.valueOf(operatingNPV));
 
-        System.out.println("laborCost"+String.valueOf(laborCost));
+        System.out.println("laborCost:"+String.valueOf(laborCost));
 
         double laborCostNPV=NPVCalcUtils.calcNPV(discountRate,laborCostResults);
-        System.out.println("laborCostNPV"+String.valueOf(laborCostNPV));
+        System.out.println("laborCostNPV:"+String.valueOf(laborCostNPV));
 
         double fuelCostNPV=NPVCalcUtils.calcNPV(discountRate,fuelCostResults);
         System.out.println(fuelCostNPV);
 
         double maintenanceCostNPV=NPVCalcUtils.calcNPV(discountRate,maintenanceCostResults);
-        System.out.println(maintenanceCostNPV);
+        System.out.println("omCostNPV:"+maintenanceCostNPV);
 
         double omCostNPV=NPVCalcUtils.calcNPV(discountRate,omCostResults);
-        System.out.println(omCostNPV);
+        System.out.println("omCostNPV:"+omCostNPV);
 
 
 

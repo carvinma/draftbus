@@ -1,5 +1,6 @@
 package com.bteplus.draftbus.controller;
 
+import com.bteplus.draftbus.common.NPVCalcUtils;
 import com.bteplus.draftbus.entity.*;
 import com.bteplus.draftbus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,8 +154,8 @@ public class HomeContrller {
         model.addAttribute("resultEmissionData",resultEmissionData);
         model.addAttribute("resultSocialCostData",resultSocialCostData);
         model.addAttribute("resultData2",resultData2);
-        model.addAttribute("resultEmissionData2",resultEmissionData2);
-        model.addAttribute("resultSocialCostData2",resultSocialCostData2);
+        model.addAttribute("resultEmissionData2",resultEmissionData2);//总的
+        model.addAttribute("resultSocialCostData2",resultSocialCostData2);//年
 
         model.addAttribute("country",country);
         model.addAttribute("city",city);
@@ -176,22 +177,24 @@ public class HomeContrller {
         result.setFuel_cost_npv(getDouble2(resultData.getFuel_cost_npv()*mutil));
         result.setCapital_cost_npv(getDouble2(resultData.getCapital_cost_npv()*mutil));
         result.setFinancial_cost_npv(getDouble2(resultData.getFinancial_cost_npv()*mutil));
+        result.setOm_cost_npv(getDouble2(resultData.getOm_cost_npv()*mutil));
+        result.setInfra_cost_npv(getDouble2(resultData.getInfra_cost_npv()*mutil));
         return  result;
 
     }
     private ResultEmissionData getResultEmissionData2(Integer n,ResultEmissionData resultEmissionData){
         ResultEmissionData result=new ResultEmissionData();
-        result.setNox(getDouble2(resultEmissionData.getNox()/n));
-        result.setCo(getDouble2(resultEmissionData.getCo()/n));
-        result.setCo2(getDouble2(resultEmissionData.getCo2()/n));
-        result.setCo2_up(getDouble2(resultEmissionData.getCo2_up()/n));
-        result.setCo2e(getDouble2(resultEmissionData.getCo2e()/n));
-        result.setCo2e_up(getDouble2(resultEmissionData.getCo2e()/n));
-        result.setPm10(getDouble2(resultEmissionData.getPm10()/n));
-        result.setPm10_up(getDouble2(resultEmissionData.getPm10()/n));
-        result.setPm25(getDouble2(resultEmissionData.getPm25()/n));
-        result.setPm25_up(getDouble2(resultEmissionData.getPm25_up()/n));
-        result.setThc(getDouble2(resultEmissionData.getThc()/n));
+        result.setNox(getDouble2(resultEmissionData.getNox()*n));
+        result.setCo(getDouble2(resultEmissionData.getCo()*n));
+        result.setCo2(getDouble2(resultEmissionData.getCo2()*n));
+        result.setCo2_up(getDouble2(resultEmissionData.getCo2_up()*n));
+        result.setCo2e(getDouble2(resultEmissionData.getCo2e()*n));
+        result.setCo2e_up(getDouble2(resultEmissionData.getCo2e_up()*n));
+        result.setPm10(getDouble2(resultEmissionData.getPm10()*n));
+        result.setPm10_up(getDouble2(resultEmissionData.getPm10_up()*n));
+        result.setPm25(getDouble2(resultEmissionData.getPm25()*n));
+        result.setPm25_up(getDouble2(resultEmissionData.getPm25_up()*n));
+        result.setThc(getDouble2(resultEmissionData.getThc()*n));
         return  result;
     }
 
@@ -203,14 +206,29 @@ public class HomeContrller {
 
     private ResultSocialCostData getResultSocialCostData2(double r,Integer n,ResultSocialCostData resultSocialCostData) {
         ResultSocialCostData result = new ResultSocialCostData();
-        double mutil = r / (1 - Math.pow(1 + r, -1 * n));
-        System.out.println("ResultSocialCostData mutil"+String.valueOf(mutil));
-        result.setCo(getDouble2(resultSocialCostData.getCo()*mutil));
-        result.setCo2(getDouble2(resultSocialCostData.getCo2()*mutil));
-        result.setNox(getDouble2(resultSocialCostData.getNox()*mutil));
-        result.setPm10(getDouble2(resultSocialCostData.getPm10()*mutil));
-        result.setPm25(getDouble2(resultSocialCostData.getPm25()*mutil));
-        result.setThc(getDouble2(resultSocialCostData.getThc()*mutil));
+        Double[] arrCo=new Double[n];
+        Double[] arrCo2=new Double[n];
+        Double[] arrNox=new Double[n];
+        Double[] arrPm10=new Double[n];
+        Double[] arrPm25=new Double[n];
+        Double[] arrThc=new Double[n];
+        for(int i=0;i<n;i++){
+            arrCo[i]=resultSocialCostData.getCo();
+            arrCo2[i]=resultSocialCostData.getCo2();
+            arrNox[i]=resultSocialCostData.getNox();
+            arrPm10[i]=resultSocialCostData.getPm10();
+            arrPm25[i]=resultSocialCostData.getPm25();
+            arrThc[i]=resultSocialCostData.getThc();
+        }
+
+        result.setCo(getDouble2(NPVCalcUtils.calcNPV(r,arrCo)));
+        result.setCo2(getDouble2(NPVCalcUtils.calcNPV(r,arrCo2)));
+        result.setNox(getDouble2(NPVCalcUtils.calcNPV(r,arrNox)));
+        result.setPm10(getDouble2(NPVCalcUtils.calcNPV(r,arrPm10)));
+        result.setPm25(getDouble2(NPVCalcUtils.calcNPV(r,arrPm25)));
+        result.setThc(getDouble2(NPVCalcUtils.calcNPV(r,arrThc)));
+
+
         return result;
     }
 
