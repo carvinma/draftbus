@@ -15,7 +15,7 @@ $(function () {
                 if (data.code == 0) {
                     getchart("chart1",data.data1.legendData,data.data1.categoryData,data.data1.data);
                     getchart("chart2",data.data2.legendData,data.data2.categoryData,data.data2.data);
-                    getchart("chart3",data.data3.legendData,data.data3.categoryData,data.data3.data);
+                    getchart3("chart3",data.data3.legendData,data.data3.categoryData,data.data3.data);
                 }
             }
         });
@@ -54,7 +54,8 @@ $(function () {
             ],
             yAxis : [
                 {
-                    type : 'value'
+                    type : 'value',
+                    axisLabel:{formatter:'{value}US$/tonne'}
                 }
             ],
             series : data
@@ -97,8 +98,12 @@ $(function () {
             yAxis : [
                 {
                     type : 'value'
+
                 }
             ],
+            grid:{
+                top:'100px;'
+            },
             series : data
         };
 
@@ -179,5 +184,56 @@ $(function () {
 
         myChart.setOption(option);
     }
-    
+
+
+    function getchart3(chartName,legendData,categoryData,data) {
+        var myChart = echarts.init(document.getElementById(chartName));
+        var option;
+        option = {
+            title : {
+                text: '',
+                subtext: ''
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:legendData  //fields
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : categoryData //name
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    //name:'US$/tonne'
+                    axisLabel:{formatter:'{value}($/tonne)'}
+                }
+            ],
+            grid:{
+                left:'160px'
+            },
+            series : data
+        };
+
+        myChart.setOption(option);
+    }
+
+    $( ".btnBack" ).click(function() {
+        history.go(-1);
+    });
 });

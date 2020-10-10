@@ -13,6 +13,7 @@ import com.bteplus.draftbus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -760,7 +761,7 @@ public class ApiController {
         return map;
     }
     @RequestMapping(value="/saveChildData2")
-    public Map<String,Object> saveChild2(Integer id,String name,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime) {
+    public Map<String,Object> saveChild2(Integer id,String name,Double downPaymentRate, Double procurementSubsidy, Double residualValue,Double loanInterestRate,Integer loanTime,Double additionalOperationalCost) {
         Map<String,Object> map= new HashMap<>();
         if(id!=null) {
             InputCostFactor costFactor=inputCostFactorRepository.getOne(id);
@@ -769,8 +770,8 @@ public class ApiController {
             costFactor.setProcurement_subsidy(procurementSubsidy);
             costFactor.setResidual_value(residualValue*100);
             costFactor.setDown_payment_rate(downPaymentRate);
+            costFactor.setAdditional_operation_cost(additionalOperationalCost);
             inputCostFactorRepository.save(costFactor);
-
             InputData inputData=inputDataRepository.getOne(id);
             inputData.setName(name);
             inputDataRepository.save(inputData);
@@ -781,7 +782,7 @@ public class ApiController {
     }
 
     @RequestMapping(value="/saveChildData3")
-    public Map<String,Object> saveChild3(Integer id,String name,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double operationalCost,Double maintenanceCost) {
+    public Map<String,Object> saveChild3(Integer id,String name,Double chargerConstruction,Double procurementCost,Integer chargersNumber,Double operationalCost,Double maintenanceCost,Double fuelPrice,Double additionalFuelPrice) {
         Map<String,Object> map= new HashMap<>();
         if(id!=null) {
             InputData inputData=inputDataRepository.getOne(id);
@@ -792,6 +793,11 @@ public class ApiController {
             inputData.setOperational_cost(operationalCost);
             inputData.setProcurement_cost(procurementCost);
             inputDataRepository.save(inputData);
+
+            InputCostFactor costFactor=inputCostFactorRepository.getOne(id);
+            costFactor.setFuel_price(fuelPrice);
+            costFactor.setAdditional_fuel_price(additionalFuelPrice);
+            inputCostFactorRepository.save(costFactor);
         }
 
         map.put("code",0) ;
@@ -861,7 +867,8 @@ public class ApiController {
 
         Map<String,Object> result1=resultDataList.get(0);
         for (String key:result1.keySet()) {
-            legendList.add(key);
+            //String keyName=key.replace("_"," ");
+            legendList.add(key.replace("_cost_npv","CostNPV"));
         }
         legendList.remove("name");
         legendList.remove("record_id");
@@ -873,16 +880,17 @@ public class ApiController {
         int legendSize=legendList.size();
         for(int i=0;i<legendSize;i++){
             String name=legendList.get(i);
+            String key=name.replace("CostNPV","_cost_npv");
             BarResult barResult=new BarResult();
             barResult.setName(name);
             List<Object> lst=new ArrayList<>();
             for(int j=0;j<length;j++){
                 Map<String,Object> result=resultDataList.get(j);
-                lst.add(result.get(name));
+                lst.add(result.get(key));
             }
             barResult.setData(lst);
             if(resultType.intValue()==3){
-                barResult.setStack("cc3");
+                //barResult.setStack("cc3");//叠拼
             }
 
             dataList.add(barResult);
@@ -1009,5 +1017,21 @@ public class ApiController {
     }
 
 
+
+    @RequestMapping(value="test1")
+    public Map<String,Object> test1(){
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("code",0);
+        System.out.println("1");
+        return map;
+    }
+
+    @RequestMapping(value="test2",method=RequestMethod.POST)
+    public Map<String,Object> test2(String name,String pwd){
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("code",0);
+        System.out.println(name+" "+pwd);
+        return map;
+    }
 
 }

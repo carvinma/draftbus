@@ -17,87 +17,39 @@
 </head>
 <body>
 
-<div class="row" id="mainBody">
+<div class="row" id="mainBody" style="font-family: georgia,serif!important;">
     <div class="col-md-10 col-md-offset-1">
         <form class="form-horizontal" id="frm">
-            <div class="panel panel-default" style="margin-top: 20px;">
-                <div class="panel-heading">
-                    <h3 class="panel-title">General information</h3>
+            <div class="form-horizontal" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-3 control-label">Country<span class="required">*</span></label>
+                    <div class="col-sm-3">
+                        <select name="countryId" required class="form-control" lay-verify="" id="countryId"
+                                style="display: block;width:200px;">
+                        </select>
+                    </div>
+                    <label for="" class="col-sm-3 control-label">City</label>
+                    <div class="col-sm-3">
+                        <select name="cityId"  class="form-control" lay-verify="" id="cityId"
+                                style="display: block;width:200px;">
+                        </select>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Country<span class="required">*</span></label>
-                            <div class="col-sm-3">
-                                <select name="countryId" required class="form-control" lay-verify="" id="countryId"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
 
-                            <label for="" class="col-sm-3 control-label">Temperature </label>
-                            <div class="col-sm-3">
-                                <select class="form-control" lay-verify="" id="temperature" name="temperature"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">City</label>
-                            <div class="col-sm-3">
-                                <select name="cityId"  class="form-control" lay-verify="" id="cityId"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-                            <label for="" class="col-sm-3 control-label">Humidity </label>
-                            <div class="col-sm-3">
-                                <select class="form-control" lay-verify="" id="humidity" name="humidity"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-
-
-                        </div>
-
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Discount rate(%)<span class="required">*</span></label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" required name="discountRate" id="discountRate" placeholder=""
-                                       style="width:200px;" value="${inputData.discount_rate!}">
-                            </div>
-                            <label for="" class="col-sm-3 control-label">Altitude/slope </label>
-                            <div class="col-sm-3">
-                                <select class="form-control" lay-verify="" id="slope" name="slope"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Social discount rate(%)<span
-                                    class="required">*</span></label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" required name="socialDiscountRate" id="socialDiscountRate" placeholder=""
-                                       style="width:200px;" value="${inputData.social_discount_rate!}">
-                            </div>
-                            <label for="" class="col-sm-3 control-label">Inflation rate(%)</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" disabled name="inflationRate" id="inflationRate" placeholder=""
-                                       style="width:200px;" value="${inputData.inflation_rate!}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="display: none;" for="" class="col-sm-2 control-label">Year<span class="required">*</span></label>
-                            <div class="col-sm-2" style="display: none;">
-                                <select name="modelYear"  class="form-control" lay-verify="" id="modelYear" name="modelYear"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-                        </div>
-
+                <div class="form-group">
+                    <label data-toggle="tooltip" title="Example tooltip" for="" class="col-sm-3 control-label">Discount rate (%)<span class="required">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" required name="discountRate" id="discountRate" placeholder=""
+                               style="width:200px;" value="${inputData.discount_rate!}">
+                    </div>
+                    <label for="" class="col-sm-3 control-label">Social discount rate (%)<span
+                            class="required">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" required name="socialDiscountRate" id="socialDiscountRate" placeholder=""
+                               style="width:200px;" value="${inputData.social_discount_rate!}">
                     </div>
                 </div>
             </div>
-
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Bus fleet information</h3>
@@ -126,11 +78,13 @@
                                         style="display: block;width:200px;">
                                 </select>
                             </div>
-                            <label for="" class="col-sm-3 control-label">Replacement ratio</label>
+                            <label for="" class="col-sm-3 control-label">Operational years (Year)<span
+                                    class="required">*</span></label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control" disabled id="replacementRatio" name="replacementRatio" placeholder=""
-                                       style="width:200px;" value="${busFleet.replacement_ratio!}">
+                                <input type="text" required class="form-control" name="operationalYears" id="operationalYears" placeholder=""
+                                       style="width:200px;" value="${busFleet.operational_years!}">
                             </div>
+
                         </div>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Emission standard<span
@@ -141,34 +95,16 @@
                                 </select>
                             </div>
                             <label for="" class="col-sm-3 control-label">Annual distance traveled
-                                (VKT)(km/year/bus)<span class="required">*</span></label>
+                                 (VKT)(km/year/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" id="vkt" placeholder="" name="vkt"
                                        style="width:200px;" value="${busFleet.vkt!}">
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Average speed </label>
-                            <div class="col-sm-3">
-                                <select class="form-control"  lay-verify="" id="opSpeed" name="opSpeed"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-                            <label for="" class="col-sm-3 control-label">Operational years(Year)<span
-                                    class="required">*</span></label>
-                            <div class="col-sm-3">
-                                <input type="text" required class="form-control" name="operationalYears" id="operationalYears" placeholder=""
-                                       style="width:200px;" value="${busFleet.operational_years!}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Load </label>
-                            <div class="col-sm-3">
-                                <select class="form-control"  lay-verify="" id="feLoad" name="feLoad"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-                            <label for="" class="col-sm-3 control-label">Fuel efficiency(<span id="fuelUnit">L/100km</span>)<span
+
+                            <label for="" class="col-sm-3 control-label">Fuel efficiency (<span id="fuelUnit" >L/100km</span>)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" id="fuelEfficiency" name="fuelEfficiency" placeholder=""
@@ -176,22 +112,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Air condition </label>
-                            <div class="col-sm-3">
-                                <select class="form-control"  lay-verify="" id="ac" name="ac"
-                                        style="display: block;width:200px;">
-                                </select>
-                            </div>
-                        </div>
+
 
                     </div>
                 </div>
             </div>
 
+
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> Cost Factors <button class="btn btn-primary" style="margin-left: 20px;" type="button" id="fillCostFactor">Fill default values</button>
+                    <h3 class="panel-title"> Cost Factors <button class="btn btn-primary" style="margin-left: 60px;" type="button" id="fillCostFactor">Fill default values</button>
                         <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">unfold
                         </a></h3>
                 </div>
@@ -203,12 +133,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Purchase price($/bus)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Purchase price ($/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="purchasePrice" placeholder="" name="purchasePrice"
                                        style="width:200px;"  required value="${costFactor.purchase_price!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Annual total labor cost($/bus/year)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Annual total labor cost ($/bus/year)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="annualLaborCost" placeholder="" name="annualLaborCost"
                                        style="width:200px;"  required value="${costFactor.annual_labor_cost!}">
@@ -216,12 +146,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Procurement subsidy($/bus)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Procurement subsidy ($/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="procurementSubsidy" id="procurementSubsidy" placeholder=""
                                        style="width:200px;"  required value="${costFactor.procurement_subsidy!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Fuel price(<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Fuel price (<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="fuelPrice" id="fuelPrice" placeholder=""
                                        style="width:200px;"  required value="${costFactor.fuel_price!}">
@@ -229,12 +159,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Residual value(%)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Residual value (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="residualValue" id="residualValue" placeholder=""
                                        style="width:200px;"  required value="${costFactor.residual_value!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Fuel cost projection(%)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Fuel cost projection (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control"  name="fuelCostProjection" id="fuelCostProjection" placeholder=""
                                        style="width:200px;"  required value="${costFactor.fuel_cost_projection!}">
@@ -242,12 +172,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Down payment(%)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Down payment (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="downPaymentRate" placeholder=""
                                        style="width:200px;" name="downPaymentRate"  required value="${costFactor.down_payment_rate!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Additional fuel price(<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Additional fuel price (<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="additionalFuelPrice" id="additionalFuelPrice" placeholder=""
                                        style="width:200px;"  required value="${costFactor.additional_fuel_price!}">
@@ -256,13 +186,13 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Loan interest rate(%)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Loan interest rate (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="loanInterestRate" id="loanInterestRate" placeholder=""
                                        style="width:200px;"  required value="${costFactor.loan_interest_rate!}">
                             </div>
                             <label for="" class="col-sm-3 control-label">Additional operational costs to
-                                include($/bus)</label>
+                                include ($/bus)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="additionalOperationalCost" id="additionalOperationalCost" placeholder=""
                                        style="width:200px;"  required value="${costFactor.additional_operation_cost!}">
@@ -270,12 +200,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Loan time(years)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Loan time (years)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text"  required class="form-control" name="loanTime" id="loanTime" placeholder=""
                                        style="width:200px;" value="${costFactor.loan_time!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Insurance($/bus)<span class="required">*</span></label>
+                            <label for="" class="col-sm-3 control-label">Insurance ($/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text"  required class="form-control" name="insurance" id="insurance" placeholder=""
                                        style="width:200px;" value="${costFactor.insurance!}">
@@ -293,12 +223,12 @@
                         </div>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Annual general maintenance
-                                cost($/bus/year)</label>
+                                cost ($/bus/year)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="annualMaintenanceCost" id="annualMaintenanceCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.annual_maintenance_cost!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Administration($/year)</label>
+                            <label for="" class="col-sm-3 control-label">Administration ($/year)</label>
                             <div class="col-sm-3">
                                 <input type="text"  class="form-control"  name="administration" id="administration" placeholder=""
                                        style="width:200px;" value="${costFactor.administration!}">
@@ -306,12 +236,12 @@
                         </div>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Annual maintenance labor
-                                cost($/bus/year)</label>
+                                cost ($/bus/year)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="annualMaintenanceLaborCost" id="annualMaintenanceLaborCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.annual_maintenance_labor_cost!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Other tax and fee($/bus/year)</label>
+                            <label for="" class="col-sm-3 control-label">Other tax and fee ($/bus/year)</label>
                             <div class="col-sm-3">
                                 <input type="text"  class="form-control" name="otherTaxFee" id="otherTaxFee" placeholder=""
                                        style="width:200px;" value="${costFactor.other_tax_fee!}">
@@ -319,14 +249,14 @@
                         </div>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Additional maintenance costs to
-                                include($/bus/year) </label>
+                                include ($/bus/year) </label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="additionalMaintenanceCost" id="additionalMaintenanceCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.additional_maintenance_cost!}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">One time overhaul cost($/bus)</label>
+                            <label for="" class="col-sm-3 control-label">One time overhaul cost ($/bus)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="onetimeOverhaulCost" id="onetimeOverhaulCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.onetime_overhaul_cost!}">
@@ -339,7 +269,7 @@
                             <label style="text-align: left;font-weight:800;font-size:16px;" for="" class="col-sm-6 control-label">Infrastructure (optional)</label>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Charger construction($)</label>
+                            <label for="" class="col-sm-3 control-label">Charger construction ($)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="chargerConstruction" name="chargerConstruction"placeholder=""
                                        style="width:200px;" value="${inputData.charger_construction!}">
@@ -353,21 +283,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Procurement cost($)</label>
+                            <label for="" class="col-sm-3 control-label">Procurement cost ($)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="procurementCost" id="procurementCost" placeholder=""
                                        style="width:200px;" value="${inputData.procurement_cost!}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Operational cost($/year)</label>
+                            <label for="" class="col-sm-3 control-label">Operational cost ($/year)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="operationalCost" id="operationalCost" placeholder=""
                                        style="width:200px;" value="${inputData.operational_cost!}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Maintenance cost($/year)</label>
+                            <label for="" class="col-sm-3 control-label">Maintenance cost ($/year)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="maintenanceCost" id="maintenanceCost" placeholder=""
                                        style="width:200px;" value="${inputData.maintenance_cost!}">
@@ -390,13 +320,13 @@
                             <label style="text-align: center;" for="" class="col-sm-6 control-label">UPSTREAM</label>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Carbon Monoxide (CO)(g/km)<span
+                            <label for="" class="col-sm-3 control-label">Carbon Monoxide (CO) (g/km)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="coFactor"  id="coFactor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.co!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Particulate Matter 2.5 (PM 2.5)(g/kwh)<span
+                            <label for="" class="col-sm-3 control-label">Fine Particulate Matter (PM 2.5) (g/kwh)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm25Factor2" id="pm25Factor2" placeholder=""
@@ -404,13 +334,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Total Hydrocarbons (THC)(g/km)<span
+                            <label for="" class="col-sm-3 control-label">Total Hydrocarbons (THC) (g/km)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="thcFactor" id="thcFactor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.thc!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Particulate Matter 10 (PM 10)(g/kwh)<span
+                            <label for="" class="col-sm-3 control-label">Coarse Particulate Matter (PM 10) (g/kwh)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm10Factor2" id="pm10Factor2"  placeholder=""
@@ -418,13 +348,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Nitrogen Oxide (Nox)(g/km)<span
+                            <label for="" class="col-sm-3 control-label">Nitrogen Oxide (Nox) (g/km)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="noxFactor" id="noxFactor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.nox!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Carbon Dioxide (CO2)(g/kwh)<span
+                            <label for="" class="col-sm-3 control-label">Carbon Dioxide (CO2) (g/kwh)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="co2Factor2" id="co2Factor2" placeholder=""
@@ -432,13 +362,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Particulate Matter 2.5 (PM 2.5)(g/km)<span
+                            <label for="" class="col-sm-3 control-label">Fine Particulate Matter (PM 2.5) (g/km)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm25Factor" id="pm25Factor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.pm25!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Greenhouse Gases (GHG/CO2e)(g/kwh)<span
+                            <label for="" class="col-sm-3 control-label">Greenhouse Gases (GHG/CO2e) (g/kwh)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="co2eFactor2" id="co2eFactor2" placeholder=""
@@ -446,7 +376,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Particulate Matter 10 (PM 10)(g/km)<span
+                            <label for="" class="col-sm-3 control-label">Coarse Particulate Matter (PM 10) (g/km)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm10Factor" id="pm10Factor" placeholder=""
@@ -454,7 +384,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Carbon Dioxide (CO2)(g/L)<span
+                            <label for="" class="col-sm-3 control-label">Carbon Dioxide (CO2) (g/L)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="co2Factor" id="co2Factor" placeholder=""
@@ -463,7 +393,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Greenhouse Gases (GHG/CO2e)(g/L)<span
+                            <label for="" class="col-sm-3 control-label">Greenhouse Gases (GHG/CO2e) (g/L)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="co2eFactor" id="co2eFactor" placeholder=""
@@ -507,7 +437,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Particulate Matter 2.5 (PM 2.5)<span
+                            <label for="" class="col-sm-3 control-label">Fine Particulate Matter (PM 2.5)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm25Factor3" id="pm25Factor3" placeholder=""
@@ -515,7 +445,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Particulate Matter 10 (PM 10)<span
+                            <label for="" class="col-sm-3 control-label">Coarse Particulate Matter (PM 10)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm10Factor3" id="pm10Factor3" placeholder=""
@@ -534,10 +464,82 @@
                 </div>
             </div>
 
+            <div class="panel-body panel-collapse collapse" id="collapseFour" >
+                <div class="form-horizontal">
+                    <div class="form-group" style="display: none;">
+                        <label for="" class="col-sm-3 control-label">Temperature </label>
+                        <div class="col-sm-3">
+                            <select class="form-control" lay-verify="" id="temperature" name="temperature"
+                                    style="display: block;width:200px;">
+                            </select>
+                        </div>
+                        <label for="" class="col-sm-3 control-label">Humidity </label>
+                        <div class="col-sm-3">
+                            <select class="form-control" lay-verify="" id="humidity" name="humidity"
+                                    style="display: block;width:200px;">
+                            </select>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">Average speed </label>
+                        <div class="col-sm-3">
+                            <select class="form-control"  lay-verify="" id="opSpeed" name="opSpeed"
+                                    style="display: block;width:200px;">
+                            </select>
+                        </div>
+                        <label for="" class="col-sm-3 control-label">Replacement ratio</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" disabled id="replacementRatio" name="replacementRatio" placeholder=""
+                                   style="width:200px;" value="${busFleet.replacement_ratio!}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">Load </label>
+                        <div class="col-sm-3">
+                            <select class="form-control"  lay-verify="" id="feLoad" name="feLoad"
+                                    style="display: block;width:200px;">
+                            </select>
+                        </div>
+                        <label for="" class="col-sm-3 control-label">Air condition </label>
+                        <div class="col-sm-3">
+                            <select class="form-control"  lay-verify="" id="ac" name="ac"
+                                    style="display: block;width:200px;">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: none" id="tempHiden">
+                <label for="" class="col-sm-3 control-label">Altitude/slope </label>
+                <div class="col-sm-3">
+                    <select class="form-control" lay-verify="" id="slope" name="slope"
+                            style="display: block;width:200px;">
+                    </select>
+                </div>
+
+                <label for="" class="col-sm-3 control-label">Inflation rate(%)</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" disabled name="inflationRate" id="inflationRate" placeholder=""
+                           style="width:200px;" value="${inputData.inflation_rate!}">
+                </div>
+
+                <div class="form-group">
+                    <label style="display: none;" for="" class="col-sm-2 control-label">Year<span class="required">*</span></label>
+                    <div class="col-sm-2" style="display: none;">
+                        <select name="modelYear"  class="form-control" lay-verify="" id="modelYear" name="modelYear"
+                                style="display: block;width:200px;">
+                        </select>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-horizontal">
-                <div class="form-group">
+                <div class="form-group" style="margin-left: 0px;">
                     <button type="button" id="btnCalc" class="btn btn-success">Save</button>
+                    <a style="margin-left: 20px;" class="btn btn-primary btnBack">go back</a>
                 </div>
             </div>
 
@@ -569,5 +571,5 @@
 <script src="../bootstrap-3.3.7/js/bootstrap.js"></script>
 <script src="../jquery-validation-1.19.0/dist/jquery.validate.js"></script>
 <script src="../site/js/bootoast.js"></script>
-<script src="../site/js/child.js?v=1"></script>
+<script src="../site/js/child.js?v=3"></script>
 </html>

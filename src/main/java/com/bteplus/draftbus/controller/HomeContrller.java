@@ -80,7 +80,8 @@ public class HomeContrller {
         model.addAttribute("emissionFactor",emissionFactor);
         model.addAttribute("socialCostFactor",socialCostFactor);
         model.addAttribute("costFactor",costFactor);
-
+        model.addAttribute("masterId",inputData.getRecord_id());
+        model.addAttribute("masterName",inputData.getName());
         System.out.println(costFactor);
         return "/index";
     }

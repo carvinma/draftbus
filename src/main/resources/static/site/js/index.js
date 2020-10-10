@@ -799,6 +799,7 @@ $(function () {
                             $("#downPaymentRate2").val($("#downPaymentRate").val());
                             $("#loanInterestRate2").val($("#loanInterestRate").val());
                             $("#loanTime2").val($("#loanTime").val());
+                            $("#additionalOperationalCost2").val($("#additionalOperationalCost").val());
                             $("#myModal3").modal("show");
                         }else if(childType==3) {
                             $("#hidChildId4").val(data.id);
@@ -808,6 +809,8 @@ $(function () {
                             $("#procurementCost2").val($("#procurementCost").val());
                             $("#operationalCost2").val($("#operationalCost").val());
                             $("#maintenanceCost2").val($("#maintenanceCost").val());
+                            $("#fuelPrice2").val($("#fuelPrice").val());
+                            $("#additionalFuelPrice2").val($("#additionalFuelPrice").val());
                             $("#myModal4").modal("show");
                         }
                 }else {
@@ -820,8 +823,8 @@ $(function () {
                                 ids=ids+","+$(this).val();
                             });
                         }
-                        ids=$("#hidRecordId").val()+ids;
-                        window.open("/chart?ids="+ids);
+                        ids=ids.substr(1);
+                        window.location.href="/chart?ids="+ids;
 
                     }
                 }
@@ -863,12 +866,16 @@ $(function () {
                     var str = "";
                     var length=data.details.length;
                     $("#tbody").html("");
+                    var html=$("#hidMaster").html();
+                    html=html.replace("<tbody>","");
+                    html=html.replace("</tbody>","");
+                    $("#tbody").append(html);
                     for (var i = 0; i < data.details.length; i++) {
                         var detail=data.details[i];
                         var rId=detail.record_id;
                         var name=detail.name;
                         var hrHtml=$("#hidFleetButton").html();
-                        hrHtml=hrHtml.replace(/#Number#/g,i+1);
+                        hrHtml=hrHtml.replace(/#Number#/g,i+2);
                         hrHtml=hrHtml.replace(/#RecordId#/g,rId);
 
                         if(name==""||name==null){
@@ -1004,6 +1011,7 @@ $(function () {
         var loanInterestRate = delcommafy($("#loanInterestRate2").val());
         var loanTime = delcommafy($("#loanTime2").val());
         var procurementSubsidy = delcommafy($("#procurementSubsidy2").val());
+        var additionalOperationalCost = delcommafy($("#additionalOperationalCost2").val());
         var id = $("#hidChildId3").val();
         $.ajax({
             type: "post",
@@ -1017,6 +1025,7 @@ $(function () {
                 loanInterestRate:loanInterestRate,
                 loanTime:loanTime,
                 procurementSubsidy:procurementSubsidy,
+                additionalOperationalCost:additionalOperationalCost
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -1039,6 +1048,8 @@ $(function () {
         var procurementCost = delcommafy($("#procurementCost2").val());
         var operationalCost = delcommafy($("#operationalCost2").val());
         var maintenanceCost = delcommafy($("#maintenanceCost2").val());
+        var fuelPrice = delcommafy($("#fuelPrice2").val());
+        var additionalFuelPrice = delcommafy($("#additionalFuelPrice2").val());
         var id = $("#hidChildId4").val();
         $.ajax({
             type: "post",
@@ -1052,6 +1063,8 @@ $(function () {
                 operationalCost: operationalCost,
                 maintenanceCost:maintenanceCost,
                 chargerConstruction:chargerConstruction,
+                fuelPrice:fuelPrice,
+                additionalFuelPrice:additionalFuelPrice,
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {

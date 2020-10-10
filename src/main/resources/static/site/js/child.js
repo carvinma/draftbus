@@ -1269,4 +1269,8 @@ $(function () {
         getBusCost();
         getFeData();
     });
+
+    $( ".btnBack" ).click(function() {
+        history.go(-1);
+    });
 });

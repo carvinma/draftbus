@@ -17,8 +17,11 @@
 <body>
 
 <div class="row" id="mainBody">
-    <div class="col-md-11 col-md-offset-1">
 
+    <div class="col-md-11 col-md-offset-1">
+        <div  id="backBody" style="margin-top:20px;margin-bottom: 20px;margin-right:20px; ">
+            <a class="btn btn-primary btnBack">go back</a>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Cost Output</h3>
@@ -26,10 +29,10 @@
             <div class="panel-body">
                 <div class="form-horizontal">
 
-                    <div class="col-md-6">
-                        <div id="chart1" style="height:400px;width:600px;"></div>
+                    <div class="col-md-10">
+                        <div id="chart1" style="height:500px;width:800px;"></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
 
                     </div>
                 </div>
@@ -43,10 +46,10 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="col-md-12">
-                        <div class="col-md-6">
-                            <div id="chart2" style="height:400px;width:600px;"></div>
+                        <div class="col-md-10">
+                            <div id="chart2" style="height:500px;width:800px;"></div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-2">
 
                         </div>
                     </div>
@@ -63,10 +66,10 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="col-md-12">
-                        <div class="col-md-6">
-                            <div id="chart3" style="height:400px;width:600px;"></div>
+                        <div class="col-md-10">
+                            <div id="chart3" style="height:500px;width:800px;"></div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-2">
 
                         </div>
                     </div>
@@ -75,7 +78,9 @@
             </div>
         </div>
 
-
+        <div  id="backBody" style="margin-bottom: 20px;margin-right:20px; ">
+            <a class="btn btn-primary btnBack">go back</a>
+        </div>
     </div>
 </div>
 
@@ -86,5 +91,5 @@
 <script src="../site/js/jquery-2.1.1.min.js"></script>
 <script src="../bootstrap-3.3.7/js/bootstrap.js"></script>
 <script src="../site/js/echarts.min.js"></script>
-<script src="../site/js/chartresult.js?v=1"></script>
+<script src="../site/js/chartresult.js?v=3"></script>
 </html>
