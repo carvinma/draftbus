@@ -1,6 +1,7 @@
 package com.bteplus.draftbus.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bteplus.draftbus.common.AverageCapitalPlusInterestUtils;
 import com.bteplus.draftbus.common.NPVCalcUtils;
@@ -8,6 +9,7 @@ import com.bteplus.draftbus.common.OperatingCostCalcUtils;
 import com.bteplus.draftbus.common.PMTCalcUtils;
 import com.bteplus.draftbus.entity.*;
 import com.bteplus.draftbus.model.BarResult;
+import com.bteplus.draftbus.model.Chart2Result;
 import com.bteplus.draftbus.model.ChartResult;
 import com.bteplus.draftbus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -842,10 +844,10 @@ public class ApiController {
         }
 
 
-
-        map.put("data1",getResultData(lst,1));
-        map.put("data2",getResultData(lst,2));
-        map.put("data3",getResultData(lst,3));
+        map.put("data1",getResultData2(lst,1));
+        map.put("data2",getResultData2(lst,2));
+        map.put("data3",getResultData2(lst,3));
+        map.put("data4",getResultData2(lst,4));
         return map;
     }
 
@@ -1019,11 +1021,10 @@ public class ApiController {
 
 
     @RequestMapping(value="test1")
-    public Map<String,Object> test1(){
-        Map<String,Object> map=new HashMap<String,Object>();
-        map.put("code",0);
-        System.out.println("1");
-        return map;
+    public Chart2Result test1(){
+        List<Integer> lst=new ArrayList<>();
+        lst.add(113);
+        return getResultData2(lst,1);
     }
 
     @RequestMapping(value="test2",method=RequestMethod.POST)
@@ -1034,4 +1035,128 @@ public class ApiController {
         return map;
     }
 
+
+    private Chart2Result getResultData2(List<Integer> ids, Integer resultType){
+        Chart2Result result=new Chart2Result();
+        JSONObject dataSet=new JSONObject();
+        List<List<Object>> source=new ArrayList<>();
+        JSONArray types=new JSONArray();
+        JSONObject type=new JSONObject();
+        type.put("type","bar");
+        List<Map<String,Object>> resultDataList=null;
+        if(resultType.intValue()==1){
+            resultDataList=resultDataRepository.getCompareData(ids);
+            List<Object> products=new ArrayList<>();
+            products.add("product");
+            products.add("Labor cost pv");
+            products.add("Fuel cost pv");
+            products.add("Others operational cost pv");
+            products.add("Maintenance cost pv");
+            products.add("Overhaul cost pv");
+            products.add("Capital cost pv");
+            products.add("Financial cost pv");
+            products.add("Infrastructure cost pv");
+            source.add(products);
+            for(int j=0;j<8;j++){
+                types.add(type);
+            }
+            int len=resultDataList.size();
+            for(int i=0;i<len;i++){
+                List<Object> data=new ArrayList<>();
+                data.add(resultDataList.get(i).get("name").toString());
+                data.add(resultDataList.get(i).get("labor_cost_npv").toString());
+                data.add(resultDataList.get(i).get("fuel_cost_npv").toString());
+                data.add(resultDataList.get(i).get("others_operational_cost_npv").toString());
+                data.add(resultDataList.get(i).get("maintenance_cost_npv").toString());
+                data.add(resultDataList.get(i).get("overhaul_cost_npv").toString());
+                data.add(resultDataList.get(i).get("capital_cost_npv").toString());
+                data.add(resultDataList.get(i).get("financial_cost_npv").toString());
+                data.add(0);
+                source.add(data);
+
+            }
+
+
+        }else if(resultType.intValue()==2){
+            resultDataList=resultEmissionDataRepository.getCompareData(ids);
+            List<Object> products=new ArrayList<>();
+            products.add("product");
+            products.add("CO");
+            products.add("THC");
+            products.add("NOx");
+            products.add("PM2.5");
+            products.add("PM10");
+            source.add(products);
+            for(int j=0;j<5;j++){
+                types.add(type);
+            }
+            int len=resultDataList.size();
+            for(int i=0;i<len;i++){
+                List<Object> data=new ArrayList<>();
+                data.add(resultDataList.get(i).get("name").toString());
+                data.add(resultDataList.get(i).get("co").toString());
+                data.add(resultDataList.get(i).get("thc").toString());
+                data.add(resultDataList.get(i).get("nox").toString());
+                data.add(resultDataList.get(i).get("pm25").toString());
+                data.add(resultDataList.get(i).get("pm10").toString());
+                source.add(data);
+
+            }
+
+        }else if(resultType.intValue()==3){
+            resultDataList=resultSocialCostDataRepository.getCompareData(ids);
+            List<Object> products=new ArrayList<>();
+            products.add("product");
+            products.add("CO");
+            products.add("THC");
+            products.add("NOx");
+            products.add("PM2.5");
+            products.add("PM10");
+            products.add("CO2");
+            source.add(products);
+            for(int j=0;j<6;j++){
+                types.add(type);
+            }
+            int len=resultDataList.size();
+            for(int i=0;i<len;i++){
+                List<Object> data=new ArrayList<>();
+                data.add(resultDataList.get(i).get("name").toString());
+                data.add(resultDataList.get(i).get("co").toString());
+                data.add(resultDataList.get(i).get("thc").toString());
+                data.add(resultDataList.get(i).get("nox").toString());
+                data.add(resultDataList.get(i).get("pm25").toString());
+                data.add(resultDataList.get(i).get("pm10").toString());
+                data.add(resultDataList.get(i).get("co2").toString());
+                source.add(data);
+
+            }
+        }else if(resultType.intValue()==4) {
+            resultDataList = resultEmissionDataRepository.getCompareData(ids);
+            List<Object> products = new ArrayList<>();
+            products.add("product");
+            products.add("CO2");
+            products.add("CO2e");
+            products.add("CO2 upstream");
+            products.add("CO2e upstream");
+            source.add(products);
+            for (int j = 0; j < 4; j++) {
+                types.add(type);
+            }
+            int len = resultDataList.size();
+            for (int i = 0; i < len; i++) {
+                List<Object> data = new ArrayList<>();
+                data.add(resultDataList.get(i).get("name").toString());
+                data.add(resultDataList.get(i).get("co2").toString());
+                data.add(resultDataList.get(i).get("co2e").toString());
+                data.add(resultDataList.get(i).get("co2_up").toString());
+                data.add(resultDataList.get(i).get("co2e_up").toString());
+                source.add(data);
+
+            }
+        }
+        dataSet.put("source",source);
+        result.setDataset(dataSet);
+        result.setTypes(types);
+        return result;
+    }
 }

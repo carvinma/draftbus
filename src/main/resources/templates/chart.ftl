@@ -20,7 +20,7 @@
 
     <div class="col-md-11 col-md-offset-1">
         <div  id="backBody" style="margin-top:20px;margin-bottom: 20px;margin-right:20px; ">
-            <a class="btn btn-primary btnBack">go back</a>
+            <a class="btn btn-primary btnBack">Back</a>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -41,16 +41,16 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">EMISSIONS OUTPUT</h3>
+                <h3 class="panel-title">Emissions Output</h3>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="col-md-12">
-                        <div class="col-md-10">
-                            <div id="chart2" style="height:500px;width:800px;"></div>
+                        <div class="col-md-6" style="margin-left:-50px">
+                            <div id="chart2" style="height:500px;width:600px;"></div>
                         </div>
-                        <div class="col-md-2">
-
+                        <div class="col-md-6">
+                            <div id="chart4" style="height:500px;width:600px;"></div>
                         </div>
                     </div>
 
@@ -61,7 +61,7 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">SOCIAL COST OUTPUT</h3>
+                <h3 class="panel-title">Social Cost Output</h3>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
@@ -79,7 +79,7 @@
         </div>
 
         <div  id="backBody" style="margin-bottom: 20px;margin-right:20px; ">
-            <a class="btn btn-primary btnBack">go back</a>
+            <a class="btn btn-primary btnBack">Back</a>
         </div>
     </div>
 </div>
@@ -91,5 +91,5 @@
 <script src="../site/js/jquery-2.1.1.min.js"></script>
 <script src="../bootstrap-3.3.7/js/bootstrap.js"></script>
 <script src="../site/js/echarts.min.js"></script>
-<script src="../site/js/chartresult.js?v=3"></script>
+<script src="../site/js/chartresult.js?v=5"></script>
 </html>

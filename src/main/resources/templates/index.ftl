@@ -276,10 +276,10 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                     <hr/>
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label style="text-align: left;font-weight:800;font-size:16px;" for="" class="col-sm-6 control-label">Infrastructure (optional)</label>
+                            <label style="text-align: left;font-weight:800;font-size:16px;" for="" class="col-sm-6 control-label">Infrastructure</label>
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="" for="" class="col-sm-3 control-label">Charger construction ($)</label>
+                            <label data-toggle="tooltip" title="" for="" class="col-sm-3 control-label">Charger construction costs ($)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="chargerConstruction" name="chargerConstruction"placeholder=""
                                        style="width:200px;" value="${inputData.charger_construction!}">
@@ -293,7 +293,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                             </div>
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="" for="" class="col-sm-3 control-label">Procurement cost ($)</label>
+                            <label data-toggle="tooltip" title="" for="" class="col-sm-3 control-label">Procurement costs ($)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="procurementCost" id="procurementCost" placeholder=""
                                        style="width:200px;" value="${inputData.procurement_cost!}">
@@ -336,9 +336,15 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                                 <input type="text" required class="form-control" name="coFactor"  id="coFactor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.co!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Fine particulate matter (PM 2.5) (g/kwh)<span
+                            <label for="" class="col-sm-3 control-label">Greenhouse gases (GHGs/CO<sub>2</sub>e) (g/kWh)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
+                                <input type="text" required class="form-control" name="co2eFactor2" id="co2eFactor2" placeholder=""
+                                       style="width:200px;" value="${emissionFactor.co2e_up!}">
+                            </div>
+                            <label style="display: none" for="" class="col-sm-3 control-label">Fine particulate matter (PM2.5) (g/kWh)<span
+                                    class="required">*</span></label>
+                            <div style="display: none" class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm25Factor2" id="pm25Factor2" placeholder=""
                                        style="width:200px;" value="${emissionFactor.pm25_up!}">
                             </div>
@@ -350,9 +356,15 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                                 <input type="text" required class="form-control" name="thcFactor" id="thcFactor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.thc!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Coarse particulate matter (PM 10) (g/kwh)<span
+                            <label for="" class="col-sm-3 control-label">Carbon dioxide (CO<sub>2</sub>) (g/kWh)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
+                                <input type="text" required class="form-control" name="co2Factor2" id="co2Factor2" placeholder=""
+                                       style="width:200px;" value="${emissionFactor.co2_up!}">
+                            </div>
+                            <label style="display: none" for="" class="col-sm-3 control-label">Coarse particulate matter (PM10) (g/kWh)<span
+                                    class="required">*</span></label>
+                            <div style="display: none" class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm10Factor2" id="pm10Factor2"  placeholder=""
                                        style="width:200px;" value="${emissionFactor.pm10_up!}">
                             </div>
@@ -364,29 +376,19 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                                 <input type="text" required class="form-control" name="noxFactor" id="noxFactor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.nox!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Carbon dioxide (CO<sub>2</sub>) (g/kwh)<span
-                                    class="required">*</span></label>
-                            <div class="col-sm-3">
-                                <input type="text" required class="form-control" name="co2Factor2" id="co2Factor2" placeholder=""
-                                       style="width:200px;" value="${emissionFactor.co2_up!}">
-                            </div>
+
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Fine particulate matter (PM 2.5) (g/km)<span
+                            <label  for="" class="col-sm-3 control-label">Fine particulate matter (PM2.5) (g/km)<span
                                     class="required">*</span></label>
-                            <div class="col-sm-3">
+                            <div  class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm25Factor" id="pm25Factor" placeholder=""
                                        style="width:200px;" value="${emissionFactor.pm25!}">
                             </div>
-                            <label for="" class="col-sm-3 control-label">Greenhouse gases (GHG/CO2e) (g/kwh)<span
-                                    class="required">*</span></label>
-                            <div class="col-sm-3">
-                                <input type="text" required class="form-control" name="co2eFactor2" id="co2eFactor2" placeholder=""
-                                       style="width:200px;" value="${emissionFactor.co2e_up!}">
-                            </div>
+
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Coarse particulate matter (PM 10) (g/km)<span
+                            <label for="" class="col-sm-3 control-label">Coarse particulate matter (PM10) (g/km)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm10Factor" id="pm10Factor" placeholder=""
@@ -403,7 +405,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                         </div>
 
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Greenhouse gases (GHG/CO2e) (g/L)<span
+                            <label for="" class="col-sm-3 control-label">Greenhouse gases (GHGs/CO<sub>2</sub>e) (g/L)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="co2eFactor" id="co2eFactor" placeholder=""
@@ -447,7 +449,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Fine particulate matter (PM 2.5)<span
+                            <label for="" class="col-sm-3 control-label">Fine particulate matter (PM2.5)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm25Factor3" id="pm25Factor3" placeholder=""
@@ -455,7 +457,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Coarse particulate matter (PM 10)<span
+                            <label for="" class="col-sm-3 control-label">Coarse particulate matter (PM10)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="pm10Factor3" id="pm10Factor3" placeholder=""
@@ -476,7 +478,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Other Information   <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">unfold
+                    <h3 class="panel-title">Advanced Features   <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">unfold
                     </a></h3>
                 </div>
                 <div class="panel-body panel-collapse collapse" id="collapseFour" >
@@ -498,7 +500,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">Average speed </label>
+                            <label for="" class="col-sm-3 control-label">Average speed (km/h)</label>
                             <div class="col-sm-3">
                                 <select class="form-control"  lay-verify="" id="opSpeed" name="opSpeed"
                                         style="display: block;width:200px;">
@@ -517,7 +519,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                                         style="display: block;width:200px;">
                                 </select>
                             </div>
-                            <label for="" class="col-sm-3 control-label">Air condition </label>
+                            <label for="" class="col-sm-3 control-label">Air conditioning </label>
                             <div class="col-sm-3">
                                 <select class="form-control"  lay-verify="" id="ac" name="ac"
                                         style="display: block;width:200px;">
@@ -621,7 +623,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
             <div class="modal-body">
                 <form class="form-horizontal" id="frm2">
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">Name<span class="required">*</span></label>
+                        <label for="" class="col-sm-4 control-label">Fleet name<span class="required">*</span></label>
                         <div class="col-sm-2">
                             <input class="form-control" required lay-verify="" id="name2" name="name2"
                                     >
@@ -698,7 +700,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
             <div class="modal-body">
                 <form class="form-horizontal" id="frm3">
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">Name<span class="required">*</span></label>
+                        <label for="" class="col-sm-4 control-label">Fleet Name<span class="required">*</span></label>
                         <div class="col-sm-2">
                             <input class="form-control" required lay-verify="" id="name3" name="name3"
                                     >
@@ -767,13 +769,13 @@ The cost of battery replacement, or engine overhaul can be included here for ele
             <div class="modal-body">
                 <form class="form-horizontal" id="frm4">
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">Name<span class="required">*</span></label>
+                        <label for="" class="col-sm-4 control-label">Fleet Name<span class="required">*</span></label>
                         <div class="col-sm-2">
                             <input class="form-control" required lay-verify="" id="name4" name="name4"
                                     >
                             </input>
                         </div>
-                        <label for="" class="col-sm-4 control-label">Charger construction ($)</label>
+                        <label for="" class="col-sm-4 control-label">Charger construction costs ($)</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="chargerConstruction2" placeholder="" name="chargerConstruction2"
                                     >
@@ -785,19 +787,19 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                             <input type="text" class="form-control" id="chargersNumber2" placeholder="" name="chargersNumber2"
                                     >
                         </div>
-                        <label for="" class="col-sm-4 control-label">Procurement cost ($)</label>
+                        <label for="" class="col-sm-4 control-label">Procurement costs ($)</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="procurementCost2" placeholder="" name="procurementCost2"
                                     >
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="" class="col-sm-4 control-label">Operational cost ($/year)</label>
+                        <label for="" class="col-sm-4 control-label">Operation costs ($/year)</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="operationalCost2" placeholder="" name="operationalCost2"
                                     >
                         </div>
-                        <label for="" class="col-sm-4 control-label">Maintenance cost ($/year)</label>
+                        <label for="" class="col-sm-4 control-label">Maintenance costs ($/year)</label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="maintenanceCost2" placeholder="" name="maintenanceCost2"
                                     >
