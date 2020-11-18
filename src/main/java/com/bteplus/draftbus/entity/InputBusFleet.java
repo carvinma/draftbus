@@ -18,7 +18,7 @@ public class InputBusFleet {
     private Integer fuel_type;
     private Integer emission_std;
     private Integer bus_number=0;
-    private Double replacement_ratio;
+    private Double replacement_ratio=1.0;
     private Double vkt;
     private Integer operational_years;
     private Double fuel_efficiency;

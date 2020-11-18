@@ -64,12 +64,13 @@ $(function () {
     getCountryIds();
     //getItemIdsByItemType(3,"#vehicleType","#hidVehicleType")
     //getItemIdsByItemType(4,"#fuelType","#hidFuelType")
-    //getItemIdsByItemType(8,"#feLoad","#hidFeLoad")
-    //getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed")
-    //getItemIdsByItemType(7,"#ac","#hidAc")
-    getItemIdsByItemType(9,"#temperature","#hidTemperature")
-    getItemIdsByItemType(10,"#humidity","#hidHumidity")
-    getItemIdsByItemType(11,"#slope","#hidSlope")
+    getItemIdsByItemType(8,"#feLoad","#hidFeLoad");
+    getItemIdsByItemType(6,"#opSpeed","#hidOpSpeed");
+    getItemIdsByItemType(7,"#ac","#hidAc");
+    getItemIdsByItemType(9,"#temperature","#hidTemperature");
+    getItemIdsByItemType(10,"#humidity","#hidHumidity");
+    getItemIdsByItemType(11,"#slope","#hidSlope");
+    getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
 
     loadData();
     getChildren();
@@ -87,7 +88,6 @@ $(function () {
         var countryId=$("#hidCountryId").val();
         if(countryId!=""){
             getCityIds(countryId);
-            getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
         }
         var cityId=$("#hidCityId").val();
         getVehicleList(countryId,cityId);
@@ -96,22 +96,22 @@ $(function () {
         getFuelTypeList(countryId,cityId,vehicleType);
 
         var fuelType=$("#hidFuelType").val();
-        getSpeedList(countryId,cityId,vehicleType,fuelType);
+        //getSpeedList(countryId,cityId,vehicleType,fuelType);
 
         var opSpeed=$("#hidOpSpeed").val();
-        getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
+        //getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
 
         var load=$("#hidFeLoad").val();
-        getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
+        //getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
     }
     $('#mainBody').on("change", "#countryId", function() {
         var countryId=$("#countryId").val();
         if(countryId!=null){
             getCityIds(countryId);
-            getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
+            //getItemIdsByItemType(5,"#emissionStd","#hidEmissionStd");
             getSocialCostFactor(countryId);
         }
-        getVehicleList();
+        //getVehicleList();
         //getEfData();
         //getFeData();
         //getBusCost();
@@ -119,18 +119,19 @@ $(function () {
     $('#mainBody').on("change", "#cityId", function() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
+        getMeData();
         getVehicleList(countryId,cityId);
-
+        getBusCost();
     });
     $('#mainBody').on("change", "#vehicleType", function() {
         var countryId=$("#countryId").val();
         var cityId=$("#cityId").val();
         var vehicleType=$("#vehicleType").val();
 
-        getFuelTypeList(countryId,cityId,vehicleType);
+        //getFuelTypeList(countryId,cityId,vehicleType);
 
         //getEfData();
-        //getFeData();
+        getFeData();
         //getBusCost();
     });
     $('#mainBody').on("change", "#fuelType", function() {
@@ -139,11 +140,13 @@ $(function () {
         var vehicleType=$("#vehicleType").val();
         var fuelType=$("#fuelType").val();
         if(fuelType!=null){
-            getSpeedList(countryId,cityId,vehicleType,fuelType);
+            //getSpeedList(countryId,cityId,vehicleType,fuelType);
+            getFleetData(countryId,fuelType);
+            getFeData();
         }
         if(fuelType==4){
             $("#fuelUnit").html("kwh/100km");
-            $(".fuelPriceUnit").html("$/kwh");
+            $(".fuelPriceUnit").html("$/kWh");
         }else if(fuelType==50||fuelType==77||fuelType==78){
             $("#fuelUnit").html("m3/100km");
             $(".fuelPriceUnit").html("$/m3");
@@ -176,7 +179,7 @@ $(function () {
 
     $('#emissionStd').change(function(){
         //getEfData();
-        //getFeData();
+        getFeData();
         //getBusCost();
     });
 
@@ -257,10 +260,10 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemsByItemType", // 请求发送到TestServlet处
-            //url:"../api/getCountryList",
+            //url: "../api/getItemsByItemType", // 请求发送到TestServlet处
+            url:"../api/getCountryList",
             data: {
-                itemType:1
+                //itemType:1
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -291,12 +294,12 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getItemIdsByParentIdAndItemType", // 请求发送到TestServlet处
-            //url: "../api/getCityList",
+            //url: "../api/getItemIdsByParentIdAndItemType", // 请求发送到TestServlet处
+            url: "../api/getCityList",
             data: {
-                itemType:2,
-                parentId:countryId
-                //countryId:countryId
+                //itemType:2,
+                //parentId:countryId
+                countryId:countryId
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -315,8 +318,8 @@ $(function () {
                     $("#cityId").val(cityId);
                 }
                 var cityId=$("#cityId").val();
-                getMeData();
-                getVehicleList(countryId,cityId)
+                //getMeData();
+                //getVehicleList(countryId,cityId)
             }
         });
     }
@@ -342,14 +345,14 @@ $(function () {
 
                 if (data.code == 0&& data.details.length>0) {
                     var detail=data.details[0];
-                    if(discountRate==""){
-                        $("#discountRate").val(detail.discount_rate);
+                    if(discountRate==""||discountRate==0){
+                        $("#discountRate").val((detail.discount_rate*100).toFixed(4));
                     }
-                    if(socialDiscountRate==""){
-                        $("#socialDiscountRate").val(detail.social_discount_rate);
+                    if(socialDiscountRate==""||socialDiscountRate==0){
+                        $("#socialDiscountRate").val((100*detail.social_discount_rate).toFixed(4));
                     }
-                    if(inflationRate==""){
-                        $("#inflationRate").val(detail.inflation_rate);
+                    if(inflationRate==""||inflationRate==0){
+                        $("#inflationRate").val((detail.inflation_rate*100).toFixed(4));
                     }
                 }
             }
@@ -418,7 +421,8 @@ $(function () {
     function getFeData() {
         var countryId=$("#countryId").val();
         var fuelType=$("#fuelType").val();
-        var std=$("#emissionStd").find("option:selected").data("value");
+        //var std=$("#emissionStd").find("option:selected").data("value");
+        var std=$("#emissionStd").val();
         var load=$("#feLoad").val();
         var ac=$("#ac").val();
         var opSpeed=$("#opSpeed").val();
@@ -430,7 +434,7 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getFeData", // 请求发送到TestServlet处
+            url: "../api/getFuelEfficiency", // 请求发送到TestServlet处
             data: {
                 countryId: countryId,
                 cityId:cityId,
@@ -462,13 +466,14 @@ $(function () {
         var load=$("#feLoad").val();
         var ac=$("#ac").val();
         var opSpeed=$("#opSpeed").val();
-        if(countryId==null ||cityId==null||vehicleType==null||fuelType==null||load==null||ac==null||opSpeed==null){
+        var std=$("#emissionStd").val();
+        if(countryId==null ||fuelType==null||std==null){
             return;
         }
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getEfData", // 请求发送到TestServlet处
+            url: "../api/getEfData2", // 请求发送到TestServlet处
             data: {
                 countryId: countryId,
                 cityId:cityId,
@@ -476,7 +481,8 @@ $(function () {
                 fuelType:fuelType,
                 load:load,
                 ac:ac,
-                opSpeed:opSpeed
+                opSpeed:opSpeed,
+                std:std
             },
             dataType: "json", // 返回数据形式为json
             success: function (data) {
@@ -485,8 +491,57 @@ $(function () {
                 var noxFactor=$("#noxFactor").val();
                 var pm25Factor=$("#coFactor").val();
                 var pm10Factor=$("#thcFactor").val();
+                if(data.code==0){
+                    var tails=data.tails;
+                    var ups=data.ups;
+                    if("co" in tails){
+                        $("#coFactor").val(delcommafy(tails["co"], false));
+                    }else{
+                        $("#coFactor").val(0);
+                    }
+                    if("thc" in tails) {
+                        $("#thcFactor").val(delcommafy(tails["thc"]));
+                    }else{
+                        $("#thcFactor").val(0);
+                    }
+                    if("nox" in tails) {
+                        $("#noxFactor").val(delcommafy(tails["nox"]));
+                    }else{
+                        $("#noxFactor").val(0);
+                    }
+                    if("pm2.5" in tails) {
+                        $("#pm25Factor").val(delcommafy(tails["pm2.5"]));
+                    }else{
+                        $("#pm25Factor").val(0);
+                    }
+                    if("pm10" in tails) {
+                        $("#pm10Factor").val(delcommafy(tails["pm10"]));
+                    }else{
+                        $("#pm10Factor").val(0);
+                    }
+                    if("co2" in tails) {
+                        $("#co2Factor").val(delcommafy(tails["co2"]));
+                    }else{
+                        $("#co2Factor").val(0);
+                    }
+                    if("co2e" in tails) {
+                        $("#co2eFactor").val(delcommafy(tails["co2e"]));
+                    }else{
+                        $("#co2eFactor").val(0);
+                    }
+                    if("co2" in ups) {
+                        $("#co2Factor2").val(delcommafy(ups["co2"]));
+                    }else{
+                        $("#co2Factor2").val(0);
+                    }
+                    if("ghg" in ups) {
+                        $("#co2eFactor2").val(delcommafy(ups["ghg"]));
+                    }else{
+                        $("#co2eFactor2").val(0);
+                    }
+                }
 
-                if (data.code == 0&& data.details.length>0) {
+                /*if (data.code == 0&& data.details.length>0) {
                     var std=$("#emissionStd").find("option:selected").data("value");
                     var fuelType=$("#fuelType").val();
                     var i=0;
@@ -520,7 +575,7 @@ $(function () {
                         }
                     }
 
-                }
+                }*/
             }
         })
     }
@@ -1241,7 +1296,7 @@ $(function () {
         $.ajax({
             type: "post",
             async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: "../api/getBusCost", // 请求发送到TestServlet处
+            url: "../api/getBusCost2", // 请求发送到TestServlet处
             data: {
                 countryId: countryId,
                 cityId:cityId,
@@ -1252,7 +1307,7 @@ $(function () {
             success: function (data) {
                 if (data.code == 0&& data.details.length>0) {
                     var detail=data.details[0];
-                    $("#additionalOperationalCost").val(detail.additional_operation);
+                    /*$("#loanInterestRate").val(detail.additional_operation);
                     $("#administration").val(detail.administration);
                     $("#fuelPrice").val(detail.fuel_price);
                     $("#insurance").val(detail.insurance);
@@ -1261,7 +1316,19 @@ $(function () {
                     $("#otherTaxFee").val(detail.other_tax_fee);
                     $("#purchasePrice").val(detail.purchase_price);
                     $("#residualValue").val(detail.residual_value);
-                    $("#loanTime").val(detail.life_total);
+                    $("#loanTime").val(detail.life_total);*/
+
+                    $("#loanInterestRate").val((100*detail.bank_lending_rate).toFixed(4));
+                    $("#annualLaborCost").val(detail.labor_cost.toFixed(4));
+                    $("#chargerConstruction").val(detail.charger_construction.toFixed(4));
+                    $("#procurementCost").val(detail.charger_procurement.toFixed(4));
+                    $("#operationalCost").val(detail.charger_operation.toFixed(4));
+                    $("#maintenanceCost").val(detail.charger_maintenance.toFixed(4));
+                    $("#residualValue").val((100*detail.residual_value).toFixed(4));
+                    $("#otherTaxFee").val(detail.other_fuel_cost.toFixed(4));
+                    $("#inflationRate").val((100*detail.inflation_rate).toFixed(4));
+
+                    $("#purchasePrice").val(data.purchasePrice["purchase_price"].toFixed(4));
                 }
             }
         })
@@ -1305,12 +1372,36 @@ $(function () {
 
     $('#mainBody').on("click", "#fillEmissionCostFactor", function() {
         getEfData();
-        getCo2e();
+        //getCo2e();
     });
 
     $('#mainBody').on("click", "#fillCostFactor", function() {
         getBusCost();
         getFeData();
     });
+
+    function getFleetData(countryId,fuelType) {
+        $.ajax({
+            type: "post",
+            async: true, // 异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: "./api/getFleetData", // 请求发送到TestServlet处
+            data: {
+                countryId: countryId,
+                fuelType: fuelType
+            },
+            success: function (data) {
+                if(data.code==0){
+                    var vkt=$("#vkt").val();
+                    var fuelPrice=$("#fuelPrice").val();
+                    if(vkt==""||vkt==0) {
+                        $("#vkt").val(data.result["vkt"]);
+                    }
+                    if(fuelPrice==""||fuelPrice==0) {
+                        $("#fuelPrice").val(data.result["fuel_price"]);
+                    }
+                }
+            }
+        });
+    }
 
 });

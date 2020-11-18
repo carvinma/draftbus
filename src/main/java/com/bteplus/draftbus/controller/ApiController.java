@@ -69,6 +69,9 @@ public class ApiController {
     @Autowired
     GhgDataRepository ghgDataRepository;
 
+    @Autowired
+    GeneralInfoRepository generalInfoRepository;
+
     static int const_g_t=1000000;
 
     @RequestMapping(value="/abc")
@@ -124,13 +127,13 @@ public class ApiController {
     @RequestMapping(value="/getMeData")
     public Map<String,Object> getMeData(Integer countryId,Integer cityId,Integer year){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<Map<String,Double>> lst=meDataRepository.getMeData(countryId,cityId,year);
+        List<Map<String,Double>> lst=meDataRepository.getMeData2(countryId,cityId,year);
         if (lst.isEmpty()) {
-            lst=meDataRepository.getMeData(countryId,null,null);
+            lst=meDataRepository.getMeData2(countryId,null,null);
         }else{
             Map<String,Double> detail=lst.get(0);
             if(detail.get("discount_rate").doubleValue()<=0){
-                lst=meDataRepository.getMeData(countryId,null,null);
+                lst=meDataRepository.getMeData2(countryId,null,null);
             }
         }
         map.put("code",0);
@@ -413,7 +416,7 @@ public class ApiController {
 
         double financialNPV=NPVCalcUtils.calcNPV(discountRate,AverageCapitalPlusInterestUtils.getPerYearInterest(loanAmout*loanInterestRate,loanInterestRate,numberOfPayment));
         double capitalNPV2=NPVCalcUtils.calcNPV(discountRate,AverageCapitalPlusInterestUtils.getPerYearPrincipal(loanAmout,loanInterestRate,numberOfPayment));
-        double capitalNPV=downPayment-busResidualNPV+infrastructureCost+capitalNPV2;
+        double capitalNPV=downPayment-busResidualNPV+capitalNPV2;
         double procurementNPV=financialNPV+capitalNPV;
         double annualizedFinancialCost=financialNPV*discountRate/(1-Math.pow((1+discountRate),-1*operationalYears));
         double annualizedCapitalCost=capitalNPV*discountRate/(1-Math.pow((1+discountRate),-1*operationalYears));
@@ -910,7 +913,7 @@ public class ApiController {
     @RequestMapping(value="/getCountryList")
     public Map<String,Object> getCountryList(){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getCountryList();
+        List<ItemInfo> lst=itemInfoRepository.getCountryList2();
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -919,7 +922,7 @@ public class ApiController {
     @RequestMapping(value="/getCityList")
     public Map<String,Object> getCityList(Integer countryId){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getCityList(countryId);
+        List<ItemInfo> lst=itemInfoRepository.getCityList2(countryId);
         map.put("code",0);
         map.put("details",lst);
         return map;
@@ -928,9 +931,9 @@ public class ApiController {
     @RequestMapping(value="/getVehicleTypeList")
     public Map<String,Object> getVehicleTypeList(Integer countryId,Integer cityId){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getVehicleTypeList(countryId,cityId);
+        List<ItemInfo> lst=itemInfoRepository.getVehicleTypeList2(countryId,cityId);
         if(lst.isEmpty()){
-            lst=itemInfoRepository.getVehicleTypeList(countryId,null);
+            lst=itemInfoRepository.getVehicleTypeList2(countryId,null);
         }
         map.put("code",0);
         map.put("details",lst);
@@ -939,9 +942,9 @@ public class ApiController {
     @RequestMapping(value="/getFuelTypeList")
     public Map<String,Object> getFuelTypeList(Integer countryId,Integer cityId,Integer vehicleType){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getFuelTypeList(countryId,cityId,vehicleType);
+        List<ItemInfo> lst=itemInfoRepository.getFuelTypeList2(countryId,cityId,vehicleType);
         if(lst.isEmpty()){
-            lst=itemInfoRepository.getFuelTypeList(countryId,null,null);
+            lst=itemInfoRepository.getFuelTypeList2(countryId,null,null);
         }
         map.put("code",0);
         map.put("details",lst);
@@ -950,9 +953,9 @@ public class ApiController {
     @RequestMapping(value="/getSpeedList")
     public Map<String,Object> getSpeedList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getSpeedList(countryId,cityId,vehicleType,fuelType);
+        List<ItemInfo> lst=itemInfoRepository.getSpeedList2(countryId,cityId,vehicleType,fuelType);
         if(lst.isEmpty()){
-            lst=itemInfoRepository.getSpeedList(countryId,null,null,fuelType);
+            lst=itemInfoRepository.getSpeedList2(countryId,null,null,fuelType);
         }
         map.put("code",0);
         map.put("details",lst);
@@ -961,9 +964,9 @@ public class ApiController {
     @RequestMapping(value="/getLoadList")
     public Map<String,Object> getLoadList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getLoadList(countryId,cityId,vehicleType,fuelType,opSpeed);
+        List<ItemInfo> lst=itemInfoRepository.getLoadList2(countryId,cityId,vehicleType,fuelType,opSpeed);
         if(lst.isEmpty()){
-            lst=itemInfoRepository.getLoadList(countryId,null,null,fuelType,null);
+            lst=itemInfoRepository.getLoadList2(countryId,null,null,fuelType,null);
         }
         map.put("code",0);
         map.put("details",lst);
@@ -972,9 +975,9 @@ public class ApiController {
     @RequestMapping(value="/getAcList")
     public Map<String,Object> getAcList(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer opSpeed,Integer load){
         Map<String,Object> map=new HashMap<String,Object>();
-        List<ItemInfo> lst=itemInfoRepository.getAcList(countryId,cityId,vehicleType,fuelType,opSpeed,load);
+        List<ItemInfo> lst=itemInfoRepository.getAcList2(countryId,cityId,vehicleType,fuelType,opSpeed,load);
         if(lst.isEmpty()){
-            lst=itemInfoRepository.getAcList(countryId,null,null,fuelType,null,null);
+            lst=itemInfoRepository.getAcList2(countryId,null,null,fuelType,null,null);
         }
         map.put("code",0);
         map.put("details",lst);
@@ -1063,6 +1066,8 @@ public class ApiController {
             int len=resultDataList.size();
             for(int i=0;i<len;i++){
                 List<Object> data=new ArrayList<>();
+                int recordId=Integer.parseInt(resultDataList.get(i).get("record_id").toString());
+                InputData inputData=inputDataRepository.getOne(recordId);
                 data.add(resultDataList.get(i).get("name").toString());
                 data.add(resultDataList.get(i).get("labor_cost_npv").toString());
                 data.add(resultDataList.get(i).get("fuel_cost_npv").toString());
@@ -1071,7 +1076,8 @@ public class ApiController {
                 data.add(resultDataList.get(i).get("overhaul_cost_npv").toString());
                 data.add(resultDataList.get(i).get("capital_cost_npv").toString());
                 data.add(resultDataList.get(i).get("financial_cost_npv").toString());
-                data.add(0);
+                Double infra_cost_npv=Double.parseDouble(resultDataList.get(i).get("infra_cost_npv").toString());
+                data.add(infra_cost_npv+(inputData.getCharger_construction()+inputData.getProcurement_cost())*inputData.getChargers_number());
                 source.add(data);
 
             }
@@ -1159,4 +1165,92 @@ public class ApiController {
         result.setTypes(types);
         return result;
     }
+
+    @RequestMapping(value="/getFuelEfficiency")
+    public Map<String,Object> getFuelEfficiency(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType,Integer ac,Integer load,Integer opSpeed,Integer std) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code",0);
+        double result=feDataRepository.getFeBase(countryId,cityId,vehicleType,fuelType,ac,load,opSpeed,std);
+        if(result==0){
+            result=feDataRepository.getFeBase(countryId,null,vehicleType,fuelType,null,null,null,std);
+        }
+        if(result==0){
+            result=feDataRepository.getFeBase(countryId,null,null,fuelType,null,null,null,std);
+        }
+        if(result==0){
+            result=feDataRepository.getFeBase(countryId,null,null,fuelType,null,null,null,null);
+        }
+        map.put("result",result);
+        return map;
+    }
+
+    @RequestMapping(value="/getEfData2")
+    public Map<String,Object> getEfData2(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType, Integer ac,Integer load,Integer opSpeed,Integer std){
+        Map<String,Object> map= new HashMap<>();
+        List<Map<String,Object>> lst=efDataRepository.getEfTailData(countryId,cityId,vehicleType,fuelType,ac,load,opSpeed,std);
+        if(lst.size()==0){
+            lst=efDataRepository.getEfTailData(countryId,cityId,vehicleType,fuelType,null,null,null,std);
+            if(lst.size()==0){
+                lst=efDataRepository.getEfTailData(countryId,cityId,null,fuelType,null,null,null,std);
+                if(lst.size()==0){
+                    lst=efDataRepository.getEfTailData(countryId,null,null,fuelType,null,null,null,std);
+                }
+            }
+        }
+        Map<String,Object> map1=getMapFromList(lst);
+        List<Map<String,Object>> lst2=efDataRepository.getEfUpData(countryId,cityId,fuelType,std);
+        if(lst2.size()==0){
+            lst2=efDataRepository.getEfUpData(countryId,null,fuelType,std);
+        }
+        Map<String,Object> map2=getMapFromList(lst2);
+        map.put("code",0);
+        map.put("tails",map1);
+        map.put("ups",map2);
+        return map;
+    }
+
+
+    public Map<String,Object> getMapFromList(List<Map<String,Object>> lst){
+        Map<String,Object> map=new HashMap<>();
+        for(int i=0;i<lst.size();i++){
+            String key=lst.get(i).get("emission").toString().toLowerCase();
+            String value=lst.get(i).get("avg_value").toString();
+            map.put(key,value);
+        }
+        return map;
+    }
+
+    @RequestMapping(value="/getFleetData")
+    public Map<String,Object> getFleetData(Integer countryId,Integer fuelType) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> result=inputBusFleetRepository.getFleetBase(countryId,fuelType);
+
+        map.put("code",0);
+        map.put("result",result);
+        return map;
+    }
+
+
+    @RequestMapping(value="/getBusCost2")
+    public Map<String,Object> getBusCost2(Integer countryId,Integer cityId,Integer vehicleType,Integer fuelType){
+        Map<String,Object> map=new HashMap<String,Object>();
+        Map<String,Object> busCost=busCostRepository.getBusCost2(countryId,cityId,vehicleType,fuelType);
+        if(busCost.values().size()==0){
+            busCost=busCostRepository.getBusCost2(countryId,cityId,null,fuelType);
+        }
+        if(busCost.values().size()==0){
+            busCost=busCostRepository.getBusCost2(countryId,null,null,fuelType);
+        }
+
+        List<Map<String,Object>> lst=generalInfoRepository.getGeneralBase(countryId,cityId);
+        if(lst.isEmpty()){
+            lst=generalInfoRepository.getGeneralBase(countryId,null);
+        }
+
+        map.put("code",0);
+        map.put("purchasePrice",busCost);
+        map.put("details",lst);
+        return map;
+    }
+
 }

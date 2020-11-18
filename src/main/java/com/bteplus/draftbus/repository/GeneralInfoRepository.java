@@ -44,4 +44,5 @@ public interface GeneralInfoRepository extends JpaRepository<GeneralBase,Integer
     @Query(value = "select  ifnull(avg(if(fe_value=0,null,fe_value)),0) as avg_value from fe_base where (?1 is null or country_Id=?1) and (?2 is null or city_id=?2) and (?3 is null or vehicle_type=?3) and (?4 is null or fuel_type=?4)  and  (?5 is null or ac=?5) and (?6 is null or ef_load=?6) and (?7 is null or op_speed=?7) and (?8 is null or std=?8) ",nativeQuery = true)
     List<Map<String,Object>> getFeBase(Integer countryId, Integer cityId, Integer vehicleType, Integer fuelType, Integer ac,Integer load,Integer opSpeed,Integer std);
 
+
 }
