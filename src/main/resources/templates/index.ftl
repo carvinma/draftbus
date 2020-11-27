@@ -30,13 +30,13 @@
         <form class="form-horizontal" id="frm">
             <div class="form-horizontal" style="margin-top: 20px;">
                 <div class="form-group">
-                    <label data-toggle="tooltip" title="If your country is not listed, you can select a country as a resemblance." for="" class="col-sm-3 control-label">Country<span class="required">*</span></label>
+                    <label data-toggle="tooltip" title="If your country is not listed, you can select the available country that best reflects the circumstances in your location. " for="" class="col-sm-3 control-label">Country<span class="required">*</span></label>
                     <div class="col-sm-3">
                         <select name="countryId" required class="form-control" lay-verify="" id="countryId"
                                 style="display: block;width:200px;">
                         </select>
                     </div>
-                    <label data-toggle="tooltip" title="If your city is not listed, you can select one city or “general” as a resemblance." for="" class="col-sm-3 control-label">City</label>
+                    <label data-toggle="tooltip" title="If your city is not listed, you can select the available city that best reflects the circumstances in your location, or “general” to see country averages for the remaining variables. Users can input their own data in both cases." for="" class="col-sm-3 control-label">City</label>
                     <div class="col-sm-3">
                         <select name="cityId"  class="form-control" lay-verify="" id="cityId"
                                 style="display: block;width:200px;">
@@ -50,7 +50,7 @@
                         <input type="text" class="form-control" required name="discountRate" id="discountRate" placeholder=""
                                style="width:200px;" value="${inputData.discount_rate!}">
                     </div>
-                    <label data-toggle="tooltip" title="Social discount rate (SDR) is the discount rate used in computing the value of funds spent on social projects. There is wide diversity in SDRs, with developed nations typically applying a lower rate (3-7%) than developing nations (8-15%)."  for="" class="col-sm-3 control-label">Social discount rate (%)<span
+                    <label data-toggle="tooltip" title="The social discount rate (SDR) is the discount rate used in computing the value of funds spent on social projects. There is a wide diversity in SDRs, with developed economies typically applying a lower rate (3–7%) than developing economies (8–15%)."  for="" class="col-sm-3 control-label">Social discount rate (%)<span
                             class="required">*</span></label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" required name="socialDiscountRate" id="socialDiscountRate" placeholder=""
@@ -65,13 +65,13 @@
                 <div class="panel-body">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="The available bus size in the drop-down list depends on available default data in the city or country selected. More will be included in next version. " for="" class="col-sm-3 control-label">Bus size<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="The available bus sizes in the drop-down list depend on the default data available for the city or country selected. More sizes will be included in the next version of the Tool.  " for="" class="col-sm-3 control-label">Bus size<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <select class="form-control" required lay-verify="" id="vehicleType" name="vehicleType"
                                         style="display: block;width:200px;">
                                 </select>
                             </div>
-                            <label data-toggle="tooltip" title="Input the number for a certain fleet." for="" class="col-sm-3 control-label">Number of buses<span
+                            <label data-toggle="tooltip" title="Input the number of buses for a certain fleet." for="" class="col-sm-3 control-label">Number of buses<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" id="busNumber" name="busNumber" placeholder=""
@@ -79,14 +79,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="The available fuel type in the drop-down list depends on available default data in the city or country selected. More will be included in next version." for="" class="col-sm-3 control-label">Fuel type<span
+                            <label data-toggle="tooltip" title="The available fuel types in the drop-down list depend on the default data available for the city or country selected. More fuel types will be included in the next version of the Tool. " for="" class="col-sm-3 control-label">Fuel type<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <select class="form-control" required lay-verify="" id="fuelType" name="fuelType"
                                         style="display: block;width:200px;">
                                 </select>
                             </div>
-                            <label data-toggle="tooltip" title="Input the typical useful life of the buses in this bus type. This should reflect the length of time after which buses must be retired or are sold for reuse." for="" class="col-sm-3 control-label">Operational years<span
+                            <label data-toggle="tooltip" title="Input the typical useful life of a bus of a certain type. This should reflect the length of time after which buses must be retired or sold for reuse." for="" class="col-sm-3 control-label">Operational years<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" name="operationalYears" id="operationalYears" placeholder=""
@@ -95,14 +95,14 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="The Tool only specifies European emission standards based on data availability and to reduce the complexity of the Tool. Some countries may have their own emission standards but are not reflected in the Tool. Users can refer to 3.2.3 of the technical note for more information. " for="" class="col-sm-3 control-label">Emission standard<span
+                            <label data-toggle="tooltip" title="The Tool specifies only European emission standards based on data availability and to reduce the complexity of the Tool. Some countries may have their own emission standards, but these are not reflected in the Tool. Refer to Section 3.2.3 of the technical note for more information.  " for="" class="col-sm-3 control-label">Emission standard<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <select class="form-control" required lay-verify="" id="emissionStd" name="emissionStd"
                                         style="display: block;width:200px;">
                                 </select>
                             </div>
-                            <label data-toggle="tooltip" title="Input the (average) annual distance each bus travels for this bus type." for="" class="col-sm-3 control-label">Annual distance traveled
+                            <label data-toggle="tooltip" title="Input the (average) annual distance one bus of a certain type travels." for="" class="col-sm-3 control-label">Annual distance traveled
                                  (VKT)(km/year/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" id="vkt" placeholder="" name="vkt"
@@ -112,7 +112,7 @@
 
                         <div class="form-group">
 
-                            <label data-toggle="tooltip" title="Fuel consumption by certain distance traveled." for="" class="col-sm-3 control-label">Fuel efficiency (<span id="fuelUnit" >L/100 km</span>)<span
+                            <label data-toggle="tooltip" title="Fuel consumption by distance traveled for a certain bus type." for="" class="col-sm-3 control-label">Fuel efficiency (<span id="fuelUnit" >L/100 km</span>)<span
                                     class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" required class="form-control" id="fuelEfficiency" name="fuelEfficiency" placeholder=""
@@ -140,12 +140,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the cost to buy one of the buses in this bus type, including all taxes and deductions that may be applied toward the base price." for="" class="col-sm-3 control-label">Purchase price ($/bus)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the cost to buy one bus of a certain type, including all taxes and deductions that may be applied toward the base price." for="" class="col-sm-3 control-label">Purchase price ($/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="purchasePrice" placeholder="" name="purchasePrice"
                                        style="width:200px;"  required value="${costFactor.purchase_price!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input the total cost to hire drivers for this bus type. Any factors taken into account in this response should also be included in subsequent bus types and fleets to remain consistent." for="" class="col-sm-3 control-label">Annual total labor cost ($/bus/year)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the total cost to hire drivers for a certain bus type. Any factors taken into account for one bus type and fleet should also be included in subsequent bus types and fleets to remain consistent." for="" class="col-sm-3 control-label">Annual total labor cost ($/bus/year)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="annualLaborCost" placeholder="" name="annualLaborCost"
                                        style="width:200px;"  required value="${costFactor.annual_labor_cost!}">
@@ -153,12 +153,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the subsidies that can be applied to this type of bus, if not already included in the purchase price." for="" class="col-sm-3 control-label">Procurement subsidy ($/bus)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the subsidies that can be applied for a bus of a certain type, if not already included in the purchase price." for="" class="col-sm-3 control-label">Procurement subsidy ($/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="procurementSubsidy" id="procurementSubsidy" placeholder=""
                                        style="width:200px;"  required value="${costFactor.procurement_subsidy!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input the current fuel cost for this bus type." for="" class="col-sm-3 control-label">Fuel price (<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the current fuel cost for a certain bus type." for="" class="col-sm-3 control-label">Fuel price (<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="fuelPrice" id="fuelPrice" placeholder=""
                                        style="width:200px;"  required value="${costFactor.fuel_price!}">
@@ -166,12 +166,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the expected residual value of this bus type." for="" class="col-sm-3 control-label">Residual value (%)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the expected residual value of a certain bus type." for="" class="col-sm-3 control-label">Residual value (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="residualValue" id="residualValue" placeholder=""
                                        style="width:200px;"  required value="${costFactor.residual_value!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input the projected annual increase or decrease of fuel for this bus type." for="" class="col-sm-3 control-label">Fuel cost projection (%)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the projected annual increase or decrease in fuel cost for a certain bus type." for="" class="col-sm-3 control-label">Fuel cost projection (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control"  name="fuelCostProjection" id="fuelCostProjection" placeholder=""
                                        style="width:200px;"  required value="${costFactor.fuel_cost_projection!}">
@@ -179,12 +179,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the percentage required as a down payment for a loan to finance this bus type." for="" class="col-sm-3 control-label">Down payment (%)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the percentage required as a down payment for a loan to finance a certain bus type." for="" class="col-sm-3 control-label">Down payment (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" id="downPaymentRate" placeholder=""
                                        style="width:200px;" name="downPaymentRate"  required value="${costFactor.down_payment_rate!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input the cost for any fuel additive, charging service fee, etc. " for="" class="col-sm-3 control-label">Additional fuel price (<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the cost for any fuel additive, charging service fee, or other fee." for="" class="col-sm-3 control-label">Additional fuel price (<span class="fuelPriceUnit">$/L</span>)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="additionalFuelPrice" id="additionalFuelPrice" placeholder=""
                                        style="width:200px;"  required value="${costFactor.additional_fuel_price!}">
@@ -193,12 +193,12 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the yearly interest rate that this bus type's loan will have." for="" class="col-sm-3 control-label">Loan interest rate (%)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input the yearly interest rate that a certain bus type’s loan will have." for="" class="col-sm-3 control-label">Loan interest rate (%)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="loanInterestRate" id="loanInterestRate" placeholder=""
                                        style="width:200px;"  required value="${costFactor.loan_interest_rate!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input any other operations costs that weren't covered in the previous categories. Any factors included in this response should also be included in subsequent bus types and fleets to remain consistent.Battery leasing costs can be included in this category." for="" class="col-sm-3 control-label">Additional operational costs to
+                            <label data-toggle="tooltip" title="Input any other operational costs that weren’t covered in the previous categories. Any factors taken into account for one bus type and fleet should also be included in subsequent bus types and fleets to remain consistent. Battery leasing costs can be included in this category." for="" class="col-sm-3 control-label">Additional operational costs to
                                 include ($/bus)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="additionalOperationalCost" id="additionalOperationalCost" placeholder=""
@@ -212,7 +212,7 @@
                                 <input type="text"  required class="form-control" name="loanTime" id="loanTime" placeholder=""
                                        style="width:200px;" value="${costFactor.loan_time!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input any insurance for this bus type." for="" class="col-sm-3 control-label">Insurance ($/bus)<span class="required">*</span></label>
+                            <label data-toggle="tooltip" title="Input any insurance used for a certain bus type." for="" class="col-sm-3 control-label">Insurance ($/bus)<span class="required">*</span></label>
                             <div class="col-sm-3">
                                 <input type="text"  required class="form-control" name="insurance" id="insurance" placeholder=""
                                        style="width:200px;" value="${costFactor.insurance!}">
@@ -229,33 +229,33 @@
 
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the average maintenance cost for one bus under this bus type. If the maintenance is not in-house, but based on contract, then the contract costs should be included here." for="" class="col-sm-3 control-label">Annual general maintenance
+                            <label data-toggle="tooltip" title="Input the average maintenance cost for one bus of a certain type. If the maintenance is not done in-house, but contracted out, then the contract costs should be included here." for="" class="col-sm-3 control-label">Annual general maintenance
                                 cost ($/bus/year)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="annualMaintenanceCost" id="annualMaintenanceCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.annual_maintenance_cost!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input any over-arching indirect costs that weren't covered in the previous categories, but are important to include for the correct cost calculation of a certain fleet. " for="" class="col-sm-3 control-label">Administration ($/year)</label>
+                            <label data-toggle="tooltip" title="Input any overarching indirect costs that weren’t covered in the previous categories, but that are important to include for the correct cost calculation of a certain fleet. " for="" class="col-sm-3 control-label">Administration ($/year)</label>
                             <div class="col-sm-3">
                                 <input type="text"  class="form-control"  name="administration" id="administration" placeholder=""
                                        style="width:200px;" value="${costFactor.administration!}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input the total cost to hire maintenance labors for this bus type. Any factors taken into account in this response should also be included in subsequent bus types and fleets to remain consistent." for="" class="col-sm-3 control-label">Annual maintenance labor
+                            <label data-toggle="tooltip" title="Input the total cost to hire maintenance workers for a certain bus type. Any factors taken into account for one bus type and fleet should also be included in subsequent bus types and fleets to remain consistent." for="" class="col-sm-3 control-label">Annual maintenance labor
                                 cost ($/bus/year)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="annualMaintenanceLaborCost" id="annualMaintenanceLaborCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.annual_maintenance_labor_cost!}">
                             </div>
-                            <label data-toggle="tooltip" title="Input any additional tax and fees that weren't covered in the previous categories, but are important to include for the correct cost calculation of a certain fleet." for="" class="col-sm-3 control-label">Other taxes and fees ($/bus/year)</label>
+                            <label data-toggle="tooltip" title="Input any additional taxes and fees that weren’t covered in the previous categories, but that are important to include for the correct cost calculation of a certain fleet." for="" class="col-sm-3 control-label">Other taxes and fees ($/bus/year)</label>
                             <div class="col-sm-3">
                                 <input type="text"  class="form-control" name="otherTaxFee" id="otherTaxFee" placeholder=""
                                        style="width:200px;" value="${costFactor.other_tax_fee!}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="Input any other maintenance costs that weren't covered in the previous categories. " for="" class="col-sm-3 control-label">Additional maintenance costs to
+                            <label data-toggle="tooltip" title="Input any other maintenance costs that weren’t covered in the previous categories. Any factors taken into account for one bus type or fleet should also be included in subsequent bus types and fleets to remain consistent." for="" class="col-sm-3 control-label">Additional maintenance costs to
                                 include ($/bus/year) </label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="additionalMaintenanceCost" id="additionalMaintenanceCost" placeholder=""
@@ -263,10 +263,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="The Tool assumes only one overhaul during the total lifespan of a bus, if there is one needed. It largely depends on the operator’s contract with the manufacturer, and the operator’s decision of whether to replace key parts, or replace the whole vehicle at once.
+                            <label data-toggle="tooltip" title="The Tool assumes only one overhaul during the total lifespan of a bus, if is one is needed. It largely depends on the operator’s contract with the manufacturer, and whether the operator decides to replace the entire vehicle at once or just key parts.
 
-The cost of battery replacement, or engine overhaul can be included here for electric bus, and other ICE buses.
-" for="" class="col-sm-3 control-label">One-time overhaul cost ($/bus)</label>
+The cost of battery replacement or engine overhaul can be included here for electric buses and ICE buses.
+">One-time overhaul cost ($/bus)</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control" name="onetimeOverhaulCost" id="onetimeOverhaulCost" placeholder=""
                                        style="width:200px;"   value="${costFactor.onetime_overhaul_cost!}">
@@ -319,14 +319,14 @@ The cost of battery replacement, or engine overhaul can be included here for ele
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 data-toggle="tooltip" title="Emission factors (EFs) include tailpipe emissions (tank-to-wheel) and upstream (well-to-tank) emissions. "  class="panel-title">Emissions Factors <button type="button" class="btn btn-primary" style="margin-left: 20px;" id="fillEmissionCostFactor">Use default values</button><a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">unfold
+                    <h3 data-toggle="tooltip" title="Emission factors (EFs) include tailpipe emissions (tank-to-wheel) and upstream emissions (well-to-tank).  "  class="panel-title">Emissions Factors <button type="button" class="btn btn-primary" style="margin-left: 20px;" id="fillEmissionCostFactor">Use default values</button><a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">unfold
                     </a>
                     </h3>
                 </div>
                 <div class="panel-body panel-collapse collapse" id="collapseTwo" >
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label data-toggle="tooltip" title="The default data are collected by bus length, fuel type and emission standard, when such data are available for tailpipe emissions. Tailpipe emission factors cover air pollutants emissions and carbon emissions for all types of buses. Electric bus has zero tailpipe emissions in this Tool." style="text-align: center;" for="" class="col-sm-6 control-label">TAILPIPE</label>
+                            <label data-toggle="tooltip" title="The default data are collected by bus length, fuel type, and emission standard, when such data are available for tailpipe emissions. Tailpipe emission factors cover air pollutant emissions and carbon emissions for all types of buses. Electric buses have zero tailpipe emissions in the Tool." style="text-align: center;" for="" class="col-sm-6 control-label">TAILPIPE</label>
                             <label data-toggle="tooltip" title="Upstream emission factors are collected for different fuels, including emission factors of fossil fuel production processes, and grid emission factors, which account for emissions generated by electricity used when operating electric buses. Upstream emission factors cover carbon emissions for all types of buses." style="text-align: center;" for="" class="col-sm-6 control-label">UPSTREAM</label>
                         </div>
                         <div class="form-group">
@@ -417,7 +417,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 data-toggle="tooltip" title="This Tool defines social cost as the costs of external impacts. Social costs factors are collected for each type of air pollutant and measure the total social cost per unit mass of each pollutant (in US$/tonne) at national level. " class="panel-title">Social Cost Factors  <button class="btn btn-primary" style="margin-left: 20px;" type="button" id="fillSocialCostFactor">Use default values</button> <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">unfold
+                    <h3 data-toggle="tooltip" title="This tool defines social cost as the cost of externalities. Social cost factors measure the total social cost per unit mass of each pollutant (in US$/tonne) at the national level. " class="panel-title">Social Cost Factors  <button class="btn btn-primary" style="margin-left: 20px;" type="button" id="fillSocialCostFactor">Use default values</button> <a style="float:right;color: #337ab7;text-decoration: underline;" class="openPanel" role="button" data-toggle="collapse"  href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">unfold
                     </a></h3>
                 </div>
                 <div class="panel-body panel-collapse collapse" id="collapseThree" >
@@ -504,7 +504,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                                         style="display: block;width:200px;">
                                 </select>
                             </div>
-                            <label data-toggle="tooltip" title="Replacement ratio refers to the ratio between electric bus - or a bus with more advanced technology - and the traditional ICE bus it replaced to get the same level of service. Ideally, the ratio is 1:1. We recommend users to use 1:1 – 2:1 to represent different scenarios and technology readiness." for="" class="col-sm-3 control-label">Replacement ratio</label>
+                            <label data-toggle="tooltip" title="The replacement ratio refers to the number of electric buses—or buses with more advanced technology—it takes to achieve the same level of service as one traditional ICE bus. Ideally, the ratio is 1:1. We recommend users use 1:1 and 2:1 to represent different scenarios and levels of technology readiness." for="" class="col-sm-3 control-label">Replacement ratio</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control"  id="replacementRatio" name="replacementRatio" placeholder="" min="1" max="2"
                                        style="width:200px;" value="${busFleet.replacement_ratio!}">
@@ -575,7 +575,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                     <tbody id="tbody">
 
                     </tbody>
-
+                </table>
             </div>
 
 
@@ -720,7 +720,7 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                         <label for="" class="col-sm-4 control-label">Down payment (%)<span class="required">*</span></label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="downPaymentRate2" placeholder="" name="downPaymentRate2"
-                                   required ">
+                                   required >
                         </div>
 
                     </div>
@@ -728,20 +728,18 @@ The cost of battery replacement, or engine overhaul can be included here for ele
                         <label for="" class="col-sm-4 control-label">Loan interest rate (%)<span class="required">*</span></label>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="loanInterestRate2" placeholder="" name="loanInterestRate2"
-                                    required ">
+                                    required >
                         </div>
                         <label for="" class="col-sm-4 control-label">Loan time (years)<span class="required">*</span></label>
                         <div class="col-sm-2">
-                            <input type="text"  required class="form-control" id="loanTime2" placeholder="" name="loanTime2"
-                                    >
+                            <input type="text"  required class="form-control" id="loanTime2" placeholder="" name="loanTime2">
                         </div>
                     </div>
                     <div class="form-group">
                         <label  for="" class="col-sm-4 control-label">Additional operational costs to
                             include ($/bus)</label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" name="additionalOperationalCost2" id="additionalOperationalCost2" placeholder=""
-                                     >
+                            <input type="text" class="form-control" name="additionalOperationalCost2" id="additionalOperationalCost2" placeholder="">
                         </div>
                     </div>
                 </form>
